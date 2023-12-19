@@ -6,7 +6,15 @@ import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 
 const Frame = () => {
   const navigation = useNavigation();
-
+  const num = [
+    { color: "#8E6868", text: '1' },
+    { color:"#BCB1B1", text: '2' },
+    { color:"#BCB1B1", text: '3' },
+    { color:"#BCB1B1", text: "4" },
+    { color:"#BCB1B1", text: '5' },
+    { color:"#BCB1B1", text: '6' },
+    { color:"#BCB1B1", text: '7' },
+  ];
   return (
     <View style={styles.ellipseParent}>
       <Image
@@ -14,61 +22,14 @@ const Frame = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
-      <View style={[styles.ellipseGroup, styles.groupParentLayout]}>
-        <Image
-          style={[styles.groupChild, styles.groupChildPosition]}
-          contentFit="cover"
-          source={require("../assets/ellipse-49.png")}
-        />
-        <Text style={[styles.text, styles.textTypo2]}>1</Text>
-      </View>
-      <View style={[styles.ellipseContainer, styles.groupParentLayout]}>
-        <Image
-          style={[styles.groupChild, styles.groupChildPosition]}
-          contentFit="cover"
-          source={require("../assets/ellipse-49.png")}
-        />
-        <Text style={[styles.text1, styles.textTypo2]}>2</Text>
-      </View>
-      <View style={[styles.groupView, styles.groupParentLayout]}>
-        <Image
-          style={[styles.groupChild, styles.groupChildPosition]}
-          contentFit="cover"
-          source={require("../assets/ellipse-49.png")}
-        />
-        <Text style={[styles.text1, styles.textTypo2]}>3</Text>
-      </View>
-      <View style={[styles.ellipseParent1, styles.groupParentLayout]}>
-        <Image
-          style={[styles.groupChild, styles.groupChildPosition]}
-          contentFit="cover"
-          source={require("../assets/ellipse-49.png")}
-        />
-        <Text style={[styles.text1, styles.textTypo2]}>4</Text>
-      </View>
-      <View style={[styles.ellipseParent2, styles.groupParentLayout]}>
-        <Image
-          style={[styles.groupChild, styles.groupChildPosition]}
-          contentFit="cover"
-          source={require("../assets/ellipse-4911.png")}
-        />
-        <Text style={[styles.text1, styles.textTypo2]}>5</Text>
-      </View>
-      <View style={[styles.ellipseParent3, styles.groupParentLayout]}>
-        <Image
-          style={[styles.groupChild, styles.groupChildPosition]}
-          contentFit="cover"
-          source={require("../assets/ellipse-49.png")}
-        />
-        <Text style={[styles.text1, styles.textTypo2]}>7</Text>
-      </View>
-      <View style={[styles.ellipseParent4, styles.groupParentLayout]}>
-        <Image
-          style={[styles.groupChild, styles.groupChildPosition]}
-          contentFit="cover"
-          source={require("../assets/ellipse-49.png")}
-        />
-        <Text style={[styles.text1, styles.textTypo2]}>6</Text>
+      <View style={styles.frameGroup}>
+        <HStack space={1.5}>
+          {num.map((item, idx) => (
+          <Circle key={idx} size={"25px"} bg={item.color}>
+          <Text style={[ styles.textTypo]}>{item.text}</Text>
+          </Circle>
+          ))}
+        </HStack>
       </View>
       <Text style={[styles.text7, styles.textTypo1]}>전성분 확인</Text>
       <Pressable style={styles.wrapper} onPress={() => navigation.goBack()}>

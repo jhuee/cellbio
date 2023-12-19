@@ -1,12 +1,20 @@
 import * as React from "react";
 import { Image } from "expo-image";
-import { StyleSheet, Pressable, View, Text } from "react-native";
+import { StyleSheet, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-
+import {Center, HStack, Text, Circle} from "native-base"
 const Frame7 = () => {
   const navigation = useNavigation();
-
+  const num = [
+    { color: "#8E6868", text: '1' },
+    { color:"#BCB1B1", text: '2' },
+    { color:"#BCB1B1", text: '3' },
+    { color:"#BCB1B1", text: "4" },
+    { color:"#BCB1B1", text: '5' },
+    { color:"#BCB1B1", text: '6' },
+    { color:"#BCB1B1", text: '7' },
+  ];
   return (
     <View style={styles.view}>
       <Image
@@ -14,6 +22,15 @@ const Frame7 = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
+      <View style={styles.frameGroup}>
+        <HStack space={1.5}>
+          {num.map((item, idx) => (
+          <Circle key={idx} size={"25px"} bg={item.color}>
+          <Text style={[ styles.textTypo]}>{item.text}</Text>
+          </Circle>
+          ))}
+        </HStack>
+      </View>
       <View style={styles.frameParent}>
         <Pressable
           style={styles.rectangleParent}
@@ -40,64 +57,7 @@ const Frame7 = () => {
       <Text style={[styles.text3, styles.textTypo1]}>
         베이스를 선택해주세요
       </Text>
-      <View style={styles.frameGroup}>
-        <View style={[styles.ellipseParent, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.ellipseIcon, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text4, styles.textTypo]}>1</Text>
-        </View>
-        <View style={[styles.ellipseGroup, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.ellipseIcon, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-4911.png")}
-          />
-          <Text style={[styles.text5, styles.textTypo]}>2</Text>
-        </View>
-        <View style={[styles.ellipseContainer, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.ellipseIcon, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text5, styles.textTypo]}>3</Text>
-        </View>
-        <View style={[styles.frameView, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.ellipseIcon, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text5, styles.textTypo]}>4</Text>
-        </View>
-        <View style={[styles.ellipseParent1, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.ellipseIcon, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text5, styles.textTypo]}>5</Text>
-        </View>
-        <View style={[styles.ellipseParent2, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.ellipseIcon, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text5, styles.textTypo]}>7</Text>
-        </View>
-        <View style={[styles.ellipseParent3, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.ellipseIcon, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text5, styles.textTypo]}>6</Text>
-        </View>
-      </View>
+
       <View style={[styles.parent, styles.parentPosition]}>
         <Text style={[styles.text11, styles.text11Position]}>제형 고르기</Text>
         <Image
@@ -154,10 +114,8 @@ const styles = StyleSheet.create({
     height: 30,
     lineHeight: 32,
     fontSize: FontSize.size_xl,
-    textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "600",
-    position: "absolute",
   },
   text11Position: {
     marginTop: -20,

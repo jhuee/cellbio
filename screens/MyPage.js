@@ -4,6 +4,7 @@ import { Image } from "expo-image";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 
 const Frame1 = () => {
+
   return (
     <View style={styles.view}>
       <View style={styles.parent}>

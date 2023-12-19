@@ -10,10 +10,22 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-import { Center, VStack, Pressable, Box,ScrollView, HStack} from "native-base";
+import { Center, VStack, Pressable, Box,ScrollView, HStack, Circle} from "native-base";
+
+import { useDispatch } from 'react-redux';
+import { setItem } from '../src/actions';
+
+
 const Frame9 = () => {
   const navigation = useNavigation();
   const items = ['스킨', '에센스', '크림', '샴푸', '바디워시', '클렌징'];
+  const dispatch = useDispatch();
+
+  const handlePress = (item) => {
+    dispatch(setItem(item));
+    navigation.navigate("Frame8");
+  };
+
 
   return (
     <SafeAreaView style={styles.view}>
@@ -30,7 +42,7 @@ const Frame9 = () => {
            
       <VStack alignSelf={"center"} marginTop={4} space={5}>
       {items.map((item, index) => (
-        <Pressable key={index} onPress={() => navigation.navigate("Frame8") } w={330}>
+        <Pressable key={index} onPress={() => handlePress(item) } w={330}>
           <Box style={[styles.frameChild, styles.frameGroupPosition]} p={5} alignItems={"center"}>
             <Text style={styles.text1}>{item}</Text>
           </Box>
@@ -46,73 +58,7 @@ const Frame9 = () => {
           <Text style={[styles.text7, styles.textTypo]}>저장된 레시피</Text>
       </HStack>
     </VStack>
-           
-        {/* <View style={styles.container}>
-          <Pressable
-            style={[styles.rectangleParent, styles.frameGroupPosition]}
-            onPress={() => navigation.navigate("Frame8")}
-          >
-            <Pressable
-              style={[styles.frameChild, styles.frameParentPosition]}
-              onPress={() => navigation.navigate("Frame8")}
-            />
-            <Text style={[styles.text1, styles.textTypo1]}>스킨</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.rectangleGroup, styles.frameParentPosition]}
-          >
-            <Pressable
-              style={styles.frameChildPosition}
-              onPress={() => navigation.navigate("Frame8")}
-            />
-            <Text style={[styles.text2, styles.textTypo1]}>에센스</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.rectangleContainer, styles.frameParentPosition]}
-          >
-            <Pressable
-              style={styles.frameChildPosition}
-              onPress={() => navigation.navigate("Frame8")}
-            />
-            <Text style={[styles.text1, styles.textTypo1]}>크림</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.framePressable, styles.frameParentPosition]}
-          >
-            <Pressable
-              style={styles.frameChildPosition}
-              onPress={() => navigation.navigate("Frame8")}
-            />
-            <Text style={[styles.text1, styles.textTypo1]}>샴푸</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.rectangleParent1, styles.frameParentPosition]}
-          >
-            <Pressable
-              style={styles.frameChildPosition}
-              onPress={() => navigation.navigate("Frame8")}
-            />
-            <Text style={[styles.text5, styles.textTypo1]}>바디워시</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.rectangleParent2, styles.frameParentPosition]}
-          >
-            <Pressable
-              style={styles.frameChildPosition}
-              onPress={() => navigation.navigate("Frame8")}
-            />
-            <Text style={[styles.text2, styles.textTypo1]}>클렌징</Text>
-          </Pressable>
-          </View>
-        <View style={styles.frame}>
-          <Pressable
-            style={[styles.myPosition]}
-            onPress={() => navigation.navigate("Frame10")}
-          >
-            <Text style={[styles.my1, styles.textTypo]}>My 피부타입</Text>
-          </Pressable>
-          <Text style={[styles.text7, styles.textTypo]}>저장된 레시피</Text>
-        </View> */}
+       
       </ScrollView>
       <Text style={[styles.text8, styles.textTypo]}>2023년 12월 18일</Text>
     </SafeAreaView>

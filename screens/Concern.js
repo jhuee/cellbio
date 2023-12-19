@@ -3,9 +3,19 @@ import { Image } from "expo-image";
 import { StyleSheet, View,  } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import {Radio, Box, VStack, HStack, Text, Pressable, ScrollView, Checkbox} from "native-base";
+import {Box, VStack, HStack, Text, Pressable, ScrollView, Checkbox, Circle} from "native-base";
 const Frame6 = () => {
   const navigation = useNavigation();
+  const [groupValue, setGroupValue] = React.useState([]);
+  const num = [
+    { color: "#8E6868", text: '1' },
+    { color:"#BCB1B1", text: '2' },
+    { color:"#BCB1B1", text: '3' },
+    { color:"#BCB1B1", text: "4" },
+    { color:"#BCB1B1", text: '5' },
+    { color:"#BCB1B1", text: '6' },
+    { color:"#BCB1B1", text: '7' },
+  ];
   const items = [
     {
       title: '예민',
@@ -35,158 +45,42 @@ const Frame6 = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
-      <View style={styles.frameParent}>
-        <View style={[styles.ellipseParent, styles.ellipseParentPosition]}>
-          <Image
-            style={styles.frameChild}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text, styles.textTypo1]}>1</Text>
-        </View>
-        <View style={[styles.ellipseGroup, styles.ellipseParentPosition]}>
-          <Image
-            style={styles.frameChild}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>2</Text>
-        </View>
-        <View style={[styles.ellipseContainer, styles.ellipseParentPosition]}>
-          <Image
-            style={styles.frameChild}
-            contentFit="cover"
-            source={require("../assets/ellipse-4911.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>3</Text>
-        </View>
-        <View style={[styles.frameView, styles.ellipseParentPosition]}>
-          <Image
-            style={styles.frameChild}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>4</Text>
-        </View>
-        <View style={[styles.ellipseParent1, styles.ellipseParentPosition]}>
-          <Image
-            style={styles.frameChild}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>5</Text>
-        </View>
-        <View style={[styles.ellipseParent2, styles.ellipseParentPosition]}>
-          <Image
-            style={styles.frameChild}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>7</Text>
-        </View>
-        <View style={[styles.ellipseParent3, styles.ellipseParentPosition]}>
-          <Image
-            style={styles.frameChild}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>6</Text>
-        </View>
-      </View>
       <Text style={styles.text7}>피부 고민을 선택해주세요</Text>
-      
-      <Text style={styles.n}>최대 N개 가능</Text>
+      <Text style={styles.n}>최대 N개 가능 Selected: ({groupValue.length})</Text>
+      <View style={styles.frameGroup}>
+        <HStack space={1.5}>
+          {num.map((item, idx) => (
+          <Circle key={idx} size={"25px"} bg={item.color}>
+          <Text style={[ styles.textTypo1]}>{item.text}</Text>
+          </Circle>
+          ))}
+        </HStack>
+      </View>
 
-
-      <ScrollView mt={220}
-      >
-           
-      <VStack alignSelf={"center"} marginTop={4} space={5}>
-        {items.map((item, index)=> (
-          <Box key={index} style={[styles.rectangleParentLayout, styles.frameChildLayout]} p={5} alignItems={"left"}>
-          <HStack>
-            <Checkbox colorScheme="coolGray" mt={7}></Checkbox>
-              <VStack>
-                <Text style={[styles.text9, styles.textTypo]}>{item.title}</Text>
-                <Text style={[styles.text10, styles.textLayout]}>{item.content}</Text>
-              </VStack>
-          </HStack>
-          </Box>
-        ))}
-
-    </VStack>
+      <ScrollView mt={220} >
+      <Checkbox.Group colorScheme="yellow" defaultValue={groupValue} onChange={values => setGroupValue(values || [])}>
+          <VStack alignSelf={"center"} marginTop={4} space={5}>
+              {items.map((item, index) => (
+              <Box key={index} style={[styles.rectangleParentLayout, styles.frameChildLayout]} pl={4} pt={3} alignItems={"left"}>
+              <HStack>
+                <Checkbox mt={8} value={item.title}></Checkbox>
+                <VStack>
+                  <Text style={[styles.text9, styles.textTypo]}>{item.title}</Text>
+                  <Text style={[styles.text10, styles.textLayout]}>{item.content}</Text>
+                </VStack>
+              </HStack>
+              </Box>
+              ))}
+          </VStack>
+      </Checkbox.Group>
     </ScrollView>
+
     <Pressable
         style={[styles.rectangleView]}
         onPress={() => navigation.navigate("Frame5")}
       >
         <Text style={styles.text8}>선택 완료</Text>
       </Pressable>
-      {/* <View style={styles.frameGroup}>
-        <View style={[styles.rectangleGroup, styles.rectangleParentLayout]}>
-          <View style={[styles.frameChild4, styles.frameChildLayout]} />
-          <Text style={[styles.text9, styles.textTypo]}>예민</Text>
-          <Text style={[styles.text10, styles.textLayout]}>
-            알로에, 알란토인 등
-          </Text>
-          <Image
-            style={styles.frameChild5}
-            contentFit="cover"
-            source={require("../assets/ellipse-50.png")}
-          />
-        </View>
-        <View style={[styles.rectangleContainer, styles.rectangleParentLayout]}>
-          <View style={[styles.frameChild4, styles.frameChildLayout]} />
-          <Text style={[styles.text9, styles.textTypo]}>각질</Text>
-          <Text style={[styles.text10, styles.textLayout]}>
-            A-HA, BA-HA, 효소, 썰파 등
-          </Text>
-          <Image
-            style={styles.frameChild5}
-            contentFit="cover"
-            source={require("../assets/ellipse-50.png")}
-          />
-        </View>
-        <View style={[styles.rectangleParent1, styles.rectangleParentLayout]}>
-          <View style={[styles.frameChild4, styles.frameChildLayout]} />
-          <Text style={[styles.text12, styles.textPosition]}>주름 개선</Text>
-          <Text style={[styles.text13, styles.textPosition]}>
-            레티놀, 콜라겐, 아데노신 등
-          </Text>
-          <Image
-            style={styles.frameChild5}
-            contentFit="cover"
-            source={require("../assets/ellipse-50.png")}
-          />
-        </View>
-        <View style={[styles.rectangleParent2, styles.rectangleParentLayout]}>
-          <View style={[styles.frameChild4, styles.frameChildLayout]} />
-          <Text style={[styles.text9, styles.textTypo]}>브라이트닝</Text>
-          <Text style={[styles.text10, styles.textLayout]}>
-            비타민C, 나이아신 아마이드, 알부틴, 감초추출물 등
-          </Text>
-          <Image
-            style={styles.frameChild5}
-            contentFit="cover"
-            source={require("../assets/ellipse-50.png")}
-          />
-        </View>
-        <Pressable
-          style={[styles.framePressable, styles.rectangleParentLayout]}
-        >
-          <View style={[styles.frameChild12, styles.frameChildLayout]} />
-          <Text style={[styles.text9, styles.textTypo]}>건조</Text>
-          <Text style={[styles.text10, styles.textLayout]}>
-            히아루론산, 글리세린, 세라마이드, 호호바오일, 코코넛오일, 쉐어버터,
-            미네랄오일 등
-          </Text>
-          <Image
-            style={styles.frameChild5}
-            contentFit="cover"
-            source={require("../assets/ellipse-50.png")}
-          />
-        </Pressable>
-      </View> */}
       <View style={[styles.parent, styles.parentPosition]}>
         <Text style={[styles.text17, styles.text17Position]}>
           피부 고민 별 선택사항
@@ -211,15 +105,13 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   textTypo1: {
-    textAlign: "left",
     color: Color.colorWhite,
-    fontFamily: FontFamily.pretendardLight,
-    fontWeight: "600",
-    lineHeight: 32,
-    fontSize: FontSize.size_xl,
     top: 0,
     height: 30,
-    position: "absolute",
+    lineHeight: 32,
+    fontSize: FontSize.size_xl,
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "600",
   },
   rectanglePosition: {
     height: 62,
@@ -244,7 +136,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_xl,
   },
   textLayout: {
-    width: 296,
+    width: 287,
     lineHeight: 24,
     fontSize: FontSize.size_mini,
     color: Color.colorBlack,
@@ -346,6 +238,8 @@ const styles = StyleSheet.create({
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
     fontFamily: FontFamily.pretendardLight,
+    textAlign: "center",
+    marginTop: 15
   },
   rectangleParent: {
     width: "100%",
@@ -427,11 +321,10 @@ const styles = StyleSheet.create({
     height: 112,
   },
   frameGroup: {
-    width: "89.57%",
-    top: 258,
-    right: "4.33%",
-    left: "6.11%",
-    height: 648,
+    top: 125,
+    left: 30,
+    width: 213,
+    height: 30,
     position: "absolute",
   },
   text17: {

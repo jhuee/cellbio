@@ -1,12 +1,21 @@
 import * as React from "react";
 import { Image } from "expo-image";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
+import { HStack, VStack, Circle, Text } from "native-base";
 
 const Frame4 = () => {
   const navigation = useNavigation();
-
+  const num = [
+    { color: "#8E6868", text: '1' },
+    { color:"#BCB1B1", text: '2' },
+    { color:"#BCB1B1", text: '3' },
+    { color:"#BCB1B1", text: "4" },
+    { color:"#BCB1B1", text: '5' },
+    { color:"#BCB1B1", text: '6' },
+    { color:"#BCB1B1", text: '7' },
+  ];
   return (
     <View style={styles.view}>
       <Image
@@ -14,63 +23,14 @@ const Frame4 = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
-      <View style={styles.frameParent}>
-        <View style={[styles.ellipseParent, styles.frameParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.frameParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text, styles.textTypo1]}>1</Text>
-        </View>
-        <View style={[styles.ellipseGroup, styles.frameParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.frameParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>2</Text>
-        </View>
-        <View style={[styles.ellipseContainer, styles.frameParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.frameParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>3</Text>
-        </View>
-        <View style={[styles.frameView, styles.frameParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.frameParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>4</Text>
-        </View>
-        <View style={[styles.ellipseParent1, styles.frameParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.frameParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>5</Text>
-        </View>
-        <View style={[styles.ellipseParent2, styles.frameParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.frameParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>7</Text>
-        </View>
-        <View style={[styles.ellipseParent3, styles.frameParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.frameParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-4911.png")}
-          />
-          <Text style={[styles.text1, styles.textTypo1]}>6</Text>
-        </View>
+            <View style={styles.frameGroup}>
+        <HStack space={1.5}>
+          {num.map((item, idx) => (
+          <Circle key={idx} size={"25px"} bg={item.color}>
+          <Text style={[ styles.textTypo]}>{item.text}</Text>
+          </Circle>
+          ))}
+        </HStack>
       </View>
       <Text style={[styles.text7, styles.textTypo]}>
         원하시는 용량을 선택해주세요

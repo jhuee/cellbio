@@ -2,29 +2,34 @@ const Stack = createNativeStackNavigator();
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { NativeBaseProvider } from 'native-base';
-
-import Screen1 from "./screens/Screen1";
-import Frame3 from "./screens/Frame3";
-import Frame from "./screens/Frame";
+import { useFonts } from 'expo-font';
+import Screen1 from "./screens/SignIn";
+import Frame3 from "./screens/SelectCase";
+import Frame from "./screens/RemoveIngre";
 import Component from "./components/Component";
-import Frame1 from "./screens/Frame1";
+import Frame1 from "./screens/MyPage";
 import Frame2 from "./screens/Frame2";
-import Frame4 from "./screens/Frame4";
-import Frame5 from "./screens/Frame5";
-import Frame6 from "./screens/Frame6";
-import Frame7 from "./screens/Frame7";
-import Frame8 from "./screens/Frame8";
-import Frame9 from "./screens/Frame9";
+import Frame4 from "./screens/Volume";
+import Frame5 from "./screens/Concentration"; 
+import Frame6 from "./screens/Concern";
+import Frame7 from "./screens/Base";
+import Frame8 from "./screens/Fomulation";
+import Frame9 from "./screens/Home";
 import Frame10 from "./screens/Frame10";
-import Frame11 from "./screens/Frame11";
-import Frame12 from "./screens/Frame12";
-import Screen2 from "./screens/Screen2";
+import Frame11 from "./screens/CompleteSignUp";
+import Frame12 from "./screens/SignUp";
+import Screen2 from "./screens/Splash";
+import { Provider } from 'react-redux';
+import store from './src/store';
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
+  let [fontsLoaded] = useFonts({
+    'Pretendard-Light': require('./assets/fonts/Pretendard-Light.otf'),  // 경로와 파일명은 본인의 환경에 맞게 변경해주세요.
+  });
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -34,6 +39,7 @@ const App = () => {
 
   return (
     <>
+    <Provider store={store}>
        <NativeBaseProvider>
 
       <NavigationContainer>
@@ -123,6 +129,7 @@ const App = () => {
         )}
       </NavigationContainer>
       </NativeBaseProvider>
+      </Provider>
     </>
   );
 };

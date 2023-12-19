@@ -3,10 +3,21 @@ import { Image } from "expo-image";
 import { StyleSheet, View,  } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
-import { ScrollView,Box, VStack, HStack, Text, Center,Pressable } from "native-base";
+import { ScrollView,Box, VStack, HStack, Text, Center,Pressable, Circle } from "native-base";
+import { useSelector } from 'react-redux';
 
 const Frame8 = () => {
   const navigation = useNavigation();
+  const num = [
+    { color: "#8E6868", text: '1' },
+    { color:"#BCB1B1", text: '2' },
+    { color:"#BCB1B1", text: '3' },
+    { color:"#BCB1B1", text: "4" },
+    { color:"#BCB1B1", text: '5' },
+    { color:"#BCB1B1", text: '6' },
+    { color:"#BCB1B1", text: '7' },
+  ];
+  const kk = useSelector(state => state.item);
   const items = [
     {
       text: "#리치한 영양감",
@@ -33,6 +44,7 @@ const Frame8 = () => {
   
   return (
     <View style={styles.view}>
+    
       <Image
         style={[styles.child, styles.iconLayout]}
         contentFit="cover"
@@ -78,172 +90,16 @@ const Frame8 = () => {
      
     </VStack>
       </ScrollView>
-          {/*
-      <View style={styles.frameParent}>
-        <View
-          style={[
-            styles.wrapperKakaotalk20231117030Parent,
-            styles.wrapperPosition1,
-          ]}
-        >
-          <View
-            style={[styles.wrapperKakaotalk20231117030, styles.wrapperPosition]}
-          >
-            <Image
-              style={[
-                styles.kakaotalk202311170300216431Icon,
-                styles.iconPosition,
-              ]}
-              contentFit="cover"
-              source={require("../assets/KakaoTalk_20231117_030021643.gif")}
-            />
-          </View>
-          <Text style={[styles.text1, styles.textTypo2]}>#리치한 영양감</Text>
-        </View>
-        <View
-          style={[
-            styles.wrapperKakaotalk20231117030Group,
-            styles.wrapperPosition1,
-          ]}
-        >
-          <View
-            style={[styles.wrapperKakaotalk20231117030, styles.wrapperPosition]}
-          >
-            <Image
-              style={[
-                styles.kakaotalk202311170302258801Icon,
-                styles.iconPosition,
-              ]}
-              contentFit="cover"
-              source={require("../assets/kakaotalk-20231117-030225880-1.png")}
-            />
-          </View>
-          <Text style={[styles.text2, styles.textTypo2]}>
-            #부드러운 로션 제형
-          </Text>
-        </View>
-        <View
-          style={[
-            styles.wrapperKakaotalk20231117030Container,
-            styles.framePosition,
-          ]}
-        >
-          <View
-            style={[styles.wrapperKakaotalk20231117030, styles.wrapperPosition]}
-          >
-            <Image
-              style={[
-                styles.kakaotalk202311170304101631Icon,
-                styles.iconPosition,
-              ]}
-              contentFit="cover"
-              source={require("../assets/kakaotalk-20231117-030410163-1.png")}
-            />
-          </View>
-          <Text style={[styles.text3, styles.textTypo1]}>
-            #도톰한 실키 제형
-          </Text>
-        </View>
-        <View style={[styles.frameView, styles.framePosition]}>
-          <View
-            style={[styles.wrapperKakaotalk20231117030, styles.wrapperPosition]}
-          >
-            <Image
-              style={[
-                styles.kakaotalk202311170306107211Icon,
-                styles.iconPosition,
-              ]}
-              contentFit="cover"
-              source={require("../assets/KakaoTalk_20231117_030610721.gif")}
-            />
-          </View>
-          <Text style={[styles.text3, styles.textTypo1]}>
-            #매끈한 밀키 제형
-          </Text>
-        </View>
-        <Pressable
-          style={[styles.framePressable, styles.framePosition]}
-          onPress={() => navigation.navigate("Frame7")}
-        >
-          <View style={styles.wrapperPosition}>
-            <Pressable
-              style={styles.iconPosition}
-              onPress={() => navigation.navigate("Frame7")}
-            >
-              <Image
-                style={styles.icon}
-                contentFit="cover"
-                source={require("../assets/KakaoTalk_20231117_030756483.gif")}
-              />
-            </Pressable>
-          </View>
-          <Text style={[styles.text5, styles.textTypo1]}>
-            #촉촉한 워터 제형
-          </Text>
-        </Pressable>
-      </View>
-      <Text style={[styles.text6, styles.textTypo3]}>
-        원하는 제형을 골라보세요
-      </Text>
-      */}
       <View style={styles.frameGroup}>
-        <View style={[styles.ellipseParent, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-4911.png")}
-          />
-          <Text style={[styles.text7, styles.textTypo]}>1</Text>
-        </View>
-        <View style={[styles.ellipseGroup, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text8, styles.textTypo]}>2</Text>
-        </View>
-        <View style={[styles.ellipseContainer, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text8, styles.textTypo]}>3</Text>
-        </View>
-        <View style={[styles.ellipseParent1, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text8, styles.textTypo]}>4</Text>
-        </View>
-        <View style={[styles.ellipseParent2, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text8, styles.textTypo]}>5</Text>
-        </View>
-        <View style={[styles.ellipseParent3, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text8, styles.textTypo]}>6</Text>
-        </View>
-        <View style={[styles.ellipseParent4, styles.ellipseParentLayout]}>
-          <Image
-            style={[styles.frameChild, styles.ellipseParentLayout]}
-            contentFit="cover"
-            source={require("../assets/ellipse-49.png")}
-          />
-          <Text style={[styles.text8, styles.textTypo]}>7</Text>
-        </View>
-      </View> 
+        <HStack space={1.5}>
+          {num.map((item, idx) => (
+          <Circle key={idx} size={"25px"} bg={item.color}>
+          <Text style={[ styles.textTypo]}>{item.text}</Text>
+          </Circle>
+          ))}
+        </HStack>
+      </View>
+
     </View>
   );
 };
@@ -324,7 +180,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     lineHeight: 32,
     fontSize: FontSize.size_xl,
-    top: 0,
     height: 30,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
