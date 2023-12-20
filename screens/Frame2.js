@@ -27,7 +27,7 @@ const Frame2 = () => {
         <HStack space={1.5}>
           {num.map((item, idx) => (
           <Circle key={idx} size={"25px"} bg={item.color}>
-          <Text style={[ styles.textTypo]}>{item.text}</Text>
+          <Text style={[ styles.textTypo1]}>{item.text}</Text>
           </Circle>
           ))}
         </HStack>
@@ -116,6 +116,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     overflow: "hidden",
   },
+  frameGroup: {
+    top: 125,
+    left: 30,
+    width: 213,
+    height: 30,
+    position: "absolute",
+  },
   frameChild: {
     top: 2,
     height: 27,
@@ -134,6 +141,16 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.pretendardLight,
     top: 0,
     height: 30,
+    position: "absolute",
+  },
+  textTypo: {
+    color: Color.colorWhite,
+    fontWeight: "600",
+    lineHeight: 32,
+    fontSize: FontSize.size_xl,
+    height: 30,
+    textAlign: "left",
+    fontFamily: FontFamily.pretendardLight,
     position: "absolute",
   },
   ellipseParent: {

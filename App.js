@@ -21,6 +21,7 @@ import Frame12 from "./screens/SignUp";
 import Screen2 from "./screens/Splash";
 import { Provider } from 'react-redux';
 import store from './src/store';
+import Confirm from "./screens/Confirm";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
@@ -121,6 +122,11 @@ const App = () => {
             <Stack.Screen
               name="Screen2"
               component={Screen2}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Confirm"
+              component={Confirm}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

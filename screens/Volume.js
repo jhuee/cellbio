@@ -1,21 +1,32 @@
 import * as React from "react";
 import { Image } from "expo-image";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
-import { HStack, VStack, Circle, Text } from "native-base";
-
+import { HStack, VStack, Circle, Text, Pressable, Radio, Box } from "native-base";
+import { useDispatch } from "react-redux";
+import { setVolume } from "../src/actions";
 const Frame4 = () => {
   const navigation = useNavigation();
   const num = [
-    { color: "#8E6868", text: '1' },
+    { color:"#BCB1B1", text: '1' },
     { color:"#BCB1B1", text: '2' },
     { color:"#BCB1B1", text: '3' },
     { color:"#BCB1B1", text: "4" },
     { color:"#BCB1B1", text: '5' },
-    { color:"#BCB1B1", text: '6' },
+    { color: "#8E6868", text: '6' },
     { color:"#BCB1B1", text: '7' },
   ];
+
+  const mlValues = ['500ml', '1,000ml', '3,000ml', '10,000ml'];
+
+  const [value, setValue] = React.useState("");
+
+  const dispatch = useDispatch();
+  const handlePress = () => {
+    dispatch(setVolume(value));
+    navigation.navigate("Frame3");
+  };
   return (
     <View style={styles.view}>
       <Image
@@ -23,11 +34,11 @@ const Frame4 = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
-            <View style={styles.frameGroup}>
+            <View style={styles.frameGroup1}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
           <Circle key={idx} size={"25px"} bg={item.color}>
-          <Text style={[ styles.textTypo]}>{item.text}</Text>
+          <Text style={[ styles.textTypo2]}>{item.text}</Text>
           </Circle>
           ))}
         </HStack>
@@ -35,57 +46,23 @@ const Frame4 = () => {
       <Text style={[styles.text7, styles.textTypo]}>
         원하시는 용량을 선택해주세요
       </Text>
-      <View style={styles.frameGroup}>
-        <View style={[styles.rectangleParent, styles.rectangleParentPosition]}>
-          <View
-            style={[styles.rectangleView, styles.rectangleParentPosition]}
-          />
-          <Text style={[styles.ml, styles.textTypo1]}>500ml</Text>
-          <Image
-            style={styles.frameChild4}
-            contentFit="cover"
-            source={require("../assets/ellipse-50.png")}
-          />
-        </View>
-        <View style={[styles.rectangleGroup, styles.rectangleParentPosition]}>
-          <View
-            style={[styles.rectangleView, styles.rectangleParentPosition]}
-          />
-          <Text style={[styles.ml, styles.textTypo1]}>1,000ml</Text>
-          <Image
-            style={styles.frameChild4}
-            contentFit="cover"
-            source={require("../assets/ellipse-50.png")}
-          />
-        </View>
-        <View
-          style={[styles.rectangleContainer, styles.rectangleParentPosition]}
-        >
-          <View
-            style={[styles.rectangleView, styles.rectangleParentPosition]}
-          />
-          <Text style={[styles.ml, styles.textTypo1]}>3,000ml</Text>
-          <Image
-            style={styles.frameChild4}
-            contentFit="cover"
-            source={require("../assets/ellipse-50.png")}
-          />
-        </View>
-        <View style={[styles.rectangleParent1, styles.rectangleParentPosition]}>
-          <View
-            style={[styles.rectangleView, styles.rectangleParentPosition]}
-          />
-          <Text style={[styles.ml, styles.textTypo1]}>10,000ml</Text>
-          <Image
-            style={styles.frameChild4}
-            contentFit="cover"
-            source={require("../assets/ellipse-50.png")}
-          />
-        </View>
-      </View>
+
+      {/* 라디오 그룹 */}
+      <Radio.Group value={value} onChange={nextValue => {setValue(nextValue);}}>
+      <VStack style={styles.frameGroup} alignSelf={"center"} space={5}>
+      {mlValues.map((value, index) => (
+            <Box key={index} w={330} style={[styles.rectangleParent, styles.rectangleView]} justifyContent={"center"}>
+            <Radio value={value} colorScheme={"gray"} ml={3}>
+              <Text style={[styles.ml, styles.textTypo1]} ml={4}>{value}</Text>
+            </Radio>
+          </Box>
+        ))}
+      </VStack>
+      </Radio.Group>
+       
       <Pressable
         style={[styles.framePressable, styles.framePosition]}
-        onPress={() => navigation.navigate("Frame3")}
+        onPress={handlePress}
       >
         <View style={[styles.frameChild11, styles.framePosition]} />
         <Text style={[styles.text8, styles.textPosition]}>선택 완료</Text>
@@ -108,12 +85,10 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   textTypo1: {
-    textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "600",
     lineHeight: 32,
     fontSize: FontSize.size_xl,
-    position: "absolute",
   },
   textTypo: {
     fontWeight: "700",
@@ -121,6 +96,16 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_6xl,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
+  },
+  textTypo2: {
+    color: Color.colorWhite,
+    fontWeight: "600",
+    lineHeight: 32,
+    fontSize: FontSize.size_xl,
+    height: 30,
+    textAlign: "left",
+    fontFamily: FontFamily.pretendardLight,
+    position: "absolute",
   },
   rectangleParentPosition: {
     height: 74,
@@ -254,10 +239,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   ml: {
-    top: 21,
-    left: 54,
     color: Color.colorRosybrown,
-    textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "600",
     lineHeight: 32,
@@ -280,7 +262,6 @@ const styles = StyleSheet.create({
     },
     shadowColor: "rgba(0, 0, 0, 0.25)",
     height: 74,
-    top: 0,
   },
   rectangleGroup: {
     top: 118,
@@ -319,11 +300,14 @@ const styles = StyleSheet.create({
     height: 74,
   },
   frameGroup: {
-    width: "89.57%",
     top: 278,
-    right: "4.83%",
-    left: "5.6%",
-    height: 428,
+    flex:1
+  },
+  frameGroup1: {
+    top: 125,
+    left: 30,
+    width: 213,
+    height: 30,
     position: "absolute",
   },
   frameChild11: {

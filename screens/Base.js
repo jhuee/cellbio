@@ -3,18 +3,52 @@ import { Image } from "expo-image";
 import { StyleSheet, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-import {Center, HStack, Text, Circle} from "native-base"
+import {Center, HStack, Text, Circle, VStack, Box} from "native-base"
+import { useDispatch } from "react-redux";
+import { setBase } from "../src/actions";
+
 const Frame7 = () => {
   const navigation = useNavigation();
   const num = [
-    { color: "#8E6868", text: '1' },
-    { color:"#BCB1B1", text: '2' },
+    { color:"#BCB1B1", text: '1' },
+    { color: "#8E6868", text: '2' },
     { color:"#BCB1B1", text: '3' },
     { color:"#BCB1B1", text: "4" },
     { color:"#BCB1B1", text: '5' },
     { color:"#BCB1B1", text: '6' },
     { color:"#BCB1B1", text: '7' },
   ];
+
+  const items = [
+    {
+      key: "premium",
+      title: "Premium",
+      description: `프리미엄에 대한 설명
+프리미엄에 대한 설명`,
+      style: styles.premium,
+    },
+    {
+      key: "standard",
+      title: "Standard",
+      description: `스탠다드에 대한 설명
+스탠다드에 대한 설명`,
+      style: [styles.standard, styles.basicTypo],
+    },
+    {
+      key: "basic",
+      title: "Basic",
+      description: `베이직에 대한 설명
+베이직에 대한 설명`,
+      style: [styles.basic, styles.basicTypo],
+    },
+  ];
+
+  const dispatch = useDispatch();
+  const handlePress = (item) => {
+    dispatch(setBase(item));
+    navigation.navigate("Frame6");
+  };
+
   return (
     <View style={styles.view}>
       <Image
@@ -31,29 +65,17 @@ const Frame7 = () => {
           ))}
         </HStack>
       </View>
-      <View style={styles.frameParent}>
-        <Pressable
-          style={styles.rectangleParent}
-          onPress={() => navigation.navigate("Frame6")}
-        >
-          <View style={styles.frameShadowBox} />
-          <Text style={styles.premium}>Premium</Text>
-          <Text style={[styles.text, styles.textTypo2]}>{`프리미엄에 대한 설명
-프리미엄에 대한 설명`}</Text>
-        </Pressable>
-        <Pressable style={styles.rectangleGroup}>
-          <View style={styles.frameShadowBox} />
-          <Text style={[styles.standard, styles.basicTypo]}>Standard</Text>
-          <Text style={[styles.text1, styles.textTypo2]}>{`스탠다드에 대한 설명
-스탠다드에 대한 설명`}</Text>
-        </Pressable>
-        <Pressable style={[styles.rectangleContainer, styles.parentPosition]}>
-          <View style={styles.frameShadowBox} />
-          <Text style={[styles.basic, styles.basicTypo]}>Basic</Text>
-          <Text style={[styles.text2, styles.textTypo2]}>{`베이직에 대한 설명
-베이직에 대한 설명`}</Text>
-        </Pressable>
-      </View>
+        <VStack  top={200} space={5} alignSelf={"center"}>
+          
+        {items.map((item) => (
+  <Pressable key={item.key} style={styles.rectangleGroup} width={ 380}
+    onPress={()=> handlePress(item.key)}>
+    <View style={styles.frameShadowBox} />
+    <Text style={item.style}>{item.title}</Text>
+    <Text style={[styles.text, styles.textTypo2]}>{item.description}</Text>
+  </Pressable>
+))}
+        </VStack>
       <Text style={[styles.text3, styles.textTypo1]}>
         베이스를 선택해주세요
       </Text>
@@ -143,13 +165,7 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0, 0, 0, 0.25)",
     backgroundColor: Color.colorWhitesmoke_300,
     borderRadius: Border.br_3xs,
-    right: "0%",
-    marginTop: -86,
     height: 172,
-    left: "0%",
-    top: "50%",
-    position: "absolute",
-    width: "100%",
   },
   premium: {
     marginLeft: -51.05,
@@ -182,13 +198,7 @@ const styles = StyleSheet.create({
     marginLeft: -83.05,
   },
   rectangleGroup: {
-    marginTop: -86,
     height: 172,
-    left: "0%",
-    right: "1.12%",
-    top: "50%",
-    width: "98.88%",
-    position: "absolute",
   },
   basic: {
     marginLeft: -31.05,
@@ -205,12 +215,8 @@ const styles = StyleSheet.create({
     width: "98.88%",
   },
   frameParent: {
-    width: "90.61%",
-    top: 242,
-    right: "4.3%",
-    left: "5.09%",
-    height: 584,
-    position: "absolute",
+    top: 320,
+    flex: 1,
   },
   text3: {
     top: 160,
@@ -292,7 +298,6 @@ const styles = StyleSheet.create({
     left: 30,
     width: 213,
     height: 30,
-    position: "absolute",
   },
   text11: {
     marginLeft: -57.5,

@@ -1,12 +1,16 @@
 import React, { useState, useCallback } from "react";
 import { Image } from "expo-image";
-import { StyleSheet, View, Pressable, Modal } from "react-native";
+import { StyleSheet, View, Modal } from "react-native";
 import Component from "../components/Component";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { HStack, VStack, Circle, Text } from "native-base";
+import { HStack, VStack, Circle, Text, ScrollView, Pressable } from "native-base";
+import { useDispatch } from "react-redux";
+import { setCase } from "../src/actions";
+import { useNavigation } from "@react-navigation/native";
 
 const Frame3 = () => {
   const [frameButtonVisible, setFrameButtonVisible] = useState(false);
+  const navigation = useNavigation();
 
   const openFrameButton = useCallback(() => {
     setFrameButtonVisible(true);
@@ -16,14 +20,27 @@ const Frame3 = () => {
     setFrameButtonVisible(false);
   }, []);
   const num = [
-    { color: "#8E6868", text: '1' },
+    { color:"#BCB1B1", text: '1' },
     { color:"#BCB1B1", text: '2' },
     { color:"#BCB1B1", text: '3' },
     { color:"#BCB1B1", text: "4" },
     { color:"#BCB1B1", text: '5' },
     { color:"#BCB1B1", text: '6' },
-    { color:"#BCB1B1", text: '7' },
+    { color: "#8E6868", text: '7' },
   ];
+
+  const typeValues = [
+    { text: '스포이드 타입', source: require("../assets/ck-tc02860000772-2.png") },
+    { text: '튜브 타입', source: require("../assets/ck-tc02860000732-2.png") },
+    { text: '원형 타입', source: require("../assets/ck-tc02860000795-2.png") },
+    { text: '병 타입', source: require("../assets/ck-tc02860000811-1.png") },
+  ];
+
+  const dispatch = useDispatch();
+  const handlePress = (item) => {
+    dispatch(setCase(item));
+    navigation.navigate("Confirm");
+  };
   return (
     <>
       <View style={styles.view}>
@@ -32,11 +49,11 @@ const Frame3 = () => {
           contentFit="cover"
           source={require("../assets/ellipse-48.png")}
         />
-      <View style={styles.frameGroup}>
+      <View style={styles.frameGroup1}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
           <Circle key={idx} size={"25px"} bg={item.color}>
-          <Text style={[ styles.textTypo]}>{item.text}</Text>
+          <Text style={[ styles.textTypo2]}>{item.text}</Text>
           </Circle>
           ))}
         </HStack>
@@ -44,43 +61,21 @@ const Frame3 = () => {
         <Text style={[styles.text7, styles.textTypo]}>
           담을 케이스를 고르세요
         </Text>
-        <View style={styles.frameGroup}>
-          <Pressable
-            style={[styles.ckTc028600007722Parent, styles.parentPosition]}
-            onPress={openFrameButton}
-          >
+          <ScrollView mt={258}>
+            <VStack alignSelf={"center"} space={5} mt={2}>
+            {typeValues.map((type, index) => (
+              <Pressable onPress={()=> handlePress(type.text)} style={styles.parentPosition} w={360}>
             <Image
-              style={[styles.ckTc028600007722Icon, styles.iconLayout]}
+              style={ styles.iconLayout}
               contentFit="cover"
-              source={require("../assets/ck-tc02860000772-2.png")}
+              source={type.source}
             />
-            <Text style={styles.text8}>스포이드 타입</Text>
-          </Pressable>
-          <View style={[styles.ckTc028600007322Parent, styles.parentPosition]}>
-            <Image
-              style={[styles.ckTc028600007322Icon, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/ck-tc02860000732-2.png")}
-            />
-            <Text style={styles.text8}>튜브 타입</Text>
-          </View>
-          <View style={[styles.ckTc028600007952Parent, styles.parentPosition]}>
-            <Image
-              style={[styles.ckTc028600007722Icon, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/ck-tc02860000795-2.png")}
-            />
-            <Text style={styles.text8}>원형 타입</Text>
-          </View>
-          <View style={[styles.ckTc028600008111Parent, styles.parentPosition]}>
-            <Image
-              style={[styles.ckTc028600007722Icon, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/ck-tc02860000811-1.png")}
-            />
-            <Text style={styles.text8}>병 타입</Text>
-          </View>
-        </View>
+            <Text style={styles.text8}>{type.text}</Text>
+              </Pressable>
+            ))}
+            </VStack>
+          </ScrollView>
+          
         <View style={[styles.parent, styles.parentPosition1]}>
           <Text style={[styles.text12, styles.text12Position]}>
             케이스 선택
@@ -122,6 +117,26 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
   },
+  textTypo: {
+    color: Color.colorWhite,
+    fontWeight: "600",
+    lineHeight: 32,
+    fontSize: FontSize.size_xl,
+    height: 30,
+    textAlign: "left",
+    fontFamily: FontFamily.pretendardLight,
+    position: "absolute",
+  },
+  textTypo2: {
+    color: Color.colorWhite,
+    fontWeight: "600",
+    lineHeight: 32,
+    fontSize: FontSize.size_xl,
+    height: 30,
+    textAlign: "left",
+    fontFamily: FontFamily.pretendardLight,
+    position: "absolute",
+  },
   textTypo1: {
     textAlign: "left",
     color: Color.colorWhite,
@@ -142,18 +157,11 @@ const styles = StyleSheet.create({
   },
   parentPosition: {
     height: 153,
-    left: "0%",
-    right: "0%",
-    position: "absolute",
-    width: "100%",
   },
   iconLayout: {
     borderRadius: Border.br_3xs,
     height: 153,
-    left: "0%",
-    right: "0%",
     maxWidth: "100%",
-    position: "absolute",
     overflow: "hidden",
     width: "100%",
   },
@@ -263,13 +271,16 @@ const styles = StyleSheet.create({
   ckTc028600008111Parent: {
     top: 534,
   },
-  frameGroup: {
-    width: "89.57%",
-    top: 258,
-    right: "4.83%",
-    left: "5.6%",
-    height: 687,
+  frameGroup1: {
+    top: 125,
+    left: 30,
+    width: 213,
+    height: 30,
     position: "absolute",
+  },
+  frameGroup: {
+    top: 258,
+    flex: 1
   },
   text12: {
     marginLeft: -57.5,

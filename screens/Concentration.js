@@ -42,7 +42,7 @@ const Frame5 = () => {
       >
         <Pressable
           style={styles.pressable}
-          onPress={() => navigation.navigate("Frame")}
+          onPress={() => navigation.navigate("Frame2")}
         />
       </LinearGradient>
       <Pressable

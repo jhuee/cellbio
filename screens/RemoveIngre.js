@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Image } from "expo-image";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-
+import { HStack,Circle, Text} from "native-base";
 const Frame = () => {
   const navigation = useNavigation();
   const num = [
@@ -22,6 +22,8 @@ const Frame = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
+     
+      {/* 단계 */}
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
@@ -40,7 +42,7 @@ const Frame = () => {
         />
       </Pressable>
       <Text style={[styles.text8, styles.textTypo1]}>
-        제거하고 싶은 성분을 선택해주세요
+        제거하고 싶은 성분을 선택해주세요dh
       </Text>
       <Pressable
         style={styles.frameItem}
@@ -120,6 +122,13 @@ const styles = StyleSheet.create({
   },
   ellipseGroup: {
     left: 30,
+  },
+  frameGroup: {
+    top: 125,
+    left: 30,
+    width: 213,
+    height: 30,
+    position: "absolute",
   },
   text1: {
     left: 7,

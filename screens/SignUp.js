@@ -1,17 +1,74 @@
-import * as React from "react";
-import { Text, StyleSheet, View, Pressable, ScrollView, FlatList} from "react-native";
+import React, { useState } from "react";
+import {  StyleSheet, View, Pressable, } from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
+import { ScrollView, VStack, Box, FormControl, Input ,Text, HStack, KeyboardAvoidingView} from "native-base";
+
 const Frame12 = () => {
   const navigation = useNavigation();
+  const [show, setShow] = React.useState(false);
 
   return (
 
     <View style={styles.view}>
       <Text style={styles.text}>회원가입</Text>
-      <ScrollView>
-      <View style={styles.parent}>
+      <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={10}   >
+      <ScrollView mt={180} ml={30} mr={30} contentContainerStyle={{ paddingBottom: 200 }}>
+        <VStack>
+        <Text style={[styles.text6]}>
+          <Text textAlign="left" style={styles.text7}>{`이메일 `}</Text>
+          <Text style={styles.text8}>*</Text>
+        </Text>
+        <HStack w={"100%"} mt={2}>
+        <Input size="lg" width={"70%"} backgroundColor={"white"} focusOutlineColor={"red.100"} mr={1}></Input>
+        <Pressable justifyContent="center" alignItems="center" style={styles.frameChild4} borderRadius={"br_3xs"}width={"30%"}>
+          <Text style={[styles.text17, styles.textTypo1]}>중복확인</Text>
+        </Pressable>
+        </HStack>
+        <Text style={[styles.text6]} mt={3}>
+          <Text textAlign="left" style={styles.text7}>{`비밀번호`}</Text>
+          <Text style={styles.text8}>*</Text>
+        </Text>
+        <Input type={show ? "text" : "password"} size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
+        <Text style={[styles.text6]} mt={3}>
+          <Text textAlign="left" style={styles.text7}>{`비밀번호 확인`}</Text>
+          <Text style={styles.text8}>*</Text>
+        </Text>
+        <Input type={show ? "text" : "password"} size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
+        <Text style={[styles.text6]} mt={3}>
+          <Text textAlign="left" style={styles.text7}>{`이름`}</Text>
+          <Text style={styles.text8}>*</Text>
+        </Text>
+        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
+        <Text style={[styles.text6]} mt={3}>
+          <Text textAlign="left" style={styles.text7}>{`핸드폰 번호`}</Text>
+          <Text style={styles.text8}>*</Text>
+        </Text>
+        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
+        <Text style={[styles.text6]} mt={3}>
+          <Text textAlign="left" style={styles.text7}>{`핸드폰 번호`}</Text>
+          <Text style={styles.text8}>*</Text>
+        </Text>
+        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
+        <Text style={[styles.text6]} mt={3}>
+          <Text textAlign="left" style={styles.text7}>{`핸드폰 번호`}</Text>
+          <Text style={styles.text8}>*</Text>
+        </Text>
+        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
+        <Text style={[styles.text6]} mt={3}>
+          <Text textAlign="left" style={styles.text7}>{`핸드폰 번호`}</Text>
+          <Text style={styles.text8}>*</Text>
+        </Text>
+        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
+        <Text style={[styles.text6]} mt={3}>
+          <Text textAlign="left" style={styles.text7}>{`핸드폰 번호`}</Text>
+          <Text style={styles.text8}>*</Text>
+        </Text>
+        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
+        </VStack>
+      {/* <View style={styles.parent}>
         <Text style={[styles.text1, styles.textTypo2]}>성별</Text>
         <View style={[styles.rectangleParent, styles.textPosition]}>
           <View style={[styles.frameChild, styles.frameChildLayout]} />
@@ -72,8 +129,9 @@ const Frame12 = () => {
           <Text style={styles.text8}>*</Text>
         </Text>
         <View style={[styles.frameChild6, styles.frameChildPosition]} />
-      </View>
-    </ScrollView>
+      </View> */}
+    </ScrollView>    
+    </KeyboardAvoidingView>
     </View>
   );
 };
@@ -112,10 +170,7 @@ const styles = StyleSheet.create({
   textTypo1: {
     color: Color.colorWhite,
     fontWeight: "500",
-    left: "50%",
-    textAlign: "center",
     fontFamily: FontFamily.pretendardLight,
-    position: "absolute",
   },
   containerPosition: {
     width: "82.19%",
@@ -299,30 +354,19 @@ const styles = StyleSheet.create({
   },
   frameChild4: {
     backgroundColor: Color.colorDarksalmon,
-    top: 0,
     borderRadius: Border.br_3xs,
     width: 95,
-    left: 0,
   },
   text17: {
-    marginLeft: -41.5,
-    top: 8,
     fontSize: 17,
     lineHeight: 27,
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 82,
-    height: 23,
   },
   rectangleParent1: {
     right: 0,
     top: 32,
   },
   frameChild5: {
-    width: "70.21%",
-    right: "29.79%",
-    top: 32,
     backgroundColor: Color.colorWhitesmoke_200,
     borderRadius: Border.br_3xs,
     height: 39,

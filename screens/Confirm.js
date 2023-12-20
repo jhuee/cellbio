@@ -5,47 +5,18 @@ import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import {Box, VStack, HStack, Text, Pressable, ScrollView, Checkbox, Circle} from "native-base";
 import { setConcern } from "../src/actions";
-import { useDispatch } from "react-redux";
-const Frame6 = () => {
+import { useSelector } from "react-redux";
+const Confirm = () => {
   const navigation = useNavigation();
-  const [groupValue, setGroupValue] = React.useState([]);
-  const num = [
-    { color:"#BCB1B1", text: '1' },
-    { color:"#BCB1B1", text: '2' },
-    { color: "#8E6868", text: '3' },
-    { color:"#BCB1B1", text: "4" },
-    { color:"#BCB1B1", text: '5' },
-    { color:"#BCB1B1", text: '6' },
-    { color:"#BCB1B1", text: '7' },
-  ];
-  const items = [
-    {
-      title: '예민',
-      content: '알로에, 알란토인 등',
-    },
-    {
-      title: '각질',
-      content: 'A-HA, BA-HA, 효소, 썰파 등',
-    },
-    {
-      title: '주름 개선',
-      content: '레티놀, 콜라겐, 아데노신 등',
-    },
-    {
-      title: '브라이트닝',
-      content: '비타민C, 나이아신 아마이드, 알부틴, 감초추출물 등',
-    },
-    {
-      title: '건조',
-      content: '히아루론산, 글리세린, 세라마이드, 호호바오일, 코코넛오일, 쉐어버터, 미네랄오일 등',
-    },
-  ];
+ 
+  const formulation = useSelector(state => state.formulation);
+  const base = useSelector(state => state.base);
+  const concern = useSelector(state => state.concern);
+  const concentration = useSelector(state => state.concentration);
+  const volume = useSelector(state => state.volume);
+  const bottle = useSelector(state => state.bottle);
 
-  const dispatch = useDispatch();
-  const handlePress = () => {
-    dispatch(setConcern(groupValue));
-    navigation.navigate("Frame5");
-  };
+
   return (
     <View style={styles.view}>
       <Image
@@ -53,45 +24,16 @@ const Frame6 = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
-      <Text style={styles.text7}>피부 고민을 선택해주세요</Text>
-      <Text style={styles.n}>최대 N개 가능 Selected: ({groupValue})</Text>
-      <View style={styles.frameGroup}>
-        <HStack space={1.5}>
-          {num.map((item, idx) => (
-          <Circle key={idx} size={"25px"} bg={item.color}>
-          <Text style={[ styles.textTypo1]}>{item.text}</Text>
-          </Circle>
-          ))}
-        </HStack>
-      </View>
-
-      <ScrollView mt={220} >
-      <Checkbox.Group colorScheme="yellow" defaultValue={groupValue} onChange={values => setGroupValue(values || [])}>
-          <VStack alignSelf={"center"} marginTop={4} space={5}>
-              {items.map((item, index) => (
-              <Box key={index} style={[styles.rectangleParentLayout, styles.frameChildLayout]} pl={4} pt={3} alignItems={"left"}>
-              <HStack>
-                <Checkbox mt={8} value={item.title}></Checkbox>
-                <VStack>
-                  <Text style={[styles.text9, styles.textTypo]}>{item.title}</Text>
-                  <Text style={[styles.text10, styles.textLayout]}>{item.content}</Text>
-                </VStack>
-              </HStack>
-              </Box>
-              ))}
-          </VStack>
-      </Checkbox.Group>
-    </ScrollView>
-
-    <Pressable
-        style={[styles.rectangleView]}
-        onPress={handlePress}      
-    >
-        <Text style={styles.text8}>선택 완료</Text>
-      </Pressable>
       <View style={[styles.parent, styles.parentPosition]}>
         <Text style={[styles.text17, styles.text17Position]}>
           피부 고민 별 선택사항
+        </Text>
+        <Text>
+            {formulation},
+            {base},
+            {concern},
+            {volume},
+            {bottle}
         </Text>
         <Image
           style={[styles.chevronLeftIcon, styles.text17Position]}
@@ -99,6 +41,17 @@ const Frame6 = () => {
           source={require("../assets/chevronleft.png")}
         />
       </View>
+
+      <Text style={styles.text7}>피부 고민을 선택해주세요</Text>
+      <Text style={styles.n}>최대 N개 가능 Selected: </Text>
+
+
+
+    <Pressable
+        style={[styles.rectangleView]}
+    >
+        <Text style={styles.text8}>선택 완료</Text>
+      </Pressable>
     </View>
   );
 };
@@ -366,4 +319,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Frame6;
+export default Confirm;

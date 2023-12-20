@@ -5,6 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 import { ScrollView,Box, VStack, HStack, Text, Center,Pressable, Circle } from "native-base";
 import { useSelector } from 'react-redux';
+import { setFormulation } from "../src/actions";
+import { useDispatch } from 'react-redux';
 
 const Frame8 = () => {
   const navigation = useNavigation();
@@ -41,6 +43,12 @@ const Frame8 = () => {
       onPress: () => navigation.navigate("Frame7"),
     },
   ];
+
+  const dispatch = useDispatch();
+  const handlePress = (item) => {
+    dispatch(setFormulation(item));
+    navigation.navigate("Frame7");
+  };
   
   return (
     <View style={styles.view}>
@@ -66,7 +74,7 @@ const Frame8 = () => {
            
       <VStack alignSelf={"center"} marginTop={4} space={1}>
         {items.map((item, index) =>(
-        <Pressable  onPress={() => navigation.navigate("Frame7") } w={360}>
+        <Pressable  onPress={() =>handlePress(item.text) } w={360}>
           <Box p={5} alignItems={"center"}>
           <Image
               style={[
@@ -82,12 +90,7 @@ const Frame8 = () => {
           </Box>
         </Pressable>
         ))}
-        
-         
-           
-    
-    
-     
+
     </VStack>
       </ScrollView>
       <View style={styles.frameGroup}>

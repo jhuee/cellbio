@@ -1,11 +1,24 @@
-import * as React from "react";
+import React, { useState } from 'react';
 import { Text, StyleSheet, View, Pressable } from "react-native";
 import { Input } from "@rneui/themed";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
+import firebase from '../firebaseConfig';
+
 
 const Screen1 = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      navigation.navigate("Frame9");
+    } catch (error) {
+      console.log("틀렷대요~")
+    }
+  };
 
   return (
     <View style={styles.view}>
@@ -17,7 +30,10 @@ const Screen1 = () => {
         placeholder="이메일"
         required={true}
         inputStyle={{}}
+        value={email}
         containerStyle={styles.frameTextInputInput}
+        onChangeText={setEmail}
+
       />
       <Input
         style={styles.frame1}
@@ -26,11 +42,14 @@ const Screen1 = () => {
         disabled={false}
         inputStyle={{}}
         containerStyle={styles.frameTextInput1Input}
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry={true}  
       />
       <Pressable
         style={[styles.frame3, styles.framePosition]}
-        onPress={() => navigation.navigate("Frame9")}
-      >
+        onPress={handleLogin}
+        >
         <View style={[styles.frameChild, styles.text1Position]} />
         <Text style={[styles.text1, styles.text1Position]}>로그인</Text>
       </Pressable>
