@@ -69,7 +69,7 @@ const Frame6 = () => {
       <Checkbox.Group colorScheme="yellow" defaultValue={groupValue} onChange={values => setGroupValue(values || [])}>
           <VStack alignSelf={"center"} marginTop={4} space={5}>
               {items.map((item, index) => (
-              <Box key={index} style={[styles.rectangleParentLayout, styles.frameChildLayout]} pl={4} pt={3} alignItems={"left"}>
+              <Box key={index} style={[styles.rectangleParentLayout, styles.frameChildLayout]} pl={4} pt={3} alignItems={"flex-start"}>
               <HStack>
                 <Checkbox mt={8} value={item.title}></Checkbox>
                 <VStack>

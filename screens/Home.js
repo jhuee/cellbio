@@ -6,7 +6,7 @@ import {
   Text,
 
   View,
-  SafeAreaView
+  
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
@@ -28,7 +28,7 @@ const Frame9 = () => {
 
 
   return (
-    <SafeAreaView style={styles.view}>
+    <View style={styles.view}>
       <Image
         style={styles.child}
         contentFit="cover"
@@ -50,7 +50,6 @@ const Frame9 = () => {
       ))}
       <HStack mt={15}>
       <Pressable
-            style={[styles.myPosition]}
             onPress={() => navigation.navigate("Frame10")}
           >
             <Text style={[styles.my1, styles.textTypo]}>My 피부타입</Text>
@@ -61,7 +60,7 @@ const Frame9 = () => {
        
       </ScrollView>
       <Text style={[styles.text8, styles.textTypo]}>2023년 12월 18일</Text>
-    </SafeAreaView>
+    </View>
   );
 };
 

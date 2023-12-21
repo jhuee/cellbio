@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Text, StyleSheet, View, Pressable } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { Text, StyleSheet, View, Pressable , Alert} from "react-native";
 import { Input } from "@rneui/themed";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
@@ -11,14 +11,30 @@ const Screen1 = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // 로그인이 이미 되어있는 경우
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Frame9' }],
+        });
+      }
+    });
+
+    // 컴포넌트 unmount 시 리스너 해제
+    return unsubscribe;
+  }, [navigation]);
+
   const handleLogin = async () => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
       navigation.navigate("Frame9");
     } catch (error) {
-      console.log("틀렷대요~")
+      Alert.alert("로그인 실패", "이메일 또는 비밀번호가 잘못되었습니다.");
     }
   };
+  
 
   return (
     <View style={styles.view}>
@@ -174,7 +190,6 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   text3: {
-    textDecoration: "underline",
     color: Color.colorDarkslategray_300,
   },
   pressable: {

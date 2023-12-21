@@ -74,7 +74,7 @@ const Frame8 = () => {
            
       <VStack alignSelf={"center"} marginTop={4} space={1}>
         {items.map((item, index) =>(
-        <Pressable  onPress={() =>handlePress(item.text) } w={360}>
+        <Pressable key={index} onPress={() =>handlePress(item.text) } w={360}>
           <Box p={5} alignItems={"center"}>
           <Image
               style={[

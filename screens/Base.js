@@ -65,10 +65,10 @@ const Frame7 = () => {
           ))}
         </HStack>
       </View>
-        <VStack  top={200} space={5} alignSelf={"center"}>
+        <VStack  top={200} space={5} alignItems={"center"}>
           
-        {items.map((item) => (
-  <Pressable key={item.key} style={styles.rectangleGroup} width={ 380}
+        {items.map((item, index) => (
+  <Pressable key={index} style={styles.rectangleGroup} width={ 380}
     onPress={()=> handlePress(item.key)}>
     <View style={styles.frameShadowBox} />
     <Text style={item.style}>{item.title}</Text>

@@ -1,72 +1,215 @@
 import React, { useState } from "react";
-import {  StyleSheet, View, Pressable, } from "react-native";
+import {  StyleSheet, View, Pressable, Alert } from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
-import { ScrollView, VStack, Box, FormControl, Input ,Text, HStack, KeyboardAvoidingView} from "native-base";
-
+import { ScrollView, VStack, Box, FormControl, Input ,Text, HStack, KeyboardAvoidingView, Button} from "native-base";
+import {auth,db} from '../firebaseConfig'
 const Frame12 = () => {
   const navigation = useNavigation();
   const [show, setShow] = React.useState(false);
+  const [selectedButton, setSelectedButton] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [birth, setBirth] = useState('');
+  const [phone, setPhone] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [alertMessage, setAlertMessage] = useState(null);
 
+  const checkSamePassword = () => {
+    if (password !== confirmPassword) {
+        setPasswordError('비밀번호가 일치하지 않습니다.');
+    } else {
+        setPasswordError('');
+    }
+};
+
+
+  const checkDuplicateEmail = async () => {
+    try {
+        const signInMethods = await auth.fetchSignInMethodsForEmail(email);
+        if (signInMethods.length === 0) {
+          Alert.alert(
+            "", 
+            "사용 가능한 이메일입니다.", // 알림 메시지
+            [
+              {text: "확인", onPress: () => console.log("OK Pressed")}
+            ],
+            { cancelable: false }
+          );
+        } else {
+          Alert.alert(
+            "",
+            "사용 중인 이메일입니다.", // 알림 메시지
+            [
+              {text: "확인", onPress: () => console.log("OK Pressed")}
+            ],
+            { cancelable: false }
+          );
+        }
+    } catch (error) {
+        alert('올바른 이메일이 아닙니다.');
+    }
+};
+const handlePhoneChange = (text) => {
+  let formattedText = text.split('-').join('');
+  if (formattedText.length >= 8) {
+    formattedText = formattedText.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+  } else if (formattedText.length >= 4) {
+    formattedText = formattedText.replace(/(\d{3})(\d{1,4})/, "$1-$2");
+  }
+  setPhone(formattedText);
+};
+
+const validateInput = () => {
+  if(email === '' || password === '' || name === '' || birth === '' || phone === '' || confirmPassword === '') {
+    Alert.alert(
+      "", // 타이틀을 빈 문자열로 설정하여 "ALERT"를 표시하지 않음
+      "모든 필드를 채워주세요", // 알림 메시지
+      [
+        {text: "확인", onPress: () => console.log("OK Pressed")}
+      ],
+      { cancelable: false }
+    );
+    return false;
+  }
+  return true;
+};
   return (
 
     <View style={styles.view}>
+
       <Text style={styles.text}>회원가입</Text>
       <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={10}   >
-      <ScrollView mt={180} ml={30} mr={30} contentContainerStyle={{ paddingBottom: 200 }}>
+      <ScrollView mt={180} ml={30} mr={30} >
         <VStack>
         <Text style={[styles.text6]}>
           <Text textAlign="left" style={styles.text7}>{`이메일 `}</Text>
           <Text style={styles.text8}>*</Text>
         </Text>
         <HStack w={"100%"} mt={2}>
-        <Input size="lg" width={"70%"} backgroundColor={"white"} focusOutlineColor={"red.100"} mr={1}></Input>
-        <Pressable justifyContent="center" alignItems="center" style={styles.frameChild4} borderRadius={"br_3xs"}width={"30%"}>
+        <Input size="lg" width={"70%"} backgroundColor={"white"} focusOutlineColor={"red.100"} mr={1}   onChangeText={text => setEmail(text)}></Input>
+        <Pressable justifyContent="center" alignItems="center" style={styles.frameChild4} borderRadius={"br_3xs"}width={"30%"}
+          onPress={checkDuplicateEmail}
+        >
           <Text style={[styles.text17, styles.textTypo1]}>중복확인</Text>
         </Pressable>
         </HStack>
         <Text style={[styles.text6]} mt={3}>
-          <Text textAlign="left" style={styles.text7}>{`비밀번호`}</Text>
-          <Text style={styles.text8}>*</Text>
-        </Text>
-        <Input type={show ? "text" : "password"} size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
-        <Text style={[styles.text6]} mt={3}>
-          <Text textAlign="left" style={styles.text7}>{`비밀번호 확인`}</Text>
-          <Text style={styles.text8}>*</Text>
-        </Text>
-        <Input type={show ? "text" : "password"} size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
+    <Text textAlign="left" style={styles.text7}>{`비밀번호`}</Text>
+    <Text style={styles.text8}>*</Text>
+</Text>
+<FormControl isInvalid={!!passwordError}>
+    <Input 
+        type={show ? "text" : "password"} 
+        size="lg"  
+        backgroundColor={"white"} 
+        focusOutlineColor={"black"} 
+        mr={1}   
+        onChangeText={text => setPassword(text)}
+    />
+</FormControl>
+<Text style={[styles.text6]} mt={3}>
+    <Text textAlign="left" style={styles.text7}>{`비밀번호 확인`}</Text>
+    <Text style={styles.text8}>*</Text>
+</Text>
+<FormControl isInvalid={!!passwordError}>
+    <Input 
+        type={show ? "text" : "password"} 
+        size="lg"  
+        backgroundColor={"white"} 
+        focusOutlineColor={"black"} 
+        mr={1}   
+        onChangeText={text => setConfirmPassword(text)}
+        onBlur={checkSamePassword}
+    />
+    <FormControl.ErrorMessage _text={{color: 'red', fontSize: 'sm', mt: '2'}}>
+        {passwordError}
+    </FormControl.ErrorMessage>
+</FormControl>
         <Text style={[styles.text6]} mt={3}>
           <Text textAlign="left" style={styles.text7}>{`이름`}</Text>
           <Text style={styles.text8}>*</Text>
         </Text>
-        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
+        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}
+          onChangeText={text => setName(text)}
+          ></Input>
+        <Text style={[styles.text6]} mt={3}>
+          <Text textAlign="left" style={styles.text7}>{`생년월일`}</Text>
+          <Text style={styles.text8}>*</Text>
+        </Text>
+        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}
+              placeholder="예) 000424"
+              onChangeText={text => setBirth(text)}
+              ></Input>
+         <Box justifyContent="center" mt={5}>
+    <HStack>
+      <Text style={[styles.text6]}mt={1}>
+        <Text textAlign="left" style={styles.text7}>{`성별`}</Text>
+        <Text style={styles.text8}>*</Text>
+      </Text>
+      <Button.Group isAttached size="md" ml={2} flex={1}>
+        <Button 
+          w="50%" 
+          variant={selectedButton === '여성' ? "solid" : "outline"} 
+          onPress={() => setSelectedButton('여성')}
+          colorScheme="dark.500"
+        >
+          <Text style={styles.text7}>여성</Text>
+        </Button>
+        <Button 
+          w="50%" 
+          variant={selectedButton === '남성' ? "solid" : "outline"} 
+          onPress={() => setSelectedButton('남성')}
+          colorScheme="dark.500"
+        >
+          <Text style={styles.text7}>남성</Text>
+        </Button>
+      </Button.Group>
+    </HStack>
+  </Box>
+
         <Text style={[styles.text6]} mt={3}>
           <Text textAlign="left" style={styles.text7}>{`핸드폰 번호`}</Text>
           <Text style={styles.text8}>*</Text>
         </Text>
-        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
-        <Text style={[styles.text6]} mt={3}>
-          <Text textAlign="left" style={styles.text7}>{`핸드폰 번호`}</Text>
-          <Text style={styles.text8}>*</Text>
-        </Text>
-        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
-        <Text style={[styles.text6]} mt={3}>
-          <Text textAlign="left" style={styles.text7}>{`핸드폰 번호`}</Text>
-          <Text style={styles.text8}>*</Text>
-        </Text>
-        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
-        <Text style={[styles.text6]} mt={3}>
-          <Text textAlign="left" style={styles.text7}>{`핸드폰 번호`}</Text>
-          <Text style={styles.text8}>*</Text>
-        </Text>
-        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
-        <Text style={[styles.text6]} mt={3}>
-          <Text textAlign="left" style={styles.text7}>{`핸드폰 번호`}</Text>
-          <Text style={styles.text8}>*</Text>
-        </Text>
-        <Input size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}></Input>
+        <Input keyboardType="numeric" size="lg"  backgroundColor={"white"} focusOutlineColor={"black"} mr={1}
+        placeholder="010-0000-0000"
+        onChangeText={handlePhoneChange}
+        value={phone}></Input>
+
+      <Box mt={6} >
+      <Pressable
+          onPress={async () => {
+            if (!validateInput()) {
+              return;
+            }
+            try {
+              const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+              const user = userCredential.user;
+        
+              await db.collection('users').doc(user.uid).set({
+                name: name,
+                birth: birth,
+                gender: selectedButton,
+                phone: phone
+              });
+        
+              navigation.navigate("Frame11");
+            } catch (error) {
+              console.error(error);
+            }
+          }}
+            style={[styles.rectangleView, styles.frameChild4Bg]}
+            justifyContent="center" alignItems="center"
+          >
+        
+        <Text style={[styles.text5, styles.textTypo1]}>가입하기</Text>
+      </Pressable>
+      </Box>  
         </VStack>
       {/* <View style={styles.parent}>
         <Text style={[styles.text1, styles.textTypo2]}>성별</Text>
@@ -133,6 +276,7 @@ const Frame12 = () => {
     </ScrollView>    
     </KeyboardAvoidingView>
     </View>
+    
   );
 };
 
@@ -165,7 +309,6 @@ const styles = StyleSheet.create({
   },
   frameChild4Bg: {
     backgroundColor: Color.colorDarksalmon,
-    top: 0,
   },
   textTypo1: {
     color: Color.colorWhite,
@@ -283,19 +426,12 @@ const styles = StyleSheet.create({
   },
   rectangleView: {
     borderRadius: Border.br_xl,
-    left: "0%",
-    position: "absolute",
     height: 67,
-    right: "0%",
     width: "100%",
   },
   text5: {
-    marginTop: -19.5,
-    marginLeft: -44,
-    top: "50%",
     fontSize: FontSize.size_6xl,
     lineHeight: 40,
-    width: 87,
   },
   rectangleGroup: {
     top: 871,
@@ -319,7 +455,6 @@ const styles = StyleSheet.create({
     fontWeight: "300",
     lineHeight: 32,
     fontSize: FontSize.size_xl,
-    textAlign: "center",
     fontFamily: FontFamily.pretendardLight,
     left: 0,
   },
