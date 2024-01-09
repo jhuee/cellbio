@@ -4,14 +4,14 @@ import { StyleSheet, View, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { HStack, VStack, Circle, Text } from "native-base";
+import { HStack, VStack, Circle, Text, Radio, ZStack, Box, Divider, extendTheme, useTheme } from "native-base";
 const Frame5 = () => {
   const navigation = useNavigation();
   const num = [
-    { color: "#8E6868", text: '1' },
+    { color: "#BCB1B1", text: '1' },
     { color:"#BCB1B1", text: '2' },
     { color:"#BCB1B1", text: '3' },
-    { color:"#BCB1B1", text: "4" },
+    { color:"#8E6868", text: "4" },
     { color:"#BCB1B1", text: '5' },
     { color:"#BCB1B1", text: '6' },
     { color:"#BCB1B1", text: '7' },
@@ -35,7 +35,22 @@ const Frame5 = () => {
       <Text style={[styles.text7, styles.textTypo]}>
         추출물 농도를 조절할 수 있어요
       </Text>
-      <LinearGradient
+      
+        <Radio.Group colorScheme={"light"} defaultValue="1" name="exampleGroup">
+      <VStack  mt={250} ml={10}>
+      {["아주 묽게", "묽게", "적당하게", "되직하게", "아주 되직하게"].map((text, index) =>
+      <Box mb={-5}>
+        <Radio key={index} value={`${index+1}`} my={1} size={"lg"}>
+          <Text style={styles.text13}>{text}</Text>
+        </Radio>
+        {index !== 4 && <Divider bg={"#B2A2A2"} thickness={3} ml={3} h={"16"} mt={-1} mb={-2}orientation="vertical"/>}  {/* 마지막 라디오 버튼에는 선이 없습니다. */}
+      </Box>
+)}
+
+      </VStack>
+        </Radio.Group>
+
+      {/* <LinearGradient
         style={styles.wrapper}
         locations={[0, 1]}
         colors={["#e7d6d6", "#795e5e"]}
@@ -44,7 +59,9 @@ const Frame5 = () => {
           style={styles.pressable}
           onPress={() => navigation.navigate("Frame2")}
         />
-      </LinearGradient>
+      </LinearGradient> */}
+
+      {/* 선택 완료 버튼 */}
       <Pressable
         style={[styles.rectangleParent, styles.rectangleLayout]}
         onPress={() => navigation.navigate("Frame2")}
@@ -52,6 +69,8 @@ const Frame5 = () => {
         <View style={[styles.rectangleView, styles.parentPosition]} />
         <Text style={[styles.text8, styles.textPosition]}>선택 완료</Text>
       </Pressable>
+
+      {/* 상단바 */}
       <View style={[styles.parent, styles.parentPosition]}>
         <Text style={[styles.text9, styles.textPosition]}>
           추출물 농도 조절
@@ -62,10 +81,16 @@ const Frame5 = () => {
           source={require("../assets/chevronleft.png")}
         />
       </View>
+
     </View>
   );
 };
 
+const theme = extendTheme({
+  colors : {
+    brown : '#B2A2A2',
+  }
+})
 const styles = StyleSheet.create({
   frameParentLayout: {
     width: 27,
@@ -81,7 +106,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   textTypo: {
-    fontWeight: "700",
+    fontWeight: "500",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
     textAlign: "left",
@@ -118,6 +143,10 @@ const styles = StyleSheet.create({
     height: 820,
     position: "absolute",
     overflow: "hidden",
+  },
+  rect:{
+    width:600,
+    
   },
   frameChild: {
     top: 2,
@@ -208,7 +237,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   wrapper: {
-    left: 39,
+    left: 50  ,
     top: 258,
     width: 23,
     height: 613,
@@ -230,6 +259,12 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     left: "50%",
+  },
+  text13: {
+    fontWeight:"500",
+    color: Color.colorGray_300,
+    fontSize: FontSize.size_xl,
+    fontFamily: FontFamily.pretendardLight,
   },
   rectangleParent: {
     width: "100.76%",

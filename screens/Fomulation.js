@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   textTypo3: {
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
-    fontWeight: "700",
+    fontWeight: "600",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
     position: "absolute",
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     color: Color.colorDarkslategray_200,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
-    fontWeight: "700",
+    fontWeight: "400",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
     position: "absolute",

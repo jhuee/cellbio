@@ -22,7 +22,8 @@ import Screen2 from "./screens/Splash";
 import { Provider } from 'react-redux';
 import store from './src/store';
 import Confirm from "./screens/Confirm";
-
+import Result from './screens/ResultFrame'
+import Recipe from './screens/MyRecipe'
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
 
@@ -127,6 +128,16 @@ const App = () => {
             <Stack.Screen
               name="Confirm"
               component={Confirm}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Result"
+              component={Result}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Recipe"
+              component={Recipe}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

@@ -48,13 +48,15 @@ const Frame9 = () => {
           </Box>
         </Pressable>
       ))}
-      <HStack mt={15}>
+      <HStack space={6} mt={15}>
       <Pressable
             onPress={() => navigation.navigate("Frame10")}
           >
             <Text style={[styles.my1, styles.textTypo]}>My 피부타입</Text>
           </Pressable>
-          <Text style={[styles.text7, styles.textTypo]}>저장된 레시피</Text>
+          <Pressable onPress={() => navigation.navigate("Recipe")}>
+          <Text style={[ styles.textTypo]}>저장된 레시피</Text>
+          </Pressable>
       </HStack>
     </VStack>
        

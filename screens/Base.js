@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { StyleSheet, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-import {Center, HStack, Text, Circle, VStack, Box} from "native-base"
+import {Center, HStack, Text, Circle, VStack, Box, ScrollView} from "native-base"
 import { useDispatch } from "react-redux";
 import { setBase } from "../src/actions";
 
@@ -23,22 +23,19 @@ const Frame7 = () => {
     {
       key: "premium",
       title: "Premium",
-      description: `프리미엄에 대한 설명
-프리미엄에 대한 설명`,
+      description: `DIY 화장품 제조에 모두 사용할 수 있는             고급 원료만을 사용한 제품으로 최상의 결과를         보여줍니다.`,
       style: styles.premium,
     },
     {
       key: "standard",
       title: "Standard",
-      description: `스탠다드에 대한 설명
-스탠다드에 대한 설명`,
+      description: '합리적인 가격대로 우수한 결과물을                얻을 수 있습니다.',
       style: [styles.standard, styles.basicTypo],
     },
     {
       key: "basic",
       title: "Basic",
-      description: `베이직에 대한 설명
-베이직에 대한 설명`,
+      description: `가장 기본적인 제품으로 무난한                          결과물을 얻을 수 있습니다.`,
       style: [styles.basic, styles.basicTypo],
     },
   ];
@@ -55,33 +52,40 @@ const Frame7 = () => {
         style={styles.child}
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
-      />
+        />
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
-          <Circle key={idx} size={"25px"} bg={item.color}>
+            <Circle key={idx} size={"25px"} bg={item.color}>
           <Text style={[ styles.textTypo]}>{item.text}</Text>
           </Circle>
           ))}
         </HStack>
       </View>
-        <VStack  top={200} space={5} alignItems={"center"}>
+        <ScrollView mt={200}>
+        <View>
+        <VStack  space={5} alignItems={"center"}>
           
         {items.map((item, index) => (
-  <Pressable key={index} style={styles.rectangleGroup} width={ 380}
+  <Pressable key={index} style={styles.rectangleGroup} width={ 370}
     onPress={()=> handlePress(item.key)}>
     <View style={styles.frameShadowBox} />
     <Text style={item.style}>{item.title}</Text>
     <Text style={[styles.text, styles.textTypo2]}>{item.description}</Text>
   </Pressable>
 ))}
+        <Text textAlign={"left"} style={styles.textTypo3} >※ 제형에 따라서 첨가할 수 있는 유효성분이 불가할 수도 있습니다.</Text>
+        <Text  textAlign={"left"} style={styles.textTypo3} mt={-4}>※ 전성분은 차후 완성형 레시피에서 확인 하실 수 있습니다.</Text>
         </VStack>
+        </View>
+
+        </ScrollView>
       <Text style={[styles.text3, styles.textTypo1]}>
         베이스를 선택해주세요
       </Text>
 
       <View style={[styles.parent, styles.parentPosition]}>
-        <Text style={[styles.text11, styles.text11Position]}>제형 고르기</Text>
+        <Text style={[styles.text11, styles.text11Position]}>베이스 선택</Text>
         <Image
           style={[styles.chevronLeftIcon, styles.text11Position]}
           contentFit="cover"
@@ -97,12 +101,17 @@ const styles = StyleSheet.create({
     color: Color.colorDimgray_200,
     fontWeight: "500",
     lineHeight: 32,
-    fontSize: FontSize.size_xl,
+    fontSize: 17,
     top: 70,
+    textAlign: "center",
+    fontFamily: FontFamily.pretendardLight,
+    position: "absolute",
+  },
+  textTypo3: {
+    color: Color.colorDimgray_200,
+    fontSize: 14,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
-    left: "50%",
-    position: "absolute",
   },
   basicTypo: {
     textAlign: "center",
@@ -120,7 +129,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   textTypo1: {
-    fontWeight: "700",
+    fontWeight: "600",
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     lineHeight: 40,
@@ -165,7 +174,7 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0, 0, 0, 0.25)",
     backgroundColor: Color.colorWhitesmoke_300,
     borderRadius: Border.br_3xs,
-    height: 172,
+    height: 180,
   },
   premium: {
     marginLeft: -51.05,
@@ -180,7 +189,8 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   text: {
-    marginLeft: -79.05,
+    marginLeft: 30,
+    marginRight: 30,
   },
   rectangleParent: {
     marginTop: -292,
