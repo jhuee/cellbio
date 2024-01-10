@@ -1,9 +1,11 @@
 import {useState, useEffect}  from "react";
-import { Text, StyleSheet, View } from "react-native";
+import {StyleSheet} from "react-native";
 import { Image } from "expo-image";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-import { ScrollView } from "native-base";
+import { Divider, HStack, ScrollView, View, Text, VStack, Circle, Box, Pressable,ChevronRightIcon, AddIcon} from "native-base";
 import {db, auth} from '../firebaseConfig'
+import { useNavigation } from '@react-navigation/native';
+
 const Frame1 = () => {
     async function getRecipe() {
         const userId = auth.currentUser.uid;
@@ -32,13 +34,63 @@ const Frame1 = () => {
         (grouped[recipe.skinType] = grouped[recipe.skinType] || []).push(recipe);
         return grouped;
       }, {});
-    
+      const navigation = useNavigation(); // navigation hook 추가
+      const [result, setResult] = useState()
+      const resultPage =() => {
+        setResult('지성 피부')
+        console.log(result)
+        // navigation.navigate('Result',  result )
+      } 
       return (
         <View style={styles.view}>
-          <ScrollView>
-            {Object.keys(groupedRecipes).map((skinType) => (
+          <VStack space={4}mt={10}>
+            <Box>
+          <HStack space={4} alignItems={"center"} justifyContent={"center"}>
+          <Pressable onPress={resultPage}>
+          <Circle size="60px" bg="#B5CECE">
+            <Text color={"#033838"}>지성</Text>
+          </Circle>
+          </Pressable>
+          <Circle size="60px" bg="#83B8B8">
+            <Text color={"#033838"}>복합성</Text>
+          </Circle>
+          <Circle size="60px" bg="#5DA6A6">
+            <Text color={"#033838"}>건성</Text>
+          </Circle>
+          <Circle  size="60px" borderColor={"#83B8B8"} borderWidth={2} >
+            <AddIcon color={"#033838"}/>
+          </Circle>
+          </HStack>
+          </Box>
+          <Box ml={6} mr={6}>
+            <HStack alignItems={"center"} space={2} >
+            <Text style={styles.textTypo1} color={"#B8B8B8"}>지성</Text>
+            <Divider thickness={1.5} w={"90%"}/>
+            </HStack>
+            </Box>
+            
+              <Pressable ml={8} mr={8}>
+                <HStack h={60} alignItems={"center"} justifyContent="space-between">
+                <Text style={styles.text}>맞춤 레시피1</Text>
+                <ChevronRightIcon />
+                </HStack>
+              </Pressable>
+            
+            
+              <Pressable ml={8} mr={8}>
+                <HStack h={60} alignItems={"center"} justifyContent="space-between">
+                <Text style={styles.text}>맞춤 레시피2</Text>
+                <ChevronRightIcon />
+                </HStack>
+              </Pressable>
+           
+            </VStack>
+            {/* {Object.keys(groupedRecipes).map((skinType) => (
               <View key={skinType}>
-                <Text>{skinType}</Text>
+                <HStack>
+                <Text style={styles.textTypo}>{skinType}</Text>
+                <Divider thickness={2}/>
+                </HStack>
                 {groupedRecipes[skinType].map((recipe) => (
                   <View key={recipe.id}>
                     <Text>{recipe.base}</Text>
@@ -48,8 +100,7 @@ const Frame1 = () => {
                   </View>
                 ))}
               </View>
-            ))}
-          </ScrollView>
+            ))} */}
         </View>
       );
 };
@@ -109,13 +160,9 @@ const styles = StyleSheet.create({
   },
   textTypo1: {
     color: Color.colorDimgray_300,
-    lineHeight: 21,
-    fontSize: FontSize.size_smi,
-    top: 2,
-    textAlign: "center",
-    fontWeight: "500",
+    fontSize: FontSize.size_mini,
+    fontWeight: "600",
     fontFamily: FontFamily.pretendardLight,
-    position: "absolute",
   },
   chevronIconPosition: {
     height: 24,
@@ -137,17 +184,10 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   text: {
-    marginLeft: -57.5,
-    fontSize: FontSize.size_6xl,
-    lineHeight: 40,
-    fontWeight: "700",
+    fontSize: FontSize.size_xl,
+    fontWeight: "600",
     color: Color.colorDarkslategray_100,
-    textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
-    left: "50%",
-    top: "50%",
-    marginTop: -20,
-    position: "absolute",
   },
   chevronLeftIcon: {
     left: 11,
@@ -322,7 +362,6 @@ const styles = StyleSheet.create({
   view: {
     backgroundColor: Color.colorWhite,
     flex: 1,
-    height: 852,
     overflow: "hidden",
     width: "100%",
   },
