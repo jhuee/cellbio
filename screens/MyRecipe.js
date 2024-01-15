@@ -2,11 +2,14 @@ import {useState, useEffect}  from "react";
 import {StyleSheet} from "react-native";
 import { Image } from "expo-image";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-import { Divider, HStack, ScrollView, View, Text, VStack, Circle, Box, Pressable,ChevronRightIcon, AddIcon} from "native-base";
+import { Divider, HStack, ScrollView, View, Text, VStack, Circle, Box, Pressable,ChevronRightIcon, AddIcon, Button, Modal, FormControl, Input, IconButton} from "native-base";
 import {db, auth} from '../firebaseConfig'
 import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 const Frame1 = () => {
+  const [showModal, setShowModal] = useState(false);
+
     async function getRecipe() {
         const userId = auth.currentUser.uid;
         const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
@@ -22,6 +25,7 @@ const Frame1 = () => {
         return recipes; // 레시피 데이터 반환
       }
       
+      
       getRecipe('userId').then((recipes) => console.log(recipes));
       
       const [recipes, setRecipes] = useState([]); // 레시피 데이터를 저장할 state
@@ -35,33 +39,128 @@ const Frame1 = () => {
         return grouped;
       }, {});
       const navigation = useNavigation(); // navigation hook 추가
-      const [result, setResult] = useState()
-      const resultPage =() => {
-        setResult('지성 피부')
-        console.log(result)
-        // navigation.navigate('Result',  result )
-      } 
+
+      const [addedSkinTypes, setAddedSkinTypes] = useState(['건성', '중성']);
+      const [remainingSkinTypes, setRemainingSkinTypes] = useState(['지성', '복합성']);
+    
+      const addSkinType = (type) => {
+        setAddedSkinTypes([...addedSkinTypes, type]);
+        setRemainingSkinTypes(remainingSkinTypes.filter((skinType) => skinType !== type));
+      };
+    
+      const removeSkinType = (type) => {
+        setAddedSkinTypes(addedSkinTypes.filter((skinType) => skinType !== type));
+        setRemainingSkinTypes([...remainingSkinTypes, type]);
+      };
+      
+      const saveSkinTypes = () => {
+        // 사용자 ID를 가져옵니다. 실제 앱에서는 로그인한 사용자의 ID를 사용해야 합니다.
+
+        const userId = auth.currentUser.uid;
+        const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
+        userRef.collection('type').doc('skinType').set({
+          types: addedSkinTypes,
+        }, { merge: true });
+        alert("수정완^^")
+      };
+    
       return (
         <View style={styles.view}>
           <VStack space={4}mt={10}>
+          <Box>
+  <HStack space={4} alignItems={"center"} justifyContent={"center"}>
+    {addedSkinTypes.map((type, index) => {
+      let result;
+      switch (type) {
+        case '지성':
+          result = '지성 피부';
+          break;
+        case '건성':
+          result = '건성·민감성 피부';
+          break;
+        case '중성':
+          result = '중성·약간 민감성 피부';
+          break;
+        case '복합성':
+          result = '복합성 피부';
+          break;
+      }
+      return (
+        <Pressable key={type} onPress={() => navigation.navigate('Result', { result })}>
+          <Circle size="60px" bg={index === 0 ? "#B5CECE" : index === 1 ? "#83B8B8" : "#5DA6A6"}>
+            <Text color={"#033838"}>{type}</Text>
+          </Circle>
+        </Pressable>
+      );
+    })}
+    <Pressable onPress={() => setShowModal(true)}>
+      <Circle size="60px" borderColor={"#83B8B8"} borderWidth={2}>
+        <AddIcon color={"#033838"}/>
+      </Circle>
+    </Pressable>
+  </HStack>
+</Box>
+
+          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <Modal.Content maxWidth="400px">
+          <Modal.CloseButton />
+          <Modal.Header >
+            <Text style={styles.text}>
+              피부 타입 추가
+            </Text>
+          </Modal.Header>
+          <Modal.Body>
+            {/* 피부 타입 추가 */}
             <Box>
-          <HStack space={4} alignItems={"center"} justifyContent={"center"}>
-          <Pressable onPress={resultPage}>
-          <Circle size="60px" bg="#B5CECE">
-            <Text color={"#033838"}>지성</Text>
-          </Circle>
-          </Pressable>
-          <Circle size="60px" bg="#83B8B8">
-            <Text color={"#033838"}>복합성</Text>
-          </Circle>
-          <Circle size="60px" bg="#5DA6A6">
-            <Text color={"#033838"}>건성</Text>
-          </Circle>
-          <Circle  size="60px" borderColor={"#83B8B8"} borderWidth={2} >
-            <AddIcon color={"#033838"}/>
-          </Circle>
+        <HStack alignItems={"center"} space={2}>
+          <Text>추가된 타입</Text>
+          <Divider w={"70%"} />
+        </HStack>
+      </Box>
+      {addedSkinTypes.map((type) => (
+        <Box key={type}>
+          <HStack justifyContent={"space-between"} alignItems={"center"}>
+            <Text>{type}</Text>
+            <IconButton _pressed={{bg: "red.600:alpha.20"}} onPress={() => removeSkinType(type)} icon={<AntDesign name="minuscircleo" size={18} color="#D80000"  />} borderRadius="full" />
           </HStack>
-          </Box>
+        </Box>
+      ))}
+      <Box>
+        <HStack alignItems={"center"} space={2}>
+          <Text>피부 타입</Text>
+          <Divider w={"70%"} />
+        </HStack>
+      </Box>
+      {remainingSkinTypes.map((type) => (
+        <Box key={type}>
+          <HStack justifyContent={"space-between"} alignItems={"center"}>
+            <Text>{type}</Text>
+            <IconButton _pressed={{bg: "green.600:alpha.20"}} onPress={() => addSkinType(type)} icon={<AntDesign name="pluscircleo" size={18} color="#488000" />} borderRadius="full" />
+          </HStack>
+        </Box>
+      ))}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button.Group space={2}>
+              <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+              setShowModal(false);
+            }}>
+                <Text style={styles.text}>
+                  취소
+                </Text>
+              </Button>
+              <Button bg="#83B8B8" onPress={() => {
+              setShowModal(false);
+              saveSkinTypes();
+            }}>
+                <Text style={styles.text} color={"white"}>
+                  저장
+                </Text>
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
           <Box ml={6} mr={6}>
             <HStack alignItems={"center"} space={2} >
             <Text style={styles.textTypo1} color={"#B8B8B8"}>지성</Text>

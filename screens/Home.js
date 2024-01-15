@@ -14,6 +14,7 @@ import { Center, VStack, Pressable, Box,ScrollView, HStack, Circle} from "native
 
 import { useDispatch } from 'react-redux';
 import { setItem } from '../src/actions';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 
 const Frame9 = () => {
@@ -35,8 +36,10 @@ const Frame9 = () => {
         source={require("../assets/ellipse-48.png")}
       />
       <StatusBar barStyle="default" />
-  
-      
+
+      <Box ml={350} mt={3}>
+      <FontAwesome5 name="user" size={30} color="#705757" />      
+      </Box>
       <ScrollView mt={150}
       >
            
@@ -48,20 +51,20 @@ const Frame9 = () => {
           </Box>
         </Pressable>
       ))}
-      <HStack space={6} mt={15}>
-      <Pressable
+      <HStack justifyContent={"space-between"} space={6} mt={15}>
+      <Pressable ml={2}
             onPress={() => navigation.navigate("Frame10")}
           >
-            <Text style={[styles.my1, styles.textTypo]}>My 피부타입</Text>
+            <Text  style={[styles.my1, styles.textTypo]}>My 피부타입</Text>
           </Pressable>
-          <Pressable onPress={() => navigation.navigate("Recipe")}>
-          <Text style={[ styles.textTypo]}>저장된 레시피</Text>
+          <Pressable mr={2} onPress={() => navigation.navigate("Recipe")}>
+          <Text p style={[ styles.my2, styles.textTypo]}>저장된 레시피</Text>
           </Pressable>
       </HStack>
     </VStack>
        
       </ScrollView>
-      <Text style={[styles.text8, styles.textTypo]}>2023년 12월 18일</Text>
+      <Text style={[styles.text8, styles.textTypo]}>2024년 1월 15일</Text>
     </View>
   );
 };
@@ -201,8 +204,10 @@ const styles = StyleSheet.create({
     height: 522,
   },
   my1: {
-    left: 13,
-    textAlign: "center",
+    color: Color.colorRosybrown,
+    fontWeight: "600",
+  },
+  my2: {
     color: Color.colorRosybrown,
     fontWeight: "600",
   },

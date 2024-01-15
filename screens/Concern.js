@@ -78,7 +78,7 @@ const Frame6 = () => {
         source={require("../assets/ellipse-48.png")}
       />
       <Text style={styles.text7}>피부 고민을 선택해주세요</Text>
-      <Text style={styles.n}>최대 N개 가능 Selected: ({groupValue})</Text>
+      <Text style={styles.n}>최대 N개 가능</Text>
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
