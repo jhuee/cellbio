@@ -9,6 +9,10 @@ import { AntDesign } from '@expo/vector-icons';
 
 const Frame1 = () => {
   const [showModal, setShowModal] = useState(false);
+  const navigation = useNavigation(); // navigation hook 추가
+  const [addedSkinTypes, setAddedSkinTypes] = useState([]);
+  const [remainingSkinTypes, setRemainingSkinTypes] = useState(['건성', '중성','지성', '복합성']);
+  const [recipes, setRecipes] = useState([]); // 레시피 데이터를 저장할 state
 
     async function getRecipe() {
         const userId = auth.currentUser.uid;
@@ -21,14 +25,12 @@ const Frame1 = () => {
           id: doc.id,
           ...doc.data(),
         }));
-      
+
         return recipes; // 레시피 데이터 반환
       }
+       getRecipe('userId').then((recipes) => console.log(recipes));
       
       
-      getRecipe('userId').then((recipes) => console.log(recipes));
-      
-      const [recipes, setRecipes] = useState([]); // 레시피 데이터를 저장할 state
 
       useEffect(() => {
         getRecipe().then((data) => setRecipes(data)); // 레시피 데이터 가져오기
@@ -38,10 +40,23 @@ const Frame1 = () => {
         (grouped[recipe.skinType] = grouped[recipe.skinType] || []).push(recipe);
         return grouped;
       }, {});
-      const navigation = useNavigation(); // navigation hook 추가
 
-      const [addedSkinTypes, setAddedSkinTypes] = useState(['건성', '중성']);
-      const [remainingSkinTypes, setRemainingSkinTypes] = useState(['지성', '복합성']);
+      
+
+      async function getSkinType() {
+        const userId = auth.currentUser.uid;
+        const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
+        const skinTypeRef = userRef.collection('type').doc('skinType'); // 피부타입 문서 참조 생성
+        const skinTypeDoc = await skinTypeRef.get();
+        return skinTypeDoc.exists ? skinTypeDoc.data().types : [];
+      }
+    
+      useEffect(() => {
+        getSkinType().then((skinTypes) => {
+          setAddedSkinTypes(skinTypes);
+          setRemainingSkinTypes(['건성', '중성','지성', '복합성'].filter((type) => !skinTypes.includes(type)));
+        });
+      }, []);
     
       const addSkinType = (type) => {
         setAddedSkinTypes([...addedSkinTypes, type]);
@@ -54,14 +69,13 @@ const Frame1 = () => {
       };
       
       const saveSkinTypes = () => {
-        // 사용자 ID를 가져옵니다. 실제 앱에서는 로그인한 사용자의 ID를 사용해야 합니다.
 
         const userId = auth.currentUser.uid;
         const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
         userRef.collection('type').doc('skinType').set({
           types: addedSkinTypes,
         }, { merge: true });
-        alert("수정완^^")
+      
       };
     
       return (
