@@ -17,6 +17,7 @@ const Frame7 = () => {
     { color:"#BCB1B1", text: '5' },
     { color:"#BCB1B1", text: '6' },
     { color:"#BCB1B1", text: '7' },
+    { color:"#BCB1B1", text: '8' },
   ];
 
   const items = [
@@ -56,7 +57,7 @@ const Frame7 = () => {
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
-            <Circle key={idx} size={"25px"} bg={item.color}>
+            <Circle key={idx} size={"28px"} bg={item.color}>
           <Text style={[ styles.textTypo]}>{item.text}</Text>
           </Circle>
           ))}
@@ -141,12 +142,8 @@ const styles = StyleSheet.create({
   },
   textTypo: {
     color: Color.colorWhite,
-    top: 0,
-    height: 30,
-    lineHeight: 32,
     fontSize: FontSize.size_xl,
     fontFamily: FontFamily.pretendardLight,
-    fontWeight: "600",
   },
   text11Position: {
     marginTop: -20,

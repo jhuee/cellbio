@@ -8,13 +8,14 @@ import { HStack, VStack, Circle, Text } from "native-base";
 const Frame2 = () => {
   const navigation = useNavigation();
   const num = [
-    { color: "#8E6868", text: '1' },
+    { color: "#BCB1B1", text: '1' },
     { color:"#BCB1B1", text: '2' },
     { color:"#BCB1B1", text: '3' },
     { color:"#BCB1B1", text: "4" },
-    { color:"#BCB1B1", text: '5' },
+    { color:"#8E6868", text: '5' },
     { color:"#BCB1B1", text: '6' },
     { color:"#BCB1B1", text: '7' },
+    { color:"#BCB1B1", text: '8' },
   ];
   return (
     <View style={styles.view}>
@@ -26,20 +27,20 @@ const Frame2 = () => {
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
-          <Circle key={idx} size={"25px"} bg={item.color}>
-          <Text style={[ styles.textTypo1]}>{item.text}</Text>
+          <Circle key={idx} size={"28px"} bg={item.color}>
+          <Text style={[ styles.textTypo3]}>{item.text}</Text>
           </Circle>
           ))}
         </HStack>
       </View>
-      <Text style={[styles.text7, styles.textTypo]}>
+      <Text style={[styles.text7, styles.textTypo4]}>
         제거하고 싶은 성분을 선택해주세요
       </Text>
       <Pressable
         style={styles.item}
         onPress={() => navigation.navigate("Frame8")}
       />
-      <Text style={[styles.text8, styles.textTypo]}>{`○ 정제수,
+      <Text style={[styles.text8, styles.textTypo2]}>{`○ 정제수,
 ○ 글리세린,
 ○ 사이클로헥사실록세인,
 ○ 스쿠알란,
@@ -90,6 +91,18 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.pretendardLight,
     left: "50%",
     position: "absolute",
+  },
+  textTypo3:{
+    color: Color.colorWhite,
+    fontSize: FontSize.size_xl,
+    fontFamily: FontFamily.pretendardLight,
+  },
+  textTypo4: {
+    fontWeight: "500",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+    textAlign: "left",
+    fontFamily: FontFamily.pretendardLight,
   },
   rectangleLayout: {
     height: 62,
@@ -202,11 +215,10 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   text7: {
-    marginLeft: -171.5,
     top: 160,
-    fontWeight: "700",
-    lineHeight: 40,
-    fontSize: FontSize.size_6xl,
+    left: 32,
+    color: Color.colorBlack,
+    position: "absolute",
   },
   item: {
     marginLeft: -162.5,
@@ -227,7 +239,6 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   text8: {
-    marginLeft: -134.5,
     top: 305,
     fontSize: 18,
     lineHeight: 29,

@@ -15,6 +15,7 @@ const Frame5 = () => {
     { color:"#BCB1B1", text: '5' },
     { color:"#BCB1B1", text: '6' },
     { color:"#BCB1B1", text: '7' },
+    { color:"#BCB1B1", text: '8' },
   ];
   return (
     <View style={styles.view}>
@@ -26,7 +27,7 @@ const Frame5 = () => {
            <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
-          <Circle key={idx} size={"25px"} bg={item.color}>
+          <Circle key={idx} size={"28px"} bg={item.color}>
           <Text style={[ styles.textTypo1]}>{item.text}</Text>
           </Circle>
           ))}
@@ -98,12 +99,8 @@ const styles = StyleSheet.create({
   },
   textTypo1: {
     color: Color.colorWhite,
-    top: 0,
-    height: 30,
-    lineHeight: 32,
     fontSize: FontSize.size_xl,
     fontFamily: FontFamily.pretendardLight,
-    fontWeight: "600",
   },
   textTypo: {
     fontWeight: "500",

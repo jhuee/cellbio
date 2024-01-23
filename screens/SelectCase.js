@@ -27,6 +27,7 @@ const Frame3 = () => {
     { color:"#BCB1B1", text: '5' },
     { color:"#BCB1B1", text: '6' },
     { color: "#8E6868", text: '7' },
+    { color: "#BCB1B1", text: '8' },
   ];
 
   const typeValues = [
@@ -52,7 +53,7 @@ const Frame3 = () => {
       <View style={styles.frameGroup1}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
-          <Circle key={idx} size={"25px"} bg={item.color}>
+          <Circle key={idx} size={"28px"} bg={item.color}>
           <Text style={[ styles.textTypo2]}>{item.text}</Text>
           </Circle>
           ))}
@@ -61,7 +62,7 @@ const Frame3 = () => {
         <Text style={[styles.text7, styles.textTypo]}>
           담을 케이스를 고르세요
         </Text>
-          <ScrollView mt={258}>
+          <ScrollView mt={248}>
             <VStack alignSelf={"center"} space={5} mt={2}>
             {typeValues.map((type, index) => (
               <Pressable onPress={()=> handlePress(type.text)} style={styles.parentPosition} w={360}>
@@ -118,24 +119,20 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   textTypo: {
-    color: Color.colorWhite,
-    fontWeight: "600",
-    lineHeight: 32,
-    fontSize: FontSize.size_xl,
-    height: 30,
+    top: 160,
+    color: Color.colorBlack,
+    left: 32,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
+    fontWeight: "500",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
     position: "absolute",
   },
   textTypo2: {
     color: Color.colorWhite,
-    fontWeight: "600",
-    lineHeight: 32,
     fontSize: FontSize.size_xl,
-    height: 30,
-    textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
-    position: "absolute",
   },
   textTypo1: {
     textAlign: "left",
@@ -148,13 +145,7 @@ const styles = StyleSheet.create({
     height: 30,
     position: "absolute",
   },
-  textTypo: {
-    fontWeight: "700",
-    lineHeight: 40,
-    fontSize: FontSize.size_6xl,
-    textAlign: "left",
-    fontFamily: FontFamily.pretendardLight,
-  },
+
   parentPosition: {
     height: 153,
   },

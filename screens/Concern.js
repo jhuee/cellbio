@@ -17,6 +17,7 @@ const Frame6 = () => {
     { color:"#BCB1B1", text: '5' },
     { color:"#BCB1B1", text: '6' },
     { color:"#BCB1B1", text: '7' },
+    { color:"#BCB1B1", text: '8' },
   ];
   const items = [
     {
@@ -78,11 +79,11 @@ const Frame6 = () => {
         source={require("../assets/ellipse-48.png")}
       />
       <Text style={styles.text7}>피부 고민을 선택해주세요</Text>
-      <Text style={styles.n}>최대 N개 가능</Text>
+      <Text style={styles.n}>최대 2개 가능</Text>
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
-          <Circle key={idx} size={"25px"} bg={item.color}>
+          <Circle key={idx} size={"28px"} bg={item.color}>
           <Text style={[ styles.textTypo1]}>{item.text}</Text>
           </Circle>
           ))}
@@ -138,12 +139,8 @@ const styles = StyleSheet.create({
   },
   textTypo1: {
     color: Color.colorWhite,
-    top: 0,
-    height: 30,
-    lineHeight: 32,
     fontSize: FontSize.size_xl,
     fontFamily: FontFamily.pretendardLight,
-    fontWeight: "600",
   },
   rectanglePosition: {
     height: 62,
@@ -252,11 +249,11 @@ const styles = StyleSheet.create({
     top: 160,
     color: Color.colorBlack,
     left: 32,
-    fontWeight: "700",
-    lineHeight: 40,
-    fontSize: FontSize.size_6xl,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
+    fontWeight: "600",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
     position: "absolute",
   },
   rectangleView: {

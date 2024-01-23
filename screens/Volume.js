@@ -16,6 +16,7 @@ const Frame4 = () => {
     { color:"#BCB1B1", text: '5' },
     { color: "#8E6868", text: '6' },
     { color:"#BCB1B1", text: '7' },
+    { color:"#BCB1B1", text: '8' },
   ];
 
   const mlValues = ['500ml', '1,000ml', '3,000ml', '10,000ml'];
@@ -37,7 +38,7 @@ const Frame4 = () => {
             <View style={styles.frameGroup1}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
-          <Circle key={idx} size={"25px"} bg={item.color}>
+          <Circle key={idx} size={"28px"} bg={item.color}>
           <Text style={[ styles.textTypo2]}>{item.text}</Text>
           </Circle>
           ))}
@@ -91,21 +92,20 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_xl,
   },
   textTypo: {
-    fontWeight: "700",
-    lineHeight: 40,
-    fontSize: FontSize.size_6xl,
+    top: 160,
+    color: Color.colorBlack,
+    left: 32,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
+    fontWeight: "600",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+    position: "absolute",
   },
   textTypo2: {
     color: Color.colorWhite,
-    fontWeight: "600",
-    lineHeight: 32,
     fontSize: FontSize.size_xl,
-    height: 30,
-    textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
-    position: "absolute",
   },
   rectangleParentPosition: {
     height: 74,
