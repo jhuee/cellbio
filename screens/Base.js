@@ -42,8 +42,8 @@ const Frame7 = () => {
   ];
 
   const dispatch = useDispatch();
-  const handlePress = (item) => {
-    dispatch(setBase(item));
+  const handlePress = (base) => {
+    dispatch(setBase(base));
     navigation.navigate("Frame6");
   };
 
@@ -54,6 +54,21 @@ const Frame7 = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
         />
+      <Text style={[styles.text3, styles.textTypo1]}>
+        베이스를 선택해주세요
+      </Text>
+      
+        <HStack mt={3} ml={3}space={3} alignItems={"center"}>
+        <Pressable onPress={() => navigation.goBack()}>
+        <Image
+          style={styles.chevronLeftIcon}
+          contentFit="cover"
+          source={require("../assets/chevronleft.png")}
+          />
+        </Pressable>
+      <Text style={[styles.titleText, styles.textTypo3]}>베이스 선택</Text>
+      </HStack>
+
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
@@ -63,7 +78,8 @@ const Frame7 = () => {
           ))}
         </HStack>
       </View>
-        <ScrollView mt={200}>
+      
+        <ScrollView mt={150}>
         <View>
         <VStack  space={5} alignItems={"center"}>
           
@@ -75,24 +91,17 @@ const Frame7 = () => {
     <Text style={[styles.text, styles.textTypo2]}>{item.description}</Text>
   </Pressable>
 ))}
-        <Text textAlign={"left"} style={styles.textTypo3} >※ 제형에 따라서 첨가할 수 있는 유효성분이 불가할 수도 있습니다.</Text>
-        <Text  textAlign={"left"} style={styles.textTypo3} mt={-4}>※ 전성분은 차후 완성형 레시피에서 확인 하실 수 있습니다.</Text>
+        <Text textAlign={"left"} style={styles.textTypo4} >※ 제형에 따라서 첨가할 수 있는 유효성분이 불가할 수도 있습니다.</Text>
+        <Text  textAlign={"left"} style={styles.textTypo4} mt={-4}>※ 전성분은 차후 완성형 레시피에서 확인 하실 수 있습니다.</Text>
         </VStack>
         </View>
 
         </ScrollView>
-      <Text style={[styles.text3, styles.textTypo1]}>
-        베이스를 선택해주세요
-      </Text>
 
+{/* 
       <View style={[styles.parent, styles.parentPosition]}>
-        <Text style={[styles.text11, styles.text11Position]}>베이스 선택</Text>
-        <Image
-          style={[styles.chevronLeftIcon, styles.text11Position]}
-          contentFit="cover"
-          source={require("../assets/chevronleft.png")}
-        />
-      </View>
+
+      </View> */}
     </View>
   );
 };
@@ -108,12 +117,26 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.pretendardLight,
     position: "absolute",
   },
-  textTypo3: {
-    color: Color.colorDimgray_200,
-    fontSize: 14,
-    textAlign: "left",
+  titleText:{
+    color: Color.colorDarkslategray_100,
     fontFamily: FontFamily.pretendardLight,
+    fontWeight: "700",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+},  
+textTypo3: {
+  fontFamily: FontFamily.pretendardLight,
+  fontWeight: "600",
+  lineHeight: 40,
+  fontSize: FontSize.size_6xl,
+},
+  textTypo4: {
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "600",
+    lineHeight: 40,
+    fontSize: FontSize.size_mini,
   },
+
   basicTypo: {
     textAlign: "center",
     color: Color.colorRosybrown,
@@ -130,7 +153,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   textTypo1: {
-    fontWeight: "600",
+    fontWeight: "500",
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     lineHeight: 40,
@@ -185,6 +208,14 @@ const styles = StyleSheet.create({
     left: "50%",
     position: "absolute",
   },
+  titleText:{
+      color: Color.colorDarkslategray_100,
+      fontFamily: FontFamily.pretendardLight,
+      fontWeight: "700",
+      lineHeight: 40,
+      fontSize: FontSize.size_6xl,
+  },
+
   text: {
     marginLeft: 30,
     marginRight: 30,
@@ -229,7 +260,6 @@ const styles = StyleSheet.create({
     top: 160,
     left: 32,
     color: Color.colorBlack,
-    position: "absolute",
   },
   ellipseIcon: {
     top: 2,
@@ -305,6 +335,7 @@ const styles = StyleSheet.create({
     left: 30,
     width: 213,
     height: 30,
+    position: "absolute",
   },
   text11: {
     marginLeft: -57.5,
@@ -318,22 +349,17 @@ const styles = StyleSheet.create({
     marginTop: -20,
   },
   chevronLeftIcon: {
-    left: 11,
     width: 41,
     height: 41,
     overflow: "hidden",
   },
   parent: {
-    top: 55,
-    height: 46,
     left: "0%",
-    right: "0%",
     width: "100%",
   },
   view: {
     backgroundColor: Color.colorWhite,
     flex: 1,
-    height: 916,
     overflow: "hidden",
     width: "100%",
   },

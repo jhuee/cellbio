@@ -3,7 +3,7 @@ import { Text, StyleSheet, View } from "react-native";
 import { Image } from "expo-image";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 
-const Frame1 = () => {
+const Frame2 = () => {
 
   return (
     <View style={styles.view}>
@@ -357,4 +357,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Frame1;
+export default Frame2;

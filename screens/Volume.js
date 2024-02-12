@@ -21,7 +21,7 @@ const Frame4 = () => {
 
   const mlValues = ['500ml', '1,000ml', '3,000ml', '10,000ml'];
 
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(mlValues[0]);
 
   const dispatch = useDispatch();
   const handlePress = () => {
@@ -35,6 +35,21 @@ const Frame4 = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
+      <Text style={[styles.text7, styles.textTypo]}>
+        원하시는 용량을 선택해주세요
+      </Text>
+
+      <HStack mt={3} ml={3}space={3} alignItems={"center"}>
+        <Pressable onPress={() => navigation.goBack()}>
+        <Image
+          style={styles.chevronLeftIcon}
+          contentFit="cover"
+          source={require("../assets/chevronleft.png")}
+          />
+        </Pressable>
+      <Text style={[styles.titleText, styles.textTypo3]}>용량 선택</Text>
+      </HStack>
+
             <View style={styles.frameGroup1}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
@@ -44,16 +59,14 @@ const Frame4 = () => {
           ))}
         </HStack>
       </View>
-      <Text style={[styles.text7, styles.textTypo]}>
-        원하시는 용량을 선택해주세요
-      </Text>
+
 
       {/* 라디오 그룹 */}
-      <Radio.Group value={value} onChange={nextValue => {setValue(nextValue);}}>
-      <VStack style={styles.frameGroup} alignSelf={"center"} space={5}>
+      <Radio.Group  value={value} onChange={nextValue => {setValue(nextValue);}}>
+      <VStack mt={160} alignSelf={"center"} space={5}>
       {mlValues.map((value, index) => (
             <Box key={index} w={330} style={[styles.rectangleParent, styles.rectangleView]} justifyContent={"center"}>
-            <Radio value={value} colorScheme={"gray"} ml={3}>
+            <Radio  value={value} colorScheme={"gray"} ml={3}>
               <Text style={[styles.ml, styles.textTypo1]} ml={4}>{value}</Text>
             </Radio>
           </Box>
@@ -68,14 +81,7 @@ const Frame4 = () => {
         <View style={[styles.frameChild11, styles.framePosition]} />
         <Text style={[styles.text8, styles.textPosition]}>선택 완료</Text>
       </Pressable>
-      <View style={styles.parent}>
-        <Text style={[styles.text9, styles.textPosition]}>용량 선택</Text>
-        <Image
-          style={[styles.chevronLeftIcon, styles.textPosition]}
-          contentFit="cover"
-          source={require("../assets/chevronleft.png")}
-        />
-      </View>
+
     </View>
   );
 };
@@ -91,6 +97,19 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     fontSize: FontSize.size_xl,
   },
+  titleText:{
+    color: Color.colorDarkslategray_100,
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "700",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+},  
+textTypo3: {
+  fontFamily: FontFamily.pretendardLight,
+  fontWeight: "600",
+  lineHeight: 40,
+  fontSize: FontSize.size_6xl,
+},
   textTypo: {
     top: 160,
     color: Color.colorBlack,
@@ -100,7 +119,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-    position: "absolute",
   },
   textTypo2: {
     color: Color.colorWhite,
@@ -231,7 +249,6 @@ const styles = StyleSheet.create({
     top: 160,
     left: 32,
     color: Color.colorBlack,
-    position: "absolute",
   },
   rectangleView: {
     borderRadius: Border.br_3xs,
@@ -299,10 +316,7 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0, 0, 0, 0.25)",
     height: 74,
   },
-  frameGroup: {
-    top: 278,
-    flex:1
-  },
+
   frameGroup1: {
     top: 125,
     left: 30,
@@ -342,7 +356,6 @@ const styles = StyleSheet.create({
     left: "50%",
   },
   chevronLeftIcon: {
-    left: 11,
     width: 41,
     height: 41,
     overflow: "hidden",

@@ -32,4 +32,14 @@ export const setFormulation = (formulation) => ({
     type: 'SET_CASE',
     payload: bottle,
   });
+
+  export const setRemoveIng = (ingredient) => ({
+    type: 'SET_INGREDIENT',
+    payload: ingredient,
+  });
+
+  export const setRecName = (name) => ({
+    type: 'SET_NAME',
+    payload: name,
+  });
   

@@ -59,21 +59,22 @@ const Frame8 = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
-      <View style={styles.parent}>
-        <Text style={[styles.text, styles.textTypo3]}>제형 고르기</Text>
+      <Text style={[styles.text6, styles.textTypo3]}>
+        원하는 제형을 골라보세요
+      </Text>
+      <HStack mt={3} ml={3} space={3} alignItems={"center"}>
+        <Pressable onPress={() => navigation.goBack()}>
         <Image
           style={styles.chevronLeftIcon}
           contentFit="cover"
           source={require("../assets/chevronleft.png")}
           />
-      </View>
-      <Text style={[styles.text6, styles.textTypo3]}>
-        원하는 제형을 골라보세요
-      </Text>
-      <ScrollView mt={200}
+        </Pressable>
+      <Text style={[styles.text, styles.textTypo3]}>제형 고르기</Text>
+      </HStack>
+      <ScrollView mt={130}
       >
-           
-      <VStack alignSelf={"center"} marginTop={4} space={1}>
+      <VStack justifyContent={"center"} alignSelf={"center"} marginTop={4} space={1}>
         {items.map((item, index) =>(
         <Pressable key={index} onPress={() =>handlePress(item.text) } w={360}>
           <Box p={5} alignItems={"center"}>
@@ -114,12 +115,10 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   textTypo3: {
-    textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "600",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-    position: "absolute",
   },
   wrapperPosition1: {
     height: 172,
@@ -193,32 +192,18 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   text: {
-    marginLeft: -57.5,
     color: Color.colorDarkslategray_100,
-    left: "50%",
-    textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "700",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-    top: "50%",
-    marginTop: -20,
   },
   chevronLeftIcon: {
     width: 41,
     height: 41,
-    left: 11,
-    top: "50%",
-    marginTop: -20,
-    position: "absolute",
     overflow: "hidden",
   },
   parent: {
-    top: 55,
-    height: 46,
-    left: "0%",
-    right: "0%",
-    position: "absolute",
     width: "100%",
   },
   kakaotalk202311170300216431Icon: {
@@ -373,7 +358,6 @@ const styles = StyleSheet.create({
   view: {
     backgroundColor: Color.colorWhite,
     flex: 1,
-    height: 1318,
     overflow: "hidden",
     width: "100%",
   },

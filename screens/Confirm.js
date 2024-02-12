@@ -1,11 +1,12 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Image } from "expo-image";
 import { StyleSheet, View,  } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import {Box, VStack, HStack, Text, Pressable, ScrollView, Checkbox, Circle} from "native-base";
-import { setConcern } from "../src/actions";
-import { useSelector } from "react-redux";
+import {Box, VStack, HStack, Text, Pressable, ScrollView, Checkbox, Circle, Input, KeyboardAvoidingView} from "native-base";
+import { setRecName } from "../src/actions";
+import { useSelector, useDispatch } from "react-redux";
+
 const Confirm = () => {
   const navigation = useNavigation();
  
@@ -15,43 +16,63 @@ const Confirm = () => {
   const concentration = useSelector(state => state.concentration);
   const volume = useSelector(state => state.volume);
   const bottle = useSelector(state => state.bottle);
+  
+  const [name, setName] = useState('');
 
-
+  const dispatch = useDispatch();
+  const handlePress = () => {
+    dispatch(setRecName(name));
+    navigation.navigate("Payment");
+  };
   return (
     <View style={styles.view}>
+            <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={200}   >
+
       <Image
         style={styles.child}
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
-      <View style={[styles.parent, styles.parentPosition]}>
-        <Text style={[styles.text17, styles.text17Position]}>
-          피부 고민 별 선택사항
-        </Text>
-        <Text>
-            {formulation},
-            {base},
-            {concern},
-            {volume},
-            {bottle}
-        </Text>
+
+      <HStack mt={52} ml={3}space={3} alignItems={"center"}>
+        <Pressable onPress={() => navigation.goBack()}>
         <Image
-          style={[styles.chevronLeftIcon, styles.text17Position]}
+          style={styles.chevronLeftIcon}
           contentFit="cover"
           source={require("../assets/chevronleft.png")}
-        />
-      </View>
+          />
+        </Pressable>
+      <Text style={[styles.titleText, styles.textTypo3]}>용량 선택</Text>
+      </HStack>
 
-      <Text style={styles.text7}>피부 고민을 선택해주세요</Text>
-      <Text style={styles.n}>최대 N개 가능 Selected: </Text>
+        <VStack mt={100} alignItems={"center"} justifyContent={"center"} space={3}>
+          <Box  justifyContent={"center"} alignItems={"center"}>
+            <Image style={styles.child2} contentFit="cover" source={require("../assets/circleB.png")}></Image>
+          </Box>
+          <Text style={styles.textTypo}>
+            레시피 이름 설정
+          </Text>
+          <Input size="lg" width={"75%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setName(text)}></Input>
+          <HStack justifyContent={"space-between"} space={3} alignItems={"center"}>
+          {/* <Pressable borderRadius={5} backgroundColor={"#9A887E"} w={"35%"}  alignItems={"center"} justifyContent={"center"} h={10}> */}
+          <Pressable justifyContent={"center"} borderWidth={1} borderRadius={5} borderColor={"#9A887E"} w={"35%"} alignItems={"center"} h={10}>
+
+            <Text  style={styles.textTypo}>저장</Text>
+          </Pressable>
+          <Pressable justifyContent={"center"} borderWidth={1} borderRadius={5} borderColor={"#9A887E"} w={"35%"} alignItems={"center"} h={10}>
+            <Text style={styles.textTypo}>삭제</Text>
+          </Pressable>
+            </HStack>
+            <Pressable mt={18} borderRadius={5} backgroundColor={"#9A887E"} w={"75%"}  alignItems={"center"} justifyContent={"center"} h={10}
+             onPress={handlePress}>
+            <Text style={styles.textTypo1}>주문하기</Text>
+          </Pressable>   
+        </VStack>
 
 
 
-    <Pressable
-        style={[styles.rectangleView]}
-    >
-        <Text style={styles.text8}>선택 완료</Text>
-      </Pressable>
+ </KeyboardAvoidingView>
     </View>
   );
 };
@@ -65,6 +86,19 @@ const styles = StyleSheet.create({
     height: 30,
     position: "absolute",
   },
+  titleText:{
+    color: Color.colorDarkslategray_100,
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "700",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+},  
+textTypo3: {
+  fontFamily: FontFamily.pretendardLight,
+  fontWeight: "600",
+  lineHeight: 40,
+  fontSize: FontSize.size_6xl,
+},
   textTypo1: {
     color: Color.colorWhite,
     top: 0,
@@ -91,6 +125,7 @@ const styles = StyleSheet.create({
     height: 112,
   },
   textTypo: {
+    fontFamily: FontFamily.pretendardLight,
     color: Color.colorRosybrown,
     fontWeight: "600",
     lineHeight: 32,
@@ -111,7 +146,6 @@ const styles = StyleSheet.create({
   text17Position: {
     marginTop: -20,
     top: "50%",
-    position: "absolute",
   },
   child: {
     width: "207.63%",
@@ -121,6 +155,11 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
     height: 820,
     position: "absolute",
+    overflow: "hidden",
+  },
+  child2: {
+    width: 280,
+    height: 280,
     overflow: "hidden",
   },
   frameChild: {
@@ -294,13 +333,10 @@ const styles = StyleSheet.create({
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
     marginTop: -20,
-    textAlign: "left",
+    textAlign: "center",
     fontFamily: FontFamily.pretendardLight,
-    left: "50%",
-    marginLeft: -106.5,
   },
   chevronLeftIcon: {
-    left: 11,
     width: 41,
     height: 41,
     overflow: "hidden",

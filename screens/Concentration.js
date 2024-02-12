@@ -1,10 +1,13 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Image } from "expo-image";
 import { StyleSheet, View, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { HStack, VStack, Circle, Text, Radio, ZStack, Box, Divider, extendTheme, useTheme } from "native-base";
+import { setConcentration } from "../src/actions";
+import { useDispatch } from "react-redux";
+
 const Frame5 = () => {
   const navigation = useNavigation();
   const num = [
@@ -17,6 +20,16 @@ const Frame5 = () => {
     { color:"#BCB1B1", text: '7' },
     { color:"#BCB1B1", text: '8' },
   ];
+
+  const dispatch = useDispatch();
+  const handlePress = () => {
+    dispatch(setConcentration(value));
+    console.log(value)
+    navigation.navigate("Frame2");
+  };
+  const ccValues = ["아주 묽게", "묽게", "적당하게", "되직하게", "아주 되직하게"];
+
+  const [value, setValue] = useState(ccValues[0]);
   return (
     <View style={styles.view}>
       <Image
@@ -24,6 +37,21 @@ const Frame5 = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
+      <Text style={[styles.text7, styles.textTypo]}>
+        추출물 농도를 조절할 수 있어요
+      </Text>
+
+     <HStack mt={3} ml={3}space={3} alignItems={"center"}>
+        <Pressable onPress={() => navigation.goBack()}>
+        <Image
+          style={styles.chevronLeftIcon}
+          contentFit="cover"
+          source={require("../assets/chevronleft.png")}
+          />
+        </Pressable>
+      <Text style={[styles.titleText, styles.textTypo2]}>추출물 농도 조절</Text>
+      </HStack>
+
            <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
@@ -33,15 +61,13 @@ const Frame5 = () => {
           ))}
         </HStack>
       </View>
-      <Text style={[styles.text7, styles.textTypo]}>
-        추출물 농도를 조절할 수 있어요
-      </Text>
+
       
-        <Radio.Group colorScheme={"light"} defaultValue="1" name="exampleGroup">
-      <VStack  mt={250} ml={10}>
-      {["아주 묽게", "묽게", "적당하게", "되직하게", "아주 되직하게"].map((text, index) =>
+        <Radio.Group value={value} colorScheme={"light"} defaultValue="1"  onChange={nextValue => {setValue(nextValue)}} >
+      <VStack  mt={150} ml={10}>
+      {ccValues.map((text, index) =>
       <Box mb={-5}>
-        <Radio key={index} value={`${index+1}`} my={1} size={"lg"}>
+        <Radio key={index} value={text} my={1} size={"lg"} onPr>
           <Text style={styles.text13}>{text}</Text>
         </Radio>
         {index !== 4 && <Divider bg={"#B2A2A2"} thickness={3} ml={3} h={"16"} mt={-1} mb={-2}orientation="vertical"/>}  {/* 마지막 라디오 버튼에는 선이 없습니다. */}
@@ -51,37 +77,17 @@ const Frame5 = () => {
       </VStack>
         </Radio.Group>
 
-      {/* <LinearGradient
-        style={styles.wrapper}
-        locations={[0, 1]}
-        colors={["#e7d6d6", "#795e5e"]}
-      >
-        <Pressable
-          style={styles.pressable}
-          onPress={() => navigation.navigate("Frame2")}
-        />
-      </LinearGradient> */}
+
 
       {/* 선택 완료 버튼 */}
       <Pressable
         style={[styles.rectangleParent, styles.rectangleLayout]}
-        onPress={() => navigation.navigate("Frame2")}
+        onPress={handlePress}
       >
         <View style={[styles.rectangleView, styles.parentPosition]} />
         <Text style={[styles.text8, styles.textPosition]}>선택 완료</Text>
       </Pressable>
 
-      {/* 상단바 */}
-      <View style={[styles.parent, styles.parentPosition]}>
-        <Text style={[styles.text9, styles.textPosition]}>
-          추출물 농도 조절
-        </Text>
-        <Image
-          style={[styles.chevronLeftIcon, styles.textPosition]}
-          contentFit="cover"
-          source={require("../assets/chevronleft.png")}
-        />
-      </View>
 
     </View>
   );
@@ -97,10 +103,23 @@ const styles = StyleSheet.create({
     width: 27,
     position: "absolute",
   },
+  titleText:{
+    color: Color.colorDarkslategray_100,
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "700",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+},
   textTypo1: {
     color: Color.colorWhite,
     fontSize: FontSize.size_xl,
     fontFamily: FontFamily.pretendardLight,
+  },
+  textTypo2: {
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "600",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
   },
   textTypo: {
     fontWeight: "500",
@@ -225,7 +244,6 @@ const styles = StyleSheet.create({
     top: 160,
     left: 32,
     color: Color.colorBlack,
-    position: "absolute",
   },
   pressable: {
     borderRadius: Border.br_xl,
@@ -282,19 +300,14 @@ const styles = StyleSheet.create({
     left: "50%",
   },
   chevronLeftIcon: {
-    left: 11,
     width: 41,
     height: 41,
     overflow: "hidden",
   },
-  parent: {
-    top: 55,
-    height: 46,
-  },
+
   view: {
     backgroundColor: Color.colorWhite,
     flex: 1,
-    height: 947,
     overflow: "hidden",
     width: "100%",
   },

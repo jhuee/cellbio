@@ -38,8 +38,9 @@ const Frame3 = () => {
   ];
 
   const dispatch = useDispatch();
-  const handlePress = (item) => {
-    dispatch(setCase(item));
+  const handlePress = (bottle) => {
+    dispatch(setCase(bottle));
+    console.log(bottle)
     navigation.navigate("Confirm");
   };
   return (
@@ -50,6 +51,23 @@ const Frame3 = () => {
           contentFit="cover"
           source={require("../assets/ellipse-48.png")}
         />
+
+       <Text style={[styles.text7, styles.textTypo]}>
+          담을 케이스를 고르세요
+        </Text>
+
+      
+      <HStack mt={3} ml={3}space={3} alignItems={"center"}>
+        <Pressable onPress={() => navigation.goBack()}>
+        <Image
+          style={styles.chevronLeftIcon}
+          contentFit="cover"
+          source={require("../assets/chevronleft.png")}
+          />
+        </Pressable>
+      <Text style={[styles.titleText, styles.textTypo3]}>케이스 선택</Text>
+      </HStack>
+
       <View style={styles.frameGroup1}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
@@ -59,10 +77,8 @@ const Frame3 = () => {
           ))}
         </HStack>
       </View>
-        <Text style={[styles.text7, styles.textTypo]}>
-          담을 케이스를 고르세요
-        </Text>
-          <ScrollView mt={248}>
+       
+          <ScrollView mt={150}>
             <VStack alignSelf={"center"} space={5} mt={2}>
             {typeValues.map((type, index) => (
               <Pressable onPress={()=> handlePress(type.text)} style={styles.parentPosition} w={360}>
@@ -77,16 +93,6 @@ const Frame3 = () => {
             </VStack>
           </ScrollView>
           
-        <View style={[styles.parent, styles.parentPosition1]}>
-          <Text style={[styles.text12, styles.text12Position]}>
-            케이스 선택
-          </Text>
-          <Image
-            style={[styles.chevronLeftIcon, styles.text12Position]}
-            contentFit="cover"
-            source={require("../assets/chevronleft.png")}
-          />
-        </View>
       </View>
 
       <Modal animationType="fade" transparent visible={frameButtonVisible}>
@@ -104,6 +110,19 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
     overflow: "hidden",
   },
+  titleText:{
+    color: Color.colorDarkslategray_100,
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "700",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+},  
+textTypo3: {
+  fontFamily: FontFamily.pretendardLight,
+  fontWeight: "600",
+  lineHeight: 40,
+  fontSize: FontSize.size_6xl,
+},
   ellipseParentPosition: {
     width: 27,
     marginTop: -15,
@@ -127,7 +146,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-    position: "absolute",
   },
   textTypo2: {
     color: Color.colorWhite,
@@ -215,7 +233,6 @@ const styles = StyleSheet.create({
     top: 160,
     left: 32,
     color: Color.colorBlack,
-    position: "absolute",
   },
   frameButtonOverlay: {
     flex: 1,
@@ -285,7 +302,6 @@ const styles = StyleSheet.create({
     marginTop: -20,
   },
   chevronLeftIcon: {
-    left: 11,
     width: 41,
     height: 41,
     overflow: "hidden",
@@ -297,7 +313,6 @@ const styles = StyleSheet.create({
   view: {
     backgroundColor: Color.colorWhite,
     flex: 1,
-    height: 996,
     overflow: "hidden",
     width: "100%",
   },

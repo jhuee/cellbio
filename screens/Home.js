@@ -14,12 +14,12 @@ import { Center, VStack, Pressable, Box,ScrollView, HStack, Circle} from "native
 
 import { useDispatch } from 'react-redux';
 import { setItem } from '../src/actions';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, Feather } from '@expo/vector-icons';
 
 
 const Frame9 = () => {
   const navigation = useNavigation();
-  const items = ['스킨', '에센스', '크림', '샴푸', '바디워시', '클렌징'];
+  const items = ['스킨', '에센스', '크림', '샴푸', '바디워시', '클렌징', '크림베이스 구매', '추출물 구매'];
   const dispatch = useDispatch();
 
   const handlePress = (item) => {
@@ -37,8 +37,13 @@ const Frame9 = () => {
       />
       <StatusBar barStyle="default" />
 
-      <Box ml={350} mt={3}>
-      <FontAwesome5 name="user" size={30} color="#705757" />      
+      <Box >
+      <HStack alignItems={"center"} justifyContent={"flex-end"} p={4} space={5}>
+      <Feather name="shopping-cart" size={30} color="#705757" />
+      <Pressable onPress={() => navigation.navigate("Frame1")}>
+      <FontAwesome5 name="user" size={30} color="#705757" />
+      </Pressable> 
+      </HStack>  
       </Box>
       <ScrollView mt={150}
       >
@@ -64,7 +69,7 @@ const Frame9 = () => {
     </VStack>
        
       </ScrollView>
-      <Text style={[styles.text8, styles.textTypo]}>2024년 1월 15일</Text>
+      <Text style={[styles.text8, styles.textTypo]}>2024년 2월 07일</Text>
     </View>
   );
 };

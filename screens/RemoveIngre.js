@@ -15,6 +15,15 @@ const Frame = () => {
     { color:"#BCB1B1", text: '6' },
     { color:"#BCB1B1", text: '7' },
   ];
+  const formulation = useSelector(state => state.formulation);
+  const formulationInfo = {
+    '스킨': "스킨은 피부에 수분을 공급하고, 이후에 사용할 제품들이 더 잘 흡수되도록 도와주는 역할을 합니다.",
+    '에센스': "에센스는 피부에 깊숙이 침투하여, 피부를 촉촉하게 유지하고 피부 밸런스를 맞춰줍니다.",
+    '크림': "크림은 피부를 보호하는 마지막 단계로, 피부에 필요한 영양을 공급하고 수분을 잠가줍니다.",
+    '샴푸': "샴푸는 머리카락과 두피를 깨끗이 하는 역할을 합니다.",
+    '바디워시': "바디워시는 몸의 노폐물을 제거하고 피부를 상쾌하게 해줍니다.",
+    '클렌징': "클렌징은 피부의 노폐물과 메이크업을 제거하는 첫번째 단계입니다."
+  }
   return (
     <View style={styles.ellipseParent}>
       <Image
@@ -42,25 +51,13 @@ const Frame = () => {
         />
       </Pressable>
       <Text style={[styles.text8, styles.textTypo1]}>
-        제거하고 싶은 성분을 선택해주세요dh
+        제거하고 싶은 성분을 선택해주세요
       </Text>
       <Pressable
         style={styles.frameItem}
         onPress={() => navigation.navigate("Frame4")}
       />
-      <Text style={[styles.text9, styles.textTypo]}>{`○ 정제수,
-○ 글리세린,
-○ 사이클로헥사실록세인,
-○ 스쿠알란,
-○ 비스-피이지-18메틸에텔디메틸실란,
-○ 수크로오스스테아레이트,
-○ 스테아릴아코올,
-○ 피이지-8스테아레이트, 펜타에리스리틸테트라에칠헥사노에이트,
-○ 미리스틸미리스테이트,
-○ 우레아,
-○ 살구씨오일,
-○ 페놀시에탄올,
-○ 아보카도 오일`}</Text>
+      <Text style={[styles.text9, styles.textTypo]}> {formulationInfo[formulation]}</Text>
       <View style={[styles.frameInner, styles.groupChildPosition]} />
       <Text style={[styles.text10, styles.textTypo]}>선택 완료</Text>
     </View>

@@ -22,8 +22,9 @@ import Screen2 from "./screens/Splash";
 import { Provider } from 'react-redux';
 import store from './src/store';
 import Confirm from "./screens/Confirm";
-import Result from './screens/ResultFrame'
-import Recipe from './screens/MyRecipe'
+import Result from './screens/ResultFrame';
+import Recipe from './screens/MyRecipe';
+import Payment from './screens/Payments'
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
 
@@ -138,6 +139,11 @@ const App = () => {
             <Stack.Screen
               name="Recipe"
               component={Recipe}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Payment"
+              component={Payment}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

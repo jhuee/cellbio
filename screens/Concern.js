@@ -78,8 +78,20 @@ const Frame6 = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
-      <Text style={styles.text7}>피부 고민을 선택해주세요</Text>
+      <Text style={[styles.text7, styles.text3]}>피부 고민을 선택해주세요</Text>
+
+      <HStack mt={3} ml={3}space={3} alignItems={"center"}>
+        <Pressable onPress={() => navigation.goBack()}>
+        <Image
+          style={styles.chevronLeftIcon}
+          contentFit="cover"
+          source={require("../assets/chevronleft.png")}
+          />
+        </Pressable>
+      <Text style={[styles.titleText, styles.textTypo2]}>피부 고민 별 선택사항</Text>
+      </HStack>
       <Text style={styles.n}>최대 2개 가능</Text>
+
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
@@ -90,7 +102,7 @@ const Frame6 = () => {
         </HStack>
       </View>
 
-      <ScrollView mt={220} >
+      <ScrollView mt={130} >
       <Checkbox.Group colorScheme="yellow" defaultValue={groupValue} onChange={values => setGroupValue(values || [])}>
           <VStack alignSelf={"center"} marginTop={4} space={5}>
               {items.map((item, index) => (
@@ -114,16 +126,7 @@ const Frame6 = () => {
     >
         <Text style={styles.text8}>선택 완료</Text>
       </Pressable>
-      <View style={[styles.parent, styles.parentPosition]}>
-        <Text style={[styles.text17, styles.text17Position]}>
-          피부 고민 별 선택사항
-        </Text>
-        <Image
-          style={[styles.chevronLeftIcon, styles.text17Position]}
-          contentFit="cover"
-          source={require("../assets/chevronleft.png")}
-        />
-      </View>
+
     </View>
   );
 };
@@ -137,6 +140,19 @@ const styles = StyleSheet.create({
     height: 30,
     position: "absolute",
   },
+  titleText:{
+    color: Color.colorDarkslategray_100,
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "700",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+},
+textTypo2: {
+  fontFamily: FontFamily.pretendardLight,
+  fontWeight: "600",
+  lineHeight: 40,
+  fontSize: FontSize.size_6xl,
+},
   textTypo1: {
     color: Color.colorWhite,
     fontSize: FontSize.size_xl,
@@ -245,16 +261,17 @@ const styles = StyleSheet.create({
     height: 30,
     position: "absolute",
   },
-  text7: {
+  text3: {
     top: 160,
-    color: Color.colorBlack,
     left: 32,
+    color: Color.colorBlack,
+  },
+  text7: {
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "600",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-    position: "absolute",
   },
   rectangleView: {
     backgroundColor: Color.colorSilver,
@@ -276,7 +293,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   n: {
-    top: 196,
+    top:100,
     color: "#464646",
     lineHeight: 24,
     fontSize: FontSize.size_mini,
@@ -284,7 +301,6 @@ const styles = StyleSheet.create({
     left: 32,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
-    position: "absolute",
   },
   frameChild4: {
     width: 352,
@@ -368,20 +384,14 @@ const styles = StyleSheet.create({
     marginLeft: -106.5,
   },
   chevronLeftIcon: {
-    left: 11,
     width: 41,
     height: 41,
     overflow: "hidden",
   },
-  parent: {
-    top: 55,
-    height: 46,
-    position: "absolute",
-  },
+
   view: {
     backgroundColor: Color.colorWhite,
     flex: 1,
-    height: 1026,
     overflow: "hidden",
     width: "100%",
   },

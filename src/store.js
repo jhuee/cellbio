@@ -1,5 +1,5 @@
 import { createStore, combineReducers } from 'redux';
-import { formulationReducer, baseReducer, concernReducer, concentrationReducer, volumeReducer, caseReducer, ItemReducer } from './reducers';
+import { formulationReducer, baseReducer, concernReducer, concentrationReducer, volumeReducer, caseReducer, ItemReducer, nameReducer } from './reducers';
 
 const rootReducer = combineReducers({
   item: ItemReducer,
@@ -9,6 +9,7 @@ const rootReducer = combineReducers({
   concentration: concentrationReducer,
   volume: volumeReducer,
   case: caseReducer,
+  name: nameReducer,
 });
 
 const store = createStore(
