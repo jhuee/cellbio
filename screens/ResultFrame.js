@@ -6,11 +6,12 @@ import {
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-import { Center, VStack, Pressable, Box,ScrollView, HStack, Circle, Heading, View, Text, Divider, Icon, AddIcon} from "native-base";
+import { Center, VStack, Pressable, Box,ScrollView, HStack, Circle, Heading, View, Text, Divider, Icon, AddIcon, IconButton} from "native-base";
 
 import { useDispatch } from 'react-redux';
 import { setItem } from '../src/actions';
 import { db, auth } from '../firebaseConfig'
+import { AntDesign } from '@expo/vector-icons';
 
 
 const ResultFrame = () => {
@@ -68,7 +69,15 @@ const ResultFrame = () => {
   
   return (
     <View style={styles.view} backgroundColor="blueGray.400">
-     
+      <HStack mt={3} ml={6}space={3} alignItems={"center"}>
+      
+        <IconButton style={styles.chevronLeftIcon}
+                    _pressed={{bg: "gray.600:alpha.10"}}
+                    icon={<AntDesign name="home" size={30} color="gray"  />}
+                    borderRadius="full"
+                    onPress={() => navigation.navigate('Screen1')}/>
+
+      </HStack>
      
   
       
@@ -83,7 +92,7 @@ const ResultFrame = () => {
       </Text>
       <Box m={5}>
           {skinInfo[result].map((info, index) => (
-            <HStack alignItems={"center"}>
+            <HStack key={index} alignItems={"center"}>
             <Text ml={2} mt={3}>✔️</Text>
             <Text style={styles.text7} key={index} mr={5} ml={2} mt={4}> {info}</Text>
             </HStack>
@@ -102,7 +111,6 @@ const ResultFrame = () => {
             <Circle size={"100px"} bg="#B2A2A2">
                 <Text style={styles.text3} color="white">
                     트러블 케어
-                    50%
                 </Text>
             </Circle>
             <Text textAlign={"center"}>어성초추출물 </Text>
@@ -113,7 +121,6 @@ const ResultFrame = () => {
             <Circle size={"100px"} bg="#B5CECE">
             <Text style={styles.text3} color="white">
                     진정
-                    50%
                 </Text>
             </Circle>
             
@@ -127,7 +134,27 @@ const ResultFrame = () => {
             #번들거리지 않는 가벼운 텍스쳐
         </Text>
 
-        <Pressable alignItems={"center"} w={"80%"} borderRadius={10} h={10} backgroundColor={"#94a3b8"}>
+        <Pressable alignItems={"center"} w={"80%"} borderRadius={10} h={10} backgroundColor={"#94a3b8"}
+         onPress={ async  () =>{
+          try {
+          const userId = auth.currentUser.uid;
+          const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
+          console.log(userId)
+          const recipeRef = userRef.collection('recipe').doc(); // 레시피 문서 참조 생성
+    
+          await recipeRef.set({ // 레시피 문서에 데이터 저장
+              skinType : '지성 피부',
+              '레시피' : '맞춤 레시피1',
+              base : "Premium",
+              concerns : ['각질','예민'],
+            });
+    
+          alert("레시피 저장 완료")
+          navigation.navigate("Recipe")
+        } catch (error) {
+          console.error(error);
+        }
+      }}>
             <Text mt={2} style={styles.text4} color={"white"}>
                레시피1 저장하기
             </Text>
@@ -135,14 +162,16 @@ const ResultFrame = () => {
 
         <Divider/>
         <Text style={styles.text}  color="blueGray.600" mt={15} textAlign={"center"}>
-            {result} 맞춤화장품 레시피 2
+            {result} 
+        </Text>
+        <Text style={styles.text}  color="blueGray.600" mt={-3} textAlign={"center"}>
+            맞춤 레시피 2
         </Text>
         <HStack space={10}  h="170">
             <VStack space={2}>
-            <Circle size={"100px"} bg="#B2A2A2">
+            <Circle size={"100px"} bg="#94a3b8">
                 <Text style={styles.text3} color="white">
                     트러블 케어
-                    50%
                 </Text>
             </Circle>
             <Text textAlign={"center"}>어성초추출물 </Text>
@@ -153,7 +182,6 @@ const ResultFrame = () => {
             <Circle size={"100px"} bg="#B5CECE">
             <Text style={styles.text3} color="white">
                     진정
-                    50%
                 </Text>
             </Circle>
             
@@ -168,27 +196,10 @@ const ResultFrame = () => {
         </Text>
 
         <Pressable alignItems={"center"} w={"80%"} borderRadius={10} h={10} backgroundColor={"#94a3b8"} 
-        onPress={ async  () =>{
-            try {
-            const userId = auth.currentUser.uid;
-            const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
-            console.log(userId)
-            const recipeRef = userRef.collection('recipe').doc(); // 레시피 문서 참조 생성
-      
-            await recipeRef.set({ // 레시피 문서에 데이터 저장
-                skinType : '지성 피부',
-                base : "Premium",
-                concerns : ['각질','예민'],
-              });
-      
-            alert("저장 완료^^")
-          } catch (error) {
-            console.error(error);
-          }
-        }}>
+       >
 
             <Text mt={2} style={styles.text4} color={"white"}>
-               레시피1 저장하기
+               레시피2 저장하기
             </Text>
         </Pressable>
       </VStack>
@@ -204,6 +215,20 @@ const styles = StyleSheet.create({
     color: Color.colorBlack,
     position: "absolute",
   },
+
+  titleText:{
+    color: Color.colorDarkslategray_100,
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "700",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+},
+textTypo2: {
+  fontFamily: FontFamily.pretendardLight,
+  fontWeight: "600",
+  lineHeight: 40,
+  fontSize: FontSize.size_6xl,
+},
   image:{
     left:10,
     height: 130,

@@ -6,6 +6,7 @@ import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import {Box, VStack, HStack, Text, Pressable, ScrollView, Checkbox, Circle, Input, KeyboardAvoidingView} from "native-base";
 import { setRecName } from "../src/actions";
 import { useSelector, useDispatch } from "react-redux";
+import { db, auth } from '../firebaseConfig'
 
 const Confirm = () => {
   const navigation = useNavigation();
@@ -15,10 +16,10 @@ const Confirm = () => {
   const concern = useSelector(state => state.concern);
   const concentration = useSelector(state => state.concentration);
   const volume = useSelector(state => state.volume);
-  const bottle = useSelector(state => state.bottle);
+  const bottle = useSelector(state => state.case);
+  const item = useSelector(state => state.item);
   
   const [name, setName] = useState('');
-
   const dispatch = useDispatch();
   const handlePress = () => {
     dispatch(setRecName(name));
@@ -43,7 +44,7 @@ const Confirm = () => {
           source={require("../assets/chevronleft.png")}
           />
         </Pressable>
-      <Text style={[styles.titleText, styles.textTypo3]}>용량 선택</Text>
+      <Text style={[styles.titleText, styles.textTypo3]}>레시피 이름</Text>
       </HStack>
 
         <VStack mt={100} alignItems={"center"} justifyContent={"center"} space={3}>
@@ -56,11 +57,43 @@ const Confirm = () => {
           <Input size="lg" width={"75%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setName(text)}></Input>
           <HStack justifyContent={"space-between"} space={3} alignItems={"center"}>
           {/* <Pressable borderRadius={5} backgroundColor={"#9A887E"} w={"35%"}  alignItems={"center"} justifyContent={"center"} h={10}> */}
-          <Pressable justifyContent={"center"} borderWidth={1} borderRadius={5} borderColor={"#9A887E"} w={"35%"} alignItems={"center"} h={10}>
-
+          <Pressable justifyContent={"center"} borderWidth={1} borderRadius={5} borderColor={"#9A887E"} w={"35%"} alignItems={"center"} h={10}
+            onPress={async  () =>{
+              try {
+              const userId = auth.currentUser.uid;
+              const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
+              const recipeRef = userRef.collection('recipe').doc(); // 레시피 문서 참조 생성
+                
+              await recipeRef.set({ // 레시피 문서에 데이터 저장
+                  skinType : '지성 피부',
+                  "제품" : item,
+                  "제형" : formulation,
+                  "베이스" : base,
+                  "피부고민" : concern,
+                  "농도" : concentration,
+                  "용량" : volume,
+                  "케이스" : bottle,
+                  "레시피" : name,
+                  "가격" : 15000
+                });
+        
+              alert("저장되었습니다.")
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Recipe' }],
+              });
+            } catch (error) {
+              console.error(error);
+            }
+          }}
+            >
             <Text  style={styles.textTypo}>저장</Text>
           </Pressable>
-          <Pressable justifyContent={"center"} borderWidth={1} borderRadius={5} borderColor={"#9A887E"} w={"35%"} alignItems={"center"} h={10}>
+          <Pressable justifyContent={"center"} borderWidth={1} borderRadius={5} borderColor={"#9A887E"} w={"35%"} alignItems={"center"} h={10}
+          onPress={()=> navigation.reset({
+            index: 0,
+            routes: [{ name: 'Screen1' }],
+          })}>
             <Text style={styles.textTypo}>삭제</Text>
           </Pressable>
             </HStack>

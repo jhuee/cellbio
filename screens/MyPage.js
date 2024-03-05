@@ -1,84 +1,123 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { Image } from "expo-image";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
+import {db, auth} from '../firebaseConfig'
+import { ScrollView, VStack, Box, FormControl, Input, HStack, KeyboardAvoidingView, Divider, IconButton, Pressable, FlatList, ZStack} from "native-base";
+import { useNavigation } from "@react-navigation/native";
 
 const Frame2 = () => {
+  const [user, setUser] = useState('');
+  const navigation = useNavigation();
 
+  const getUserData = async () => {
+    const userId = auth.currentUser.uid;
+    const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
+  
+    const doc = await userRef.get();
+  
+    if (doc.exists) {
+      const userData = doc.data();
+      const name = userData.name;
+      setUser(name)
+    } else {
+      console.log("No such document!");
+    }
+  }
+  getUserData();
   return (
     <View style={styles.view}>
-      <View style={styles.parent}>
-        <Text style={styles.text}>마이 페이지</Text>
+         <HStack mt={10} ml={6}space={3} alignItems={"center"}>
+        <Pressable onPress={() => navigation.goBack()}>
         <Image
           style={styles.chevronLeftIcon}
           contentFit="cover"
           source={require("../assets/chevronleft.png")}
-        />
-      </View>
-      <View style={[styles.groupParent, styles.groupPosition]}>
+          />
+        </Pressable>
+      <Text style={[styles.titleText, styles.textTypo4]}>장바구니</Text>
+      </HStack>
+      <ScrollView mt={70}  >
+      <VStack mr={5} ml={5} space={2}>
+      <Box>
         <Image
           style={styles.frameChild}
           contentFit="cover"
           source={require("../assets/group-427320737.png")}
         />
-        <Text style={styles.text1}>김주희</Text>
+        <Text style={styles.text1}>{user}님</Text>
         <Text style={styles.green}>
           <Text style={styles.green1}>Green</Text>
           <Text style={styles.text2}> 등급</Text>
         </Text>
-      </View>
-      <View style={[styles.group, styles.groupPosition]}>
-        <Text style={[styles.text3, styles.textTypo2]}>{`포인트 
+        </Box>
+      <HStack justifyContent={"space-between"} mt={2} p={1} pl={4} pr={4}>
+        <Box w={50}>
+        <Text style={[ styles.textTypo2]}>{`포인트 
 0`}</Text>
-        <Text style={[styles.text4, styles.textTypo3]}>{`쿠폰 
+</Box>
+<Box  w={50}>
+        <Text style={[styles.textTypo2]}>{`쿠폰 
 0`}</Text>
-        <Text style={[styles.text5, styles.textTypo2]}>{`리뷰 
+</Box>
+<Box w={50}>
+        <Text style={[styles.textTypo2]}>{`리뷰 
 0`}</Text>
-      </View>
-      <View style={[styles.child, styles.itemPosition]} />
-      <View style={[styles.item, styles.itemPosition]} />
-      <Text style={[styles.text6, styles.textTypo3]}>제작 중인 레시피</Text>
-      <View style={styles.frameParent}>
-        <View style={[styles.rectangleParent, styles.rectanglePosition]}>
-          <View style={[styles.frameItem, styles.frameLayout]} />
+</Box>
+      </HStack>
+    <Divider/>
+    
+      <Text style={[ styles.textTypo3]}>제작 중인 레시피</Text>
+      <HStack justifyContent={"space-between"} mt={3} mb={5}>
+          <Box justifyContent={"center"} style={[styles.frameItem, styles.frameLayout]}>
           <Text style={styles.text7}>레시피</Text>
-        </View>
-        <View style={[styles.rectangleGroup, styles.rectanglePosition]}>
-          <View style={[styles.frameInner, styles.frameLayout]} />
+          </Box>
+        <Image
+          style={[styles.chevronRightIcon, ]}
+          contentFit="cover"
+          source={require("../assets/chevronright.png")}
+        />
+          <Box justifyContent={"center"}style={[styles.frameInner, styles.frameLayout]} >
           <Text style={[styles.text8, styles.textTypo1]}>업체선정</Text>
-        </View>
+          </Box>
         <Image
-          style={[styles.chevronRightIcon, styles.chevronIconPosition]}
+          style={[styles.chevronRightIcon, ]}
           contentFit="cover"
           source={require("../assets/chevronright.png")}
         />
+        <Box justifyContent={"center"}style={[styles.frameInner, styles.frameLayout]} >
+          <Text style={[styles.text8, styles.textTypo1]}>제작</Text>
+          </Box>
         <Image
-          style={[styles.chevronRightIcon1, styles.chevronIconPosition]}
-          contentFit="cover"
-          source={require("../assets/chevronright.png")}
-        />
-        <Image
-          style={[styles.chevronRightIcon2, styles.chevronIconPosition]}
+          style={[styles.chevronRightIcon, ]}
           contentFit="cover"
           source={require("../assets/chevronright11.png")}
         />
-        <View style={[styles.rectangleContainer, styles.rectanglePosition]}>
-          <View style={[styles.frameInner, styles.frameLayout]} />
-          <Text style={[styles.text9, styles.textTypo1]}>완성</Text>
-        </View>
-        <View style={[styles.frameView, styles.rectanglePosition]}>
-          <View style={[styles.frameInner, styles.frameLayout]} />
-          <Text style={[styles.text9, styles.textTypo1]}>제작</Text>
-        </View>
-      </View>
-      <Text style={[styles.my, styles.textTypo]}>MY 피부타입</Text>
-      <Text style={[styles.text11, styles.textTypo]}>보관된 레시피</Text>
-      <Text style={[styles.text12, styles.textTypo]}>
-        취소, 반품, 교환 내역
-      </Text>
-      <Text style={[styles.text13, styles.textTypo]}>배송지/환불 계좌</Text>
-      <Text style={[styles.text14, styles.textTypo]}>재입고 알림</Text>
-      <Text style={[styles.text15, styles.textTypo]}>이벤트 참여 현황</Text>
+        <Box justifyContent={"center"}style={[styles.frameInner, styles.frameLayout]} >
+          <Text style={[styles.text8, styles.textTypo1]}>완성</Text>
+        </Box>
+      </HStack>
+      <Divider/>
+      <Pressable h={50} justifyContent={'center'} onPress={() => navigation.navigate("Frame10")}>
+      <Text style={[styles.textTypo]}>MY 피부타입</Text>
+      </Pressable>
+      <Pressable h={50} justifyContent={'center'} onPress={() => navigation.navigate("Recipe")}>
+      <Text style={[styles.textTypo]}>보관된 레시피</Text>
+      </Pressable>
+      <Pressable h={50} justifyContent={'center'} onPress={() => navigation.navigate("Order")}>
+      <Text style={[styles.textTypo]}>주문 내역</Text>
+      </Pressable>
+      <Pressable h={50} justifyContent={'center'}>
+      <Text style={[styles.textTypo]}>취소, 반품, 교환 내역</Text>
+      </Pressable>
+      <Pressable h={50} justifyContent={'center'}>
+      <Text style={[styles.textTypo]}>배송지/환불 계좌</Text>
+      </Pressable>
+      <Pressable h={50} justifyContent={'center'}>
+      <Text style={[styles.textTypo]}>이벤트 참여 현황</Text>
+      </Pressable>
+      </VStack>
+      </ScrollView>
     </View>
   );
 };
@@ -87,28 +126,35 @@ const styles = StyleSheet.create({
   groupPosition: {
     width: 393,
     left: 0,
-    position: "absolute",
   },
   textTypo2: {
-    width: 108,
-    textAlign: "center",
-    top: 0,
+    textAlign:"center",
     color: Color.colorBlack,
     fontWeight: "500",
     lineHeight: 24,
     fontSize: FontSize.size_mini,
     fontFamily: FontFamily.pretendardLight,
-    left: "50%",
-    position: "absolute",
   },
+  titleText:{
+    color: Color.colorDarkslategray_100,
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "700",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+},
+textTypo4: {
+  fontFamily: FontFamily.pretendardLight,
+  fontWeight: "600",
+  lineHeight: 40,
+  fontSize: FontSize.size_6xl,
+},
+
   textTypo3: {
-    textAlign: "center",
     color: Color.colorBlack,
-    fontWeight: "500",
+    fontWeight: "600",
     lineHeight: 24,
     fontSize: FontSize.size_mini,
     fontFamily: FontFamily.pretendardLight,
-    position: "absolute",
   },
   itemPosition: {
     height: 1,
@@ -132,19 +178,14 @@ const styles = StyleSheet.create({
     width: 60,
     borderRadius: Border.br_xl,
     height: 25,
-    top: 0,
-    left: 0,
-    position: "absolute",
   },
   textTypo1: {
     color: Color.colorDimgray_300,
     lineHeight: 21,
     fontSize: FontSize.size_smi,
-    top: 2,
     textAlign: "center",
     fontWeight: "500",
     fontFamily: FontFamily.pretendardLight,
-    position: "absolute",
   },
   chevronIconPosition: {
     height: 24,
@@ -155,15 +196,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   textTypo: {
-    height: 21,
-    left: 28,
     color: Color.colorBlack,
     fontWeight: "500",
     lineHeight: 24,
     fontSize: FontSize.size_mini,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
-    position: "absolute",
   },
   text: {
     marginLeft: -57.5,
@@ -179,12 +217,8 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   chevronLeftIcon: {
-    left: 11,
     width: 41,
     height: 41,
-    top: "50%",
-    marginTop: -20,
-    position: "absolute",
     overflow: "hidden",
   },
   parent: {
@@ -196,21 +230,18 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   frameChild: {
-    top: 4,
-    left: 25,
     width: 52,
     height: 52,
-    position: "absolute",
   },
   text1: {
-    top: 31,
-    width: 46,
+    top: 25,
+    width: 100,
     height: 26,
     color: Color.colorBlack,
     fontWeight: "500",
     lineHeight: 24,
     fontSize: FontSize.size_mini,
-    left: 84,
+    left: 60,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     position: "absolute",
@@ -222,11 +253,11 @@ const styles = StyleSheet.create({
     color: Color.colorBlack,
   },
   green: {
-    top: 8,
+    top: 2,
     fontWeight: "600",
     lineHeight: 24,
     fontSize: FontSize.size_mini,
-    left: 84,
+    left: 60,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     position: "absolute",
@@ -235,9 +266,7 @@ const styles = StyleSheet.create({
     top: 136,
     height: 61,
   },
-  text3: {
-    marginLeft: -182.5,
-  },
+
   text4: {
     marginLeft: -54.5,
     width: 107,
@@ -248,13 +277,8 @@ const styles = StyleSheet.create({
   text5: {
     marginLeft: 73.5,
   },
-  group: {
-    top: 228,
-    height: 48,
-  },
-  child: {
-    top: 291,
-  },
+
+
   item: {
     top: 420,
   },
@@ -266,15 +290,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffc075",
   },
   text7: {
-    left: 13,
     lineHeight: 21,
     fontSize: FontSize.size_smi,
-    top: 2,
     textAlign: "center",
     color: Color.colorBlack,
     fontWeight: "500",
     fontFamily: FontFamily.pretendardLight,
-    position: "absolute",
   },
   rectangleParent: {
     marginLeft: -169,
@@ -283,17 +304,13 @@ const styles = StyleSheet.create({
   frameInner: {
     backgroundColor: Color.colorWhitesmoke_100,
   },
-  text8: {
-    left: 8,
-  },
+
   rectangleGroup: {
     marginLeft: -77,
   },
   chevronRightIcon: {
-    marginLeft: -103,
     width: 19,
     height: 24,
-    marginTop: -10.5,
   },
   chevronRightIcon1: {
     marginLeft: 82,
@@ -302,10 +319,8 @@ const styles = StyleSheet.create({
     marginTop: -10.5,
   },
   chevronRightIcon2: {
-    marginLeft: -11,
     width: 20,
     height: 24,
-    marginTop: -10.5,
   },
   text9: {
     left: 18,

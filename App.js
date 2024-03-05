@@ -27,7 +27,16 @@ import Recipe from './screens/MyRecipe';
 import Payment from './screens/Payments'
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
-
+import { LogBox } from 'react-native';
+import Cart from './screens/Cart'
+import Order from './screens/OrderHistroy'
+LogBox.ignoreLogs(['Warning: ...']);  // Warning: 이후에 경고 메시지의 일부를 입력하면 됩니다.
+LogBox.ignoreLogs([
+  'If you do not provide children, you must specify an aria-label for accessibility',
+  'We can not support a function callback.',
+  'In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.',
+  'Failed prop type: Invalid prop `readOnly` of type `string` supplied to `ForwardRef(TextInput)`, expected `boolean`.'
+]);
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
   let [fontsLoaded] = useFonts({
@@ -144,6 +153,16 @@ const App = () => {
             <Stack.Screen
               name="Payment"
               component={Payment}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Cart"
+              component={Cart}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Order"
+              component={Order}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

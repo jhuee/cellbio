@@ -189,8 +189,8 @@ m소듐하이알루로네이트
           {/* 새로 추가한 부분 */}
           {/* 여기까지   */}
       {itemInfo[item].split('\n').map((ingredient, idx) => (
-        <VStack>
-        <Box key={idx} m={2} justifyContent={"center"} h={10} >
+        <VStack key={idx}>
+        <Box  m={2} justifyContent={"center"} h={10} >
          <HStack alignItems={"center"}>
           <Text>
             ✔️

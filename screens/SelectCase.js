@@ -81,7 +81,7 @@ const Frame3 = () => {
           <ScrollView mt={150}>
             <VStack alignSelf={"center"} space={5} mt={2}>
             {typeValues.map((type, index) => (
-              <Pressable onPress={()=> handlePress(type.text)} style={styles.parentPosition} w={360}>
+              <Pressable key={index} onPress={()=> handlePress(type.text)} style={styles.parentPosition} w={360}>
             <Image
               style={ styles.iconLayout}
               contentFit="cover"

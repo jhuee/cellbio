@@ -66,8 +66,8 @@ const Frame5 = () => {
         <Radio.Group value={value} colorScheme={"light"} defaultValue="1"  onChange={nextValue => {setValue(nextValue)}} >
       <VStack  mt={150} ml={10}>
       {ccValues.map((text, index) =>
-      <Box mb={-5}>
-        <Radio key={index} value={text} my={1} size={"lg"} onPr>
+      <Box key={index} mb={-5}>
+        <Radio  value={text} my={1} size={"lg"} onPr>
           <Text style={styles.text13}>{text}</Text>
         </Radio>
         {index !== 4 && <Divider bg={"#B2A2A2"} thickness={3} ml={3} h={"16"} mt={-1} mb={-2}orientation="vertical"/>}  {/* 마지막 라디오 버튼에는 선이 없습니다. */}

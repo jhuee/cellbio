@@ -28,14 +28,13 @@ const Frame1 = () => {
 
         return recipes; // 레시피 데이터 반환
       }
-       getRecipe('userId').then((recipes) => console.log(recipes));
       
       
 
       useEffect(() => {
         getRecipe().then((data) => setRecipes(data)); // 레시피 데이터 가져오기
       }, []);
-    
+    console.log(recipes)
       const groupedRecipes = recipes.reduce((grouped, recipe) => {
         (grouped[recipe.skinType] = grouped[recipe.skinType] || []).push(recipe);
         return grouped;
@@ -77,9 +76,42 @@ const Frame1 = () => {
         }, { merge: true });
       
       };
+
+      async function deleteRecipe(recipeId) {
+        const userId = auth.currentUser.uid;
+        const userRef = db.collection('users').doc(userId);
+        const recipeRef = userRef.collection('recipe').doc(recipeId);
+      
+        await recipeRef.delete();
+        getRecipe().then((data) => setRecipes(data));
+
+      }
+
+      async function addRecipeToCart(recipe) {
+        const userId = auth.currentUser.uid;
+        const userRef = db.collection('users').doc(userId);
+        const cartRef = userRef.collection('cart');
+      
+        // id 속성 제거
+        const { id, ...recipeWithoutId } = recipe;
+      
+        await cartRef.add(recipeWithoutId);
+      }
+      
+      
     
       return (
         <View style={styles.view}>
+          <HStack mt={10} ml={3}space={3} alignItems={"center"}>
+        <Pressable onPress={() => navigation.navigate('Screen1')}>
+        <Image
+          style={styles.chevronLeftIcon}
+          contentFit="cover"
+          source={require("../assets/chevronleft.png")}
+          />
+        </Pressable>
+      <Text style={[styles.titleText, styles.textTypo4]}>My 레시피</Text>
+      </HStack>
           <VStack space={4}mt={10}>
           <Box>
   <HStack space={4} alignItems={"center"} justifyContent={"center"}>
@@ -175,45 +207,44 @@ const Frame1 = () => {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-          <Box ml={6} mr={6}>
-            <HStack alignItems={"center"} space={2} >
-            <Text style={styles.textTypo1} color={"#B8B8B8"}>지성</Text>
-            <Divider thickness={1.5} w={"90%"}/>
-            </HStack>
-            </Box>
-            
-              <Pressable ml={8} mr={8}>
-                <HStack h={60} alignItems={"center"} justifyContent="space-between">
-                <Text style={styles.text}>맞춤 레시피1</Text>
-                <ChevronRightIcon />
-                </HStack>
-              </Pressable>
-            
-            
-              <Pressable ml={8} mr={8}>
-                <HStack h={60} alignItems={"center"} justifyContent="space-between">
-                <Text style={styles.text}>맞춤 레시피2</Text>
-                <ChevronRightIcon />
-                </HStack>
-              </Pressable>
-           
+
             </VStack>
-            {/* {Object.keys(groupedRecipes).map((skinType) => (
-              <View key={skinType}>
-                <HStack>
+            <Divider/>
+            <Text ml={5} mt={2} style={styles.textTypo5}>피부 타입별 레시피</Text>
+            {Object.keys(groupedRecipes).map((skinType) => (
+              <Box key={skinType} mt={5} ml={5}>
+                <HStack space={2} alignItems={'center'}>
                 <Text style={styles.textTypo}>{skinType}</Text>
-                <Divider thickness={2}/>
+                <Divider w={'70%'}/>
                 </HStack>
                 {groupedRecipes[skinType].map((recipe) => (
-                  <View key={recipe.id}>
-                    <Text>{recipe.base}</Text>
-                    {recipe.concerns && recipe.concerns.map((concern, index) => (
-  <Text key={index}>{concern}</Text>
-))}
-                  </View>
+                  <VStack key={recipe.id}>
+                    
+                  <Pressable ml={8} mr={8}>
+                  <HStack h={60} alignItems={"center"} justifyContent="space-between">
+                  <Text style={styles.textTypo1}>{recipe.레시피}</Text>
+                  <HStack>
+                  <IconButton
+  _pressed={{bg: "gray.600:alpha.10"}}
+  icon={<AntDesign name="shoppingcart" size={18} color="gray"  />}
+  borderRadius="full"
+  onPress={() => addRecipeToCart(recipe)}
+/>
+<IconButton
+  _pressed={{bg: "gray.600:alpha.10"}}
+  icon={<AntDesign name="minus" size={18} color="gray"  />}
+  borderRadius="full"
+  onPress={() => deleteRecipe(recipe.id)}
+/>
+
+                  </HStack>
+                  </HStack>
+                </Pressable>
+                    
+                  </VStack>
                 ))}
-              </View>
-            ))} */}
+              </Box>
+            ))}
         </View>
       );
 };
@@ -224,6 +255,24 @@ const styles = StyleSheet.create({
     left: 0,
     position: "absolute",
   },
+  titleText:{
+    color: Color.colorDarkslategray_100,
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "700",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+},
+textTypo4: {
+  fontFamily: FontFamily.pretendardLight,
+  fontWeight: "600",
+  lineHeight: 40,
+  fontSize: FontSize.size_6xl,
+},
+textTypo5: {
+  fontFamily: FontFamily.pretendardLight,
+  lineHeight: 40,
+  fontSize: FontSize.size_xl,
+},
   textTypo2: {
     width: 108,
     textAlign: "center",
@@ -273,7 +322,7 @@ const styles = StyleSheet.create({
   },
   textTypo1: {
     color: Color.colorDimgray_300,
-    fontSize: FontSize.size_mini,
+    fontSize: FontSize.size_xl,
     fontWeight: "600",
     fontFamily: FontFamily.pretendardLight,
   },
@@ -286,15 +335,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   textTypo: {
-    height: 21,
-    left: 28,
     color: Color.colorBlack,
     fontWeight: "500",
     lineHeight: 24,
-    fontSize: FontSize.size_mini,
+    fontSize: 18,
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
-    position: "absolute",
   },
   text: {
     fontSize: FontSize.size_xl,
@@ -303,12 +349,8 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.pretendardLight,
   },
   chevronLeftIcon: {
-    left: 11,
     width: 41,
     height: 41,
-    top: "50%",
-    marginTop: -20,
-    position: "absolute",
     overflow: "hidden",
   },
   parent: {

@@ -42,4 +42,15 @@ export const setFormulation = (formulation) => ({
     type: 'SET_NAME',
     payload: name,
   });
+
+  export const setExtra = (extra) => ({
+    type: 'SET_EXTRA',
+    payload: extra,
+  });
+
+  export const setPrice = (price) => ({
+    type: 'SET_PRICE',
+    payload: price,
+  });
+  
   

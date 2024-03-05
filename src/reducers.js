@@ -69,4 +69,22 @@ export const formulationReducer = (state = '', action) => {
         return state;
     }
   };
+
+  export const extraReducer = (state = '', action) => {
+    switch (action.type) {
+      case 'SET_EXTRA':
+        return action.payload;
+      default:
+        return state;
+    }
+  };
+  
+  export const priceReducer = (state = '', action) => {
+    switch (action.type) {
+      case 'SET_PRICE':
+        return action.payload;
+      default:
+        return state;
+    }
+  };
   

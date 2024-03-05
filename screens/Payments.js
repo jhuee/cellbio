@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {  StyleSheet, View,  Alert,  TouchableOpacity,Keyboard,Modal, Button, TextInput} from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
@@ -24,6 +24,8 @@ const Payment = () => {
   const volume = useSelector(state => state.volume);
   const bottle = useSelector(state => state.case);
   const name = useSelector(state => state.name);
+  const extra = useSelector(state => state.extra);
+  const price = useSelector(state => state.price);
 
   const [count, setCount] = useState(1); // 초기값을 1로 설정
   const [address, setAddress] = useState('');
@@ -31,27 +33,54 @@ const Payment = () => {
   const [detailAddr, setDetailAddr] = useState('');
   const [sender, setSender] = useState(user);
   const [receiver, setReceiver] = useState(user);
+  const [extraValue, setExtraValue] = useState();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [itemPrice, setitemPrice] = useState(0);
   const increaseCount = () => {
       setCount(count + 1); // count 값을 1 증가
+      console.log(count)
+      setitemPrice(pricePerItem * (count+1))
   }
 
   const decreaseCount = () => {
       if (count > 1) { // count 값이 1보다 클 때만 감소
           setCount(count - 1); // count 값을 1 감소
+          setitemPrice(pricePerItem * (count-1))
       }
   }
 
   const priceTable = {
-    '크림': 5000,
+    '크림': 5000, 
+    '병출 추출물' : 5000,
+    '녹차 추출물' : 5000,
+    '달팽이 점액 추출물' : 5000,
+    '꿀 추출물' : 5000,
+    '프로폴리스 추출물' : 5000,
+    '어성초 추출물' : 5000,
+    '인진쑥 추출물' : 5000,
     // 필요한 만큼 다른 상품과 가격을 추가할 수 있습니다.
   };
 
   const pricePerItem = priceTable[item];  // 상품에 해당하는 가격을 찾습니다.
-  if (!pricePerItem) {
-    return <Text>해당 상품의 가격 정보가 없습니다.</Text>;
-  }
-  const totalPrice = pricePerItem * count;  // 총 가격을 계산합니다.
+  useEffect(() => {
+    if (!pricePerItem) {
+      setTotalPrice(price)
+      // setTotalPrice(Object.values(extra).reduce((sum, item) => sum + item.count * item.price, 0))
+      setExtraValue(Object.keys(extra).join(", "))
+      // console.log(Object.values(extra).reduce((sum, item) => sum + item.count * item.price, 0))
+      
+    }
+    else{setitemPrice(pricePerItem * count) } // 총 가격을 계산합니다.
+  }, [pricePerItem, extra]);
+  
+  const now = new Date();
 
+  const year = now.getFullYear();
+  const month = now.getMonth();  // 월은 0부터 시작하므로 1을 더해야 합니다.
+  const date = now.getDate();
+  
+  const paymentTime = now.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul'});
+  const paymentDate = new Date(year, month, date  );  // 월은 0부터 시작하므로 1을 빼야 합니다.
   const getUserData = async () => {
     const userId = auth.currentUser.uid;
     const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
@@ -109,7 +138,7 @@ const validateInput = () => {
 
 
 const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
-  const [searchText, setSearchText] = useState('공항대로');
+  const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
   const searchAddress = async () => {
@@ -124,7 +153,6 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
       console.log(searchResults.map)
     } else {
       console.log("No such address!");
-      console.log(data.results.common.errorMessage)
     }
   };
 
@@ -189,17 +217,19 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
       <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={10}   >
       <ScrollView mt={180} ml={15} mr={30} >
+        
         <VStack space={2} mr={5} ml={5}>
-
-        <Box  mr={8}>
+        {item ? (<>
+          <Box  mr={8}>
                 <HStack h={60} alignItems={"center"} justifyContent="space-between">
                 <Text style={styles.texttb}>{name}</Text>
                 </HStack>
         <Text>
-           {bottle}
+           {bottle} {extraValue}
         </Text>
         </Box> 
         <HStack alignItems={"center"} justifyContent={"space-between"}>
+        
           <HStack alignItems={"center"} space={1}>
         <IconButton _pressed={{bg: "gray.100:alpha.1"}} icon={<Feather name="minus" size={18} color={"gray"}/>} borderRadius="full"  onPress={decreaseCount}/>
 
@@ -208,8 +238,29 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
         </Box>
         <IconButton  _pressed={{bg: "gray.100:alpha.1"}}  icon={<Feather name="plus" size={18} color={"gray"}/>}  borderRadius="full" onPress={increaseCount}/>
         </HStack>
+
+        <Text style={styles.text4}>{itemPrice.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' })}</Text>
+        </HStack>
+        </>) : (<>
+          <Box  mr={8}>
+                <HStack h={60} alignItems={"center"} justifyContent="space-between">
+                <Text style={styles.texttb}>{name}</Text>
+                </HStack>
+                <Text>
+          {extraValue}
+        </Text>
+        </Box> 
+        <HStack alignItems={"center"} justifyContent={"space-between"}>
+          <HStack alignItems={"center"} space={1}>
+       
+        </HStack>
         <Text style={styles.text4}>{totalPrice.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' })}</Text>
         </HStack>
+        </>)}
+  
+
+        
+
         <Divider/>
         <Text style={styles.texttb}>주문자 정보</Text>
         <Text>보내는 사람</Text>
@@ -232,7 +283,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
           backgroundColor={"white"}
           focusOutlineColor={"#9A887E"}
           mr={1}
-          isReadOnly={"true"}
+          readOnly={"true"}
           value={keyword}
           />
           <Pressable borderRadius={5} w={"30%"} backgroundColor={"coolGray.400"} justifyContent={"center"} onPress={openModal}>
@@ -250,9 +301,8 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
               const newOrderRef = db.collection('order');
               await newOrderRef.add({
                 "결제금액" : totalPrice, 
-                "보내는 사람" : sender,
-                "받는 사람" : receiver,
-                "결제 시간" : new Date().toLocaleString(),
+                "보내는 사람" : sender || user,
+                "받는 사람" : receiver || user,
                 "도로명" : address,
                 "상세 주소": detailAddr,
                 "종류" : item,
@@ -262,6 +312,9 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
                 "농도" : concentration,
                 "용량" : volume,
                 "케이스" : bottle,
+                "결제시간" : paymentTime,
+                "결제일자" : paymentDate,
+                "주문자": auth.currentUser.uid
               });
               alert("결제 기능 준비 중")
               navigation.reset({
