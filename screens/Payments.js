@@ -3,7 +3,7 @@ import {  StyleSheet, View,  Alert,  TouchableOpacity,Keyboard,Modal, Button, Te
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
-import { ScrollView, VStack, Box, FormControl, Input ,Text, HStack, KeyboardAvoidingView, Divider, IconButton, Pressable, FlatList} from "native-base";
+import { ScrollView, VStack, Box, FormControl, Input ,Text, HStack, KeyboardAvoidingView, Divider, IconButton, Pressable, FlatList, Radio} from "native-base";
 import {auth,db} from '../firebaseConfig'
 import { useSelector } from "react-redux";
 import { Feather } from '@expo/vector-icons';
@@ -61,14 +61,13 @@ const Payment = () => {
     // 필요한 만큼 다른 상품과 가격을 추가할 수 있습니다.
   };
 
-  const pricePerItem = priceTable[item];  // 상품에 해당하는 가격을 찾습니다.
+  const pricePerItem = priceTable[item] || totalPrice;  // 상품에 해당하는 가격을 찾습니다.
   useEffect(() => {
     if (!pricePerItem) {
       setTotalPrice(price)
       // setTotalPrice(Object.values(extra).reduce((sum, item) => sum + item.count * item.price, 0))
       setExtraValue(Object.keys(extra).join(", "))
       // console.log(Object.values(extra).reduce((sum, item) => sum + item.count * item.price, 0))
-      
     }
     else{setitemPrice(pricePerItem * count) } // 총 가격을 계산합니다.
   }, [pricePerItem, extra]);
@@ -292,6 +291,35 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
         </HStack>
           <Text>상세 주소</Text>
           <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setDetailAddr(text)} ></Input>
+         
+          <Divider mt={5}/>
+          <Text style={styles.texttb}>결제 수단</Text>
+          <VStack space={4}>
+          <Radio.Group mt={2}colorScheme={"blue"}>
+          <Radio >무통장입금</Radio>
+          </Radio.Group>
+          <HStack justifyContent={"space-between"}>
+            <Text>받는사람</Text>
+            <Text bold color={"blue.500"}>주식회사 셀바이오</Text>
+          </HStack>
+          <HStack  justifyContent={"space-between"}>
+            <Text>입금은행</Text>
+            <Text bold color={"blue.500"}>기업은행</Text>
+          </HStack>
+          <HStack  justifyContent={"space-between"}>
+            <Text>계좌번호</Text>
+            <Text bold color={"blue.500"}>472-059724-01-013</Text>
+          </HStack>
+          <HStack  justifyContent={"space-between"}>
+            <Text>송금액</Text>
+            <Text bold color={"blue.500"}>{itemPrice}원</Text>
+          </HStack>
+          <HStack>
+          <Text>입금자명</Text> <Text color={"red.100"}>*</Text>
+          <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setDetailAddr(text)} ></Input>
+        </HStack>
+          </VStack>
+
           <Pressable onPress={async () => {
             if (!validateInput()) {
               return;

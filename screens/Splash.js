@@ -8,7 +8,7 @@ const Screen2 = () => {
       <Image
         style={[styles.ckCm3200069711Icon, styles.viewLayout]}
         contentFit="cover"
-        source={require("../assets/ck-cm320006971-1.png")}
+        source={require("../assets/Splash1.png")}
       />
     </View>
   );
