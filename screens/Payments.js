@@ -26,6 +26,7 @@ const Payment = () => {
   const name = useSelector(state => state.name);
   const extra = useSelector(state => state.extra);
   const price = useSelector(state => state.price);
+  const [depositor, setDepositor] = useState('');
 
   const [count, setCount] = useState(1); // 초기값을 1로 설정
   const [address, setAddress] = useState('');
@@ -316,7 +317,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
           </HStack>
           <HStack>
           <Text>입금자명</Text> <Text color={"red.100"}>*</Text>
-          <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setDetailAddr(text)} ></Input>
+          <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setDepositor(text)} ></Input>
         </HStack>
           </VStack>
 
@@ -325,24 +326,25 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
               return;
             }
             try {
-              
-              const newOrderRef = db.collection('order');
+              const userId = auth.currentUser.uid;
+
+    const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
+  
+    const doc = await userRef.get();
+        const userData = doc.data();
+      const phone = userData.phone;
               await newOrderRef.add({
-                "결제금액" : totalPrice, 
-                "보내는 사람" : sender || user,
-                "받는 사람" : receiver || user,
-                "도로명" : address,
-                "상세 주소": detailAddr,
-                "종류" : item,
-                "제형" : formulation,
-                "베이스" : base,
-                "고민" : concern,
-                "농도" : concentration,
-                "용량" : volume,
-                "케이스" : bottle,
+                "결제금액" : total, 
+                "보내는사람" : sender || user,
+                "받는사람" : receiver || user,
                 "결제시간" : paymentTime,
                 "결제일자" : paymentDate,
-                "주문자": auth.currentUser.uid
+                "도로명" : keyword,
+                "상세주소": detailAddr,
+                "주문서": cartWithCount,
+                "주문자": auth.currentUser.uid,
+                "입금자명": depositor,
+                "연락처": phone,
               });
               alert("결제 기능 준비 중")
               navigation.reset({

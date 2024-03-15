@@ -3,7 +3,7 @@ import {  StyleSheet, View,  Alert,  TouchableOpacity,Keyboard,Modal, Button, Te
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
-import { ScrollView, VStack, Box, FormControl, Input ,Text, HStack, KeyboardAvoidingView, Divider, IconButton, Pressable, FlatList} from "native-base";
+import { ScrollView, VStack, Box, FormControl, Input ,Text, HStack, KeyboardAvoidingView, Divider, IconButton, Pressable, FlatList, Radio} from "native-base";
 import {auth,db} from '../firebaseConfig'
 import { useSelector } from "react-redux";
 import { Feather } from '@expo/vector-icons';
@@ -37,6 +37,7 @@ const Cart = () => {
   const [extraValue, setExtraValue] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
   const [itemPrice, setitemPrice] = useState(0);
+  const [depositor, setDepositor] = useState('');
   const [carts, setCarts] = useState([]); // 레시피 데이터를 저장할 state
   const increaseCount = (recipe) => {
     const id = recipe.id;
@@ -349,6 +350,34 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
         </HStack>
           <Text>상세 주소</Text>
           <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setDetailAddr(text)} ></Input>
+          
+          <Divider mt={5}/>
+          <Text style={styles.texttb}>결제 수단</Text>
+          <VStack space={4}>
+          <Radio.Group mt={2}colorScheme={"blue"}>
+          <Radio >무통장입금</Radio>
+          </Radio.Group>
+          <HStack justifyContent={"space-between"}>
+            <Text>받는사람</Text>
+            <Text bold color={"blue.500"}>주식회사 셀바이오</Text>
+          </HStack>
+          <HStack  justifyContent={"space-between"}>
+            <Text>입금은행</Text>
+            <Text bold color={"blue.500"}>기업은행</Text>
+          </HStack>
+          <HStack  justifyContent={"space-between"}>
+            <Text>계좌번호</Text>
+            <Text bold color={"blue.500"}>472-059724-01-013</Text>
+          </HStack>
+          <HStack  justifyContent={"space-between"}>
+            <Text>송금액</Text>
+            <Text bold color={"blue.500"}>{total}원</Text>
+          </HStack>
+          <Text>입금자명</Text> 
+          <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setDepositor(text)} ></Input>
+          </VStack>
+
+          
           <Pressable onPress={async () => {
             if (!validateInput()) {
               return;
@@ -359,6 +388,13 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
                     개수: count[item.id] !== undefined ? count[item.id] : item.개수 || 1,
                 }));
               const newOrderRef = db.collection('order');
+              const userId = auth.currentUser.uid;
+
+    const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
+  
+    const doc = await userRef.get();
+        const userData = doc.data();
+      const phone = userData.phone;
               await newOrderRef.add({
                 "결제금액" : total, 
                 "보내는사람" : sender || user,
@@ -368,8 +404,9 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
                 "도로명" : keyword,
                 "상세주소": detailAddr,
                 "주문서": cartWithCount,
-                "주문자": auth.currentUser.uid
-
+                "주문자": auth.currentUser.uid,
+                "입금자명": depositor,
+                "연락처": phone,
               });
               alert("결제 기능 준비 중")
               navigation.reset({

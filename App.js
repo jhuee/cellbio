@@ -25,6 +25,7 @@ import Confirm from "./screens/Confirm";
 import Result from './screens/ResultFrame';
 import Recipe from './screens/MyRecipe';
 import Payment from './screens/Payments'
+import AdminPage from './screens/AdminPage'
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
 import { LogBox } from 'react-native';
@@ -60,6 +61,7 @@ const App = () => {
             initialRouteName="Screen1"
             screenOptions={{ headerShown: false }}
           >
+            
             <Stack.Screen
               name="Screen1"
               component={Screen1}
@@ -78,6 +80,11 @@ const App = () => {
             <Stack.Screen
               name="Frame1"
               component={Frame1}
+              options={{ headerShown: false }}
+            />
+             <Stack.Screen
+              name="AdminPage"
+              component={AdminPage}
               options={{ headerShown: false }}
             />
             <Stack.Screen

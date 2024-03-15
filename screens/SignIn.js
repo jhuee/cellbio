@@ -28,12 +28,23 @@ const Screen1 = () => {
 
   const handleLogin = async () => {
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
-      navigation.navigate("Frame9");
+      const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+  
+      // 여기서는 이메일 주소로 관리자 여부를 가정합니다.
+      // 실제로는 Firestore나 Realtime Database에서 관리자 여부를 확인해야 합니다.
+      if(user.email === "bse07210@naver.com") {
+        // 관리자 계정으로 판단되면 다른 화면으로 네비게이션 합니다.
+        navigation.navigate("AdminPage");
+      } else {
+        // 일반 사용자인 경우의 화면으로 네비게이션 합니다.
+        navigation.navigate("Frame9");
+      }
     } catch (error) {
       Alert.alert("로그인 실패", "이메일 또는 비밀번호가 잘못되었습니다.");
     }
   };
+  
   
 
   return (

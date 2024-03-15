@@ -52,7 +52,9 @@ const OrderHistoryScreen = () => {
         <VStack space={2} key={date}>
           <Text style={styles.textTypo3}>{date}</Text>
           {ordersOnDate.map(order => (
-            <VStack p={2} borderWidth={2} borderRadius={5} borderColor={"coolGray.600"} key={order.id}>
+            <VStack p={2} borderWidth={1} borderRadius={5} borderColor={"coolGray.600"} key={order.id}>
+              <Text bold color={"green.700"}>{order.상태}</Text>
+              <Divider mt={2}/>
               {order.주문서.map(item => (
                 <Box key={item.레시피}>
                 <HStack alignItems={"center"}>
