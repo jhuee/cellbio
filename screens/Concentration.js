@@ -70,7 +70,7 @@ const Frame5 = () => {
         <Radio  value={text} my={1} size={"lg"} >
           <Text style={styles.text13}>{text}</Text>
         </Radio>
-        {index !== 4 && <Divider bg={"#B2A2A2"} thickness={3} ml={3} h={"16"} mt={-1} mb={-2}orientation="vertical"/>}  {/* 마지막 라디오 버튼에는 선이 없습니다. */}
+        {index !== 4 && <Divider bg={"#B2A2A2"} thickness={3} ml={3} h={"20"} mt={-1} mb={-2}orientation="vertical"/>}  {/* 마지막 라디오 버튼에는 선이 없습니다. */}
       </Box>
 )}
 
