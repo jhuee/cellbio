@@ -24,20 +24,20 @@ const Frame7 = () => {
     {
       key: "premium",
       title: "Premium",
-      description: `DIY 화장품 제조에 모두 사용할 수 있는             고급 원료만을 사용한 제품으로 최상의 결과를         보여줍니다.`,
+      description: `DIY 화장품 제조에 모두 사용할 수 있는 고급 원료만을 사용한 제품으로 최상의 결과를 보여줍니다.`,
       style: styles.premium,
     },
     {
       key: "standard",
       title: "Standard",
-      description: '합리적인 가격대로 우수한 결과물을                얻을 수 있습니다.',
-      style: [styles.standard, styles.basicTypo],
+      description: '합리적인 가격대로 우수한 결과물을 얻을 수 있습니다.',
+      style:  styles.premium,
     },
     {
       key: "basic",
       title: "Basic",
-      description: `가장 기본적인 제품으로 무난한                          결과물을 얻을 수 있습니다.`,
-      style: [styles.basic, styles.basicTypo],
+      description: `가장 기본적인 제품으로 무난한 결과물을 얻을 수 있습니다.`,
+      style:  styles.premium
     },
   ];
 
@@ -81,13 +81,12 @@ const Frame7 = () => {
       
         <ScrollView mt={150}>
         <View>
-        <VStack  space={5} alignItems={"center"}>
+        <VStack  space={5} alignItems={"center"} >
           
         {items.map((item, index) => (
-  <Pressable key={index} style={styles.rectangleGroup} width={ 370}
+  <Pressable  key={index} style={styles.rectangleGroup} width={"95%"} 
     onPress={()=> handlePress(item.key)}>
-    <View style={styles.frameShadowBox} />
-    <Text style={item.style}>{item.title}</Text>
+    <Text style = {styles.premium} textAlign={"center"}>{item.title}</Text>
     <Text style={[styles.text, styles.textTypo2]}>{item.description}</Text>
   </Pressable>
 ))}
@@ -138,15 +137,12 @@ textTypo3: {
   },
 
   basicTypo: {
-    textAlign: "center",
     color: Color.colorRosybrown,
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "600",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-    left: "50%",
     top: 29,
-    position: "absolute",
   },
   parentPosition: {
     right: "0%",
@@ -184,29 +180,15 @@ textTypo3: {
     overflow: "hidden",
   },
   frameShadowBox: {
-    shadowOpacity: 1,
-    elevation: 10,
-    shadowRadius: 10,
-    shadowOffset: {
-      width: 4,
-      height: 4,
-    },
-    shadowColor: "rgba(0, 0, 0, 0.25)",
-    backgroundColor: Color.colorWhitesmoke_300,
-    borderRadius: Border.br_3xs,
-    height: 180,
+    
   },
   premium: {
-    marginLeft: -51.05,
-    textAlign: "left",
     color: Color.colorRosybrown,
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "600",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
     top: 29,
-    left: "50%",
-    position: "absolute",
   },
   titleText:{
       color: Color.colorDarkslategray_100,
@@ -217,8 +199,8 @@ textTypo3: {
   },
 
   text: {
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 40,
+    marginRight: 40,
   },
   rectangleParent: {
     marginTop: -292,
@@ -236,7 +218,17 @@ textTypo3: {
     marginLeft: -83.05,
   },
   rectangleGroup: {
-    height: 172,
+    shadowOpacity: 1,
+    elevation: 10,
+    shadowRadius: 10,
+    shadowOffset: {
+      width: 4,
+      height: 4,
+    },
+    shadowColor: "rgba(0, 0, 0, 0.25)",
+    backgroundColor: Color.colorWhitesmoke_300,
+    borderRadius: Border.br_3xs,
+    height: 180,
   },
   basic: {
     marginLeft: -31.05,
