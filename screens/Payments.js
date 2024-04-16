@@ -100,7 +100,7 @@ const Payment = () => {
   
 
   const searchAdd = async () => {
-    const apiKey = 'devU01TX0FVVEgyMDI0MDIwNzA0NDIxMTExNDUwMTY=';
+    const apiKey = 'U01TX0FVVEgyMDI0MDMyNjEzMzMxMTExNDYzMTE=';
     const url = `http://business.juso.go.kr/addrlink/addrLinkApi.do?confmKey=${apiKey}&currentPage=1&countPerPage=5&keyword=${encodeURI(keyword)}&resultType=json`;
   
     const response = await fetch(url);

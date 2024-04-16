@@ -31,10 +31,10 @@ const Frame3 = () => {
   ];
 
   const typeValues = [
-    { text: '스포이드 타입', source: require("../assets/ck-tc02860000772-2.png") },
-    { text: '튜브 타입', source: require("../assets/ck-tc02860000732-2.png") },
-    { text: '원형 타입', source: require("../assets/ck-tc02860000795-2.png") },
-    { text: '병 타입', source: require("../assets/ck-tc02860000811-1.png") },
+    { text: '스포이드 타입', source: require("../assets/spoid.png") },
+    { text: '튜브 타입', source: require("../assets/tube.png") },
+    { text: '원형 타입', source: require("../assets/circleC.png") },
+    { text: '병 타입', source: require("../assets/bottle.png") },
   ];
 
   const dispatch = useDispatch();
@@ -259,7 +259,7 @@ textTypo3: {
     textAlign: "left",
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "600",
-    top: "50%",
+    top: "20%",
     position: "absolute",
   },
   ckTc028600007722Parent: {

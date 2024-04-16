@@ -168,7 +168,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
   const [searchResults, setSearchResults] = useState([]);
 
   const searchAddress = async () => {
-    const apiKey = 'devU01TX0FVVEgyMDI0MDIwNzA0NDIxMTExNDUwMTY=';
+    const apiKey = 'U01TX0FVVEgyMDI0MDMyNjEzMzMxMTExNDYzMTE=';
     const url = `http://business.juso.go.kr/addrlink/addrLinkApi.do?confmKey=${apiKey}&currentPage=1&countPerPage=20&keyword=${encodeURI(searchText)}&resultType=json`;
   
     const response = await fetch(url);
@@ -188,14 +188,18 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
   return (
     <Modal visible={isVisible} onRequestClose={onClose}>
       <View style={{flex: 1}}> 
-      <VStack space={1} flex={1}>
+      <VStack space={1} flex={1} mt={"15%"}>
+        <HStack >
         <Input 
+          width={"75%"}
           value={searchText} 
           onChangeText={text => setSearchText(text)}
           placeholder="주소 검색" 
+          size={"lg"}
         />
         <Button title="검색" onPress={searchAddress} />
         <Button title="닫기" onPress={onClose} />
+        </HStack>
         <ScrollView  > 
         
         {searchResults.map((result, index) => (
@@ -256,7 +260,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
      
       <KeyboardAvoidingView flex={1} behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={30}   >
-         <HStack mt={10} ml={6}space={3} alignItems={"center"}>
+         <HStack mt={"20%"} ml={6}space={3} alignItems={"center"}>
         <Pressable onPress={() => navigation.navigate('Screen1')  }>
         <Image
           style={styles.chevronLeftIcon}
@@ -407,6 +411,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
                 "주문자": auth.currentUser.uid,
                 "입금자명": depositor,
                 "연락처": phone,
+                "상태": "결제대기"
               });
               alert("결제 기능 준비 중")
               navigation.reset({

@@ -1,8 +1,8 @@
 const Stack = createNativeStackNavigator();
-import * as React from "react";
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { NativeBaseProvider } from 'native-base';
-import { useFonts } from 'expo-font';
+import * as Font from 'expo-font';
 import Screen1 from "./screens/SignIn";
 import Frame3 from "./screens/SelectCase";
 import Frame from "./screens/RemoveIngre";
@@ -13,7 +13,7 @@ import Frame4 from "./screens/Volume";
 import Frame5 from "./screens/Concentration"; 
 import Frame6 from "./screens/Concern";
 import Frame7 from "./screens/Base";
-import Frame8 from "./screens/Fomulation";
+import Frame8 from "./screens/Formulation";
 import Frame9 from "./screens/Home";
 import Frame10 from "./screens/Frame10";
 import Frame11 from "./screens/CompleteSignUp";
@@ -31,6 +31,7 @@ import { View, Text, Pressable, TouchableOpacity } from "react-native";
 import { LogBox } from 'react-native';
 import Cart from './screens/Cart'
 import Order from './screens/OrderHistroy'
+
 LogBox.ignoreLogs(['Warning: ...']);  // Warning: 이후에 경고 메시지의 일부를 입력하면 됩니다.
 LogBox.ignoreLogs([
   'If you do not provide children, you must specify an aria-label for accessibility',
@@ -39,16 +40,20 @@ LogBox.ignoreLogs([
   'Failed prop type: Invalid prop `readOnly` of type `string` supplied to `ForwardRef(TextInput)`, expected `boolean`.'
 ]);
 const App = () => {
-  const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
-  let [fontsLoaded] = useFonts({
-    'Pretendard-Light': require('./assets/fonts/Pretendard-Light.otf'),  // 경로와 파일명은 본인의 환경에 맞게 변경해주세요.
-  });
+  const [hideSplashScreen, setHideSplashScreen] = useState(false);
 
-  React.useEffect(() => {
-    setTimeout(() => {
+
+  useEffect(() => {
+    const loadFontsAsync = async () => {
+      await Font.loadAsync({
+        'Pretendard-Light': require('./assets/fonts/Pretendard-Light.otf')
+      });
       setHideSplashScreen(true);
-    }, 2000);
+    };
+
+    loadFontsAsync();
   }, []);
+
 
   return (
     <>

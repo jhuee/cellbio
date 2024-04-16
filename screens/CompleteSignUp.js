@@ -28,8 +28,6 @@ const Frame11 = () => {
           contentFit="cover"
           source={require("../assets/ellipse-26.png")}
         />
-        <View style={[styles.frameInner, styles.frameInnerPosition]} />
-        <View style={[styles.rectangleView, styles.frameInnerPosition]} />
       </View>
     </View>
   );

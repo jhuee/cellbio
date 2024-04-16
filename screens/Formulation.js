@@ -24,23 +24,23 @@ const Frame8 = () => {
   const items = [
     {
       text: "#리치한 영양감",
-      image: require("../assets/KakaoTalk_20231117_030021643.gif"),
+      image: require("../assets/rich.png"),
     },
     {
       text: "#부드러운 로션 제형",
-      image: require("../assets/KakaoTalk_20231117_030225880.gif"),
+      image: require("../assets/soft.png"),
     },
     {
       text: "#도톰한 실키 제형",
-      image: require("../assets/KakaoTalk_20231117_030410163.gif"),
+      image: require("../assets/silky.png"),
     },
     {
-      text: "#매끈한 밀키 제형",
-      image: require("../assets/KakaoTalk_20231117_030610721.gif"),
+      text: "#커스터드 크림 제형",
+      image: require("../assets/ads.png"),
     },
     {
       text: "#촉촉한 워터 제형",
-      image: require("../assets/KakaoTalk_20231117_030756483.gif"),
+      image: require("../assets/watery.png"),
       onPress: () => navigation.navigate("Frame7"),
     },
   ];

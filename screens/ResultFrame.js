@@ -129,7 +129,7 @@ const ResultFrame = () => {
         </HStack>
         <Image
         style={styles.image}
-        source={require("../assets/KakaoTalk_20231117_030756483.gif")}/>
+        source={require("../assets/watery.png")}/>
         <Text style={styles.text7}>
             #번들거리지 않는 가벼운 텍스쳐
         </Text>
