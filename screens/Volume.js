@@ -63,9 +63,9 @@ const Frame4 = () => {
 
       {/* 라디오 그룹 */}
       <Radio.Group  value={value} onChange={nextValue => {setValue(nextValue);}}>
-      <VStack mt={160} alignSelf={"center"} space={5}>
+      <VStack mt={170} w={"90%"}  alignSelf={"center"} space={10}>
       {mlValues.map((value, index) => (
-            <Box key={index} w={330} style={[styles.rectangleParent, styles.rectangleView]} justifyContent={"center"}>
+            <Box key={index} style={[styles.rectangleParent, styles.rectangleView]} justifyContent={"center"}>
             <Radio  value={value} colorScheme={"gray"} ml={3}>
               <Text style={[styles.ml, styles.textTypo1]} ml={4}>{value}</Text>
             </Radio>
@@ -253,7 +253,6 @@ textTypo3: {
   rectangleView: {
     borderRadius: Border.br_3xs,
     backgroundColor: Color.colorWhitesmoke_300,
-    top: 0,
   },
   ml: {
     color: Color.colorRosybrown,
@@ -278,7 +277,7 @@ textTypo3: {
       height: 4,
     },
     shadowColor: "rgba(0, 0, 0, 0.25)",
-    height: 74,
+    height: 80,
   },
   rectangleGroup: {
     top: 118,
