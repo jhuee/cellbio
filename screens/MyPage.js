@@ -27,7 +27,7 @@ const Frame2 = () => {
   getUserData();
   return (
     <View style={styles.view}>
-         <HStack mt={10} ml={6}space={3} alignItems={"center"}>
+         <HStack mt={"20%"} ml={6}space={3} alignItems={"center"}>
         <Pressable onPress={() => navigation.goBack()}>
         <Image
           style={styles.chevronLeftIcon}
@@ -37,7 +37,7 @@ const Frame2 = () => {
         </Pressable>
       <Text style={[styles.titleText, styles.textTypo4]}>장바구니</Text>
       </HStack>
-      <ScrollView mt={70}  >
+      <ScrollView mt={50}  >
       <VStack mr={5} ml={5} space={2}>
       <Box>
         <Image

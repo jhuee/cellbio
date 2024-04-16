@@ -123,8 +123,8 @@ const Payment = () => {
 const validateInput = () => {
   if(keyword === '' || user === '') {
     Alert.alert(
-      "", // 타이틀을 빈 문자열로 설정하여 "ALERT"를 표시하지 않음
-      "모든 필드를 채워주세요", // 알림 메시지
+      "",
+      "모든 필드를 채워주세요", 
       [
         {text: "확인", onPress: () => console.log("OK Pressed")}
       ],
@@ -163,18 +163,22 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
   return (
     <Modal visible={isVisible} onRequestClose={onClose}>
       <View style={{flex: 1}}> 
-      <VStack space={1} flex={1}>
+      <VStack space={1} flex={1} mt={"15%"}>
+        <HStack >
         <Input 
+          width={"75%"}
           value={searchText} 
           onChangeText={text => setSearchText(text)}
           placeholder="주소 검색" 
+          size={"lg"}
         />
         <Button title="검색" onPress={searchAddress} />
         <Button title="닫기" onPress={onClose} />
+        </HStack>
         <ScrollView  > 
         
         {searchResults.map((result, index) => (
-        <Pressable onPress={() => setAddress(result.roadAddr)} mt={1} mb={1} borderBottomWidth={1} borderBottomColor={"gray.300"}>
+        <Pressable key={index} onPress={() => setAddress(result.roadAddr)} mt={1} mb={1} borderBottomWidth={1} borderBottomColor={"gray.300"}>
           <Text key={index} style={styles.text21}>
             지번주소: {result.jibunAddr} {"\n"}
             도로명주소: {result.roadAddr} {"\n"}
@@ -188,6 +192,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
       </VStack>
       </View>
     </Modal>
+
   );
 };
 
@@ -264,17 +269,19 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
         <Divider/>
         <Text style={styles.texttb}>주문자 정보</Text>
         <Text>보내는 사람</Text>
-<Input
-  size="lg"
-  width={"100%"}
-  backgroundColor={"white"}
-  focusOutlineColor={"#9A887E"}
-  mr={1}
-  onChangeText={text => setSender(text)}
-  defaultValue={user}
+        <Input
+          size="lg"
+          width={"100%"}
+          backgroundColor={"white"}
+          focusOutlineColor={"#9A887E"}
+          mr={1}
+          onChangeText={text => setSender(text)}
+          value={sender ? sender : user}
+
 />
+
         <Text>받는 사람</Text>
-        <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1} onChangeText={text => setReceiver(text)} >{user}</Input>
+        <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1} onChangeText={text => setReceiver(text ? text:user)} >{user}</Input>
         <Text>배송 주소</Text>
         <HStack>
           <Input
@@ -315,10 +322,8 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
             <Text>송금액</Text>
             <Text bold color={"blue.500"}>{itemPrice}원</Text>
           </HStack>
-          <HStack>
-          <Text>입금자명</Text> <Text color={"red.100"}>*</Text>
+          <Text>입금자명</Text> 
           <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setDepositor(text)} ></Input>
-        </HStack>
           </VStack>
 
           <Pressable onPress={async () => {

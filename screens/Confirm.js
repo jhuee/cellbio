@@ -56,7 +56,6 @@ const Confirm = () => {
           </Text>
           <Input size="lg" width={"75%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setName(text)}></Input>
           <HStack justifyContent={"space-between"} space={3} alignItems={"center"}>
-          {/* <Pressable borderRadius={5} backgroundColor={"#9A887E"} w={"35%"}  alignItems={"center"} justifyContent={"center"} h={10}> */}
           <Pressable justifyContent={"center"} borderWidth={1} borderRadius={5} borderColor={"#9A887E"} w={"35%"} alignItems={"center"} h={10}
             onPress={async  () =>{
               try {
