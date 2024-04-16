@@ -68,9 +68,18 @@ const Payment = () => {
       setTotalPrice(price)
       // setTotalPrice(Object.values(extra).reduce((sum, item) => sum + item.count * item.price, 0))
       setExtraValue(Object.keys(extra).join(", "))
-      // console.log(Object.values(extra).reduce((sum, item) => sum + item.count * item.price, 0))
     }
-    else{setitemPrice(pricePerItem * count) } // 총 가격을 계산합니다.
+  
+    else{
+      if(price >0) {
+        setTotalPrice(price)
+        setExtraValue(Object.keys(extra).join(", "))
+        setitemPrice((pricePerItem + price) * count) 
+
+      }else{
+      setitemPrice(pricePerItem * count) 
+    }
+    } // 총 가격을 계산합니다.
   }, [pricePerItem, extra]);
   
   const now = new Date();

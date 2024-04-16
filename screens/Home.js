@@ -126,7 +126,7 @@ const totalPrices = extras.reduce((total, extra) => total + extra.count * 5000, 
       <StatusBar barStyle="default" />
 
       <Box mt={"13%"}>
-      <HStack alignItems={"center"} justifyContent={"flex-end"} p={4} space={7}>
+      <HStack alignItems={"center"} justifyContent={"flex-end"} p={4} space={5}>
       <Pressable onPress={() => navigation.navigate("Cart")}>
       <Feather name="shopping-cart" size={30} color="#705757" />
       </Pressable>

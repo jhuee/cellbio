@@ -3,9 +3,11 @@ import { Image } from "expo-image";
 import { StyleSheet, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
-import { HStack, VStack, Circle, Text, ScrollView, Box,Checkbox} from "native-base";
+import { HStack, VStack, Circle, Text, ScrollView, Box,Checkbox, Modal, Divider, IconButton, Button} from "native-base";
 import { useSelector, useDispatch } from "react-redux";
-import { setGroupValue, setRemoveIng } from "../src/actions";
+import {setExtra, setItem,setPrice, setRecName, setGroupValue, setRemoveIng } from "../src/actions";
+import { FontAwesome5, Feather } from '@expo/vector-icons';
+import {db, auth} from '../firebaseConfig'
 
 const Frame2 = () => {
   const navigation = useNavigation();
@@ -19,6 +21,18 @@ const Frame2 = () => {
     { color:"#BCB1B1", text: '7' },
     { color:"#BCB1B1", text: '8' },
   ];
+
+  const [extras, setExtras] = useState([
+    {name: '병출 추출물', count: 0, price: 5000},
+    {name: '녹차 추출물', count: 0, price: 5000},
+    {name: '달팽이 점액 추출물', count: 0, price: 5000},
+    {name: '꿀 추출물', count: 0, price: 5000},
+    {name: '프로폴리스 추출물', count: 0, price: 5000},
+    {name: '어성초 추출물', count: 0, price: 5000},
+    {name: '인진쑥 추출물', count: 0, price: 5000},
+  ]);
+  const [extrasModal, showExtrasModal] = useState(false);
+  const [groupvalue, setGroupValue] =  React.useState([]);
 
   const item = useSelector(state => state.item);
   const itemInfo = {
@@ -84,8 +98,7 @@ const Frame2 = () => {
 솔비탄올리에이트
 카프릴릴/카프릴글루코사이드
 다이소듐이디티에이 
-소듐하이알루로네이트
-+ 원하는 추가 성분`,
+소듐하이알루로네이트`,
     '샴푸': `정제수
 소듐라우레스설페이트
 소듐라우레스설페이트
@@ -148,7 +161,49 @@ m소듐하이알루로네이트
     navigation.navigate("Frame4");
   };
   
-  const [groupvalue, setGroupValue] =  React.useState([]);
+  const handleCloseModal = () => {
+    // extras의 모든 아이템의 count를 0으로 초기화
+    const resetExtras = extras.map(extra => ({ ...extra, count: 0 }));
+    setExtras(resetExtras);
+    showExtrasModal(false);
+  }
+
+  const handleExtraItem = () => {
+    
+    const extrasToSave = extras.filter(extra => extra.count > 0);
+  
+    // // 배열을 객체로 변환
+    const extrasObject = extrasToSave.reduce((obj, extra) => {
+      obj[extra.name] = {count: extra.count, price: extra.price};
+      return obj;
+    }, {});
+  
+    // // 변환된 객체를 상태로 저장
+    dispatch(setExtra(extrasObject));
+    dispatch(setRecName('추출물 구매(추가)'));
+    dispatch(setPrice(totalPrices));
+    showExtrasModal(false);
+
+    // console.log(extrasObject)
+  }
+
+  const decreaseCounts = (index) => {
+    setExtras(extras.map((extra, i) => i === index ? {...extra, count: Math.max(extra.count - 1, 0)} : extra));
+  };
+  
+  // count를 늘리는 함수
+  const increaseCounts = (index) => {
+    setExtras(extras.map((extra, i) => i === index ? {...extra, count: extra.count + 1} : extra));
+  };
+  
+  // 총 금액 계산
+  const totalPrices = extras.reduce((total, extra) => total + extra.count * extra.price, 0);
+
+const handleModal = () => {
+  showExtrasModal(true);
+}
+
+
 
   return (
     <View style={styles.view}>
@@ -185,12 +240,10 @@ m소듐하이알루로네이트
       <ScrollView mt={130}>
         <VStack>
         <Box style={styles.item} m={7}>
-       
-          {/* 새로 추가한 부분 */}
-          {/* 여기까지   */}
+      
       {itemInfo[item].split('\n').map((ingredient, idx) => (
         <VStack key={idx}>
-        <Box  m={2} justifyContent={"center"} h={10} >
+        <Box  m={2} mr={4} justifyContent={"center"}  >
          <HStack alignItems={"center"}>
           <Text>
             ✔️
@@ -202,14 +255,33 @@ m소듐하이알루로네이트
                 groupvalue.includes(ingredient) ? { textDecorationLine: 'line-through' } : {}
               ]}
               ml={3}
+              numberOfLines={2} // 최대 2줄까지 표시하도록 설정
             >
               {ingredient}
             </Text>
             </HStack>
+           
         </Box>
         </VStack>
 
       ))}
+       {item === '크림' && (
+  <>
+    {/* 위에 있는 코드 */}
+    {/* 여기까지 */}
+    {/* 모달 부분 */}
+              <Pressable onPress={()=> handleModal()} >
+                <HStack alignItems={"center"} ml={2}>
+                <Text>
+                ➕
+                </Text>
+                <Text style={[styles.text2, styles.textTypo]} ml={3}>
+                  원하는 성분 추가
+                </Text>
+                </HStack>
+              </Pressable>
+  </>
+)}
     </Box>
 
         <Box ml={8} mr={8} mb={5}>
@@ -225,6 +297,56 @@ m소듐하이알루로네이트
       </VStack>
       </ScrollView>
 
+
+      <Modal isOpen={extrasModal} onClose={handleCloseModal}>
+        <Modal.Content maxWidth="400px">
+          <Modal.CloseButton />
+          <Modal.Header >
+            {/* <Text style={styles.textModal}>/ */}
+              <Text style={styles.text4}>
+              추출물 구매
+            </Text>
+          </Modal.Header>
+          <Modal.Body>
+            <Box>
+          <Text style={styles.text4}>추출물 구매 (50ml)</Text>
+          <Divider mt={1} />
+      </Box>
+      {extras.map((extra, index) => (
+  <Box key={index}>
+    <HStack mt={3} alignItems={"center"} space={2} justifyContent={"space-between"}>
+      <Text style={styles.text4}>{extra.name}</Text>
+      <HStack alignItems={"center"}>
+        <HStack alignItems={"center"} space={1}>
+          <IconButton _pressed={{bg: "gray.100:alpha.1"}} icon={<Feather name="minus" size={18} color={"gray"}/>} borderRadius="full"  onPress={() => decreaseCounts(index)}/>
+          <Box alignItems={"center"} w={10} borderWidth={1} borderRadius={5}> 
+            <Text>{extra.count}</Text>
+          </Box>
+          <IconButton  _pressed={{bg: "gray.100:alpha.1"}}  icon={<Feather name="plus" size={18} color={"gray"}/>}  borderRadius="full" onPress={() => increaseCounts(index)}/>
+        </HStack>
+      </HStack>
+    </HStack>
+  </Box>
+))
+}
+
+     <Divider/>
+      <HStack mt={2} justifyContent={"space-between"}>
+        <Text style={styles.text4}>총 금액</Text>
+        <Text style={styles.text4}>{totalPrices.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' })}</Text>
+        </HStack>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button.Group space={2} justifyContent={'space-between'} >
+              <Button  w={'100%'} bg="#83B8B8" onPress={handleExtraItem}>
+                <Text style={styles.text4} color={"white"}>
+                  담기
+                </Text>
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
     </View>
   );
 };
