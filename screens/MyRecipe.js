@@ -96,13 +96,14 @@ const Frame1 = () => {
         const { id, ...recipeWithoutId } = recipe;
       
         await cartRef.add(recipeWithoutId);
+        alert("장바구니에 추가되었습니다.")
       }
       
       
     
       return (
         <View style={styles.view}>
-          <HStack mt={10} ml={3}space={3} alignItems={"center"}>
+          <HStack mt={"20%"} ml={3}space={3} alignItems={"center"}>
         <Pressable onPress={() => navigation.navigate('Screen1')}>
         <Image
           style={styles.chevronLeftIcon}
