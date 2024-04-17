@@ -35,7 +35,7 @@ const OrderHistoryScreen = () => {
 
   return (
     <View style={styles.view1} >
-        <HStack mt={10} ml={6}space={3} alignItems={"center"}>
+        <HStack mt={"20%"} ml={6}space={3} alignItems={"center"}>
         <Pressable onPress={() => navigation.goBack()}>
         <Image
           style={styles.chevronLeftIcon}

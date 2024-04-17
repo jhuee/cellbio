@@ -113,8 +113,7 @@ const ResultFrame = () => {
                     트러블 케어
                 </Text>
             </Circle>
-            <Text textAlign={"center"}>어성초추출물 </Text>
-            <Text textAlign={"center"}>펩타이드</Text>
+
             </VStack>
             <AddIcon mt={10}></AddIcon>
             <VStack space={2}>
@@ -124,7 +123,6 @@ const ResultFrame = () => {
                 </Text>
             </Circle>
             
-            <Text textAlign={"center"}>녹차추출물 </Text>
             </VStack>
         </HStack>
         <Image
@@ -174,8 +172,7 @@ const ResultFrame = () => {
                     트러블 케어
                 </Text>
             </Circle>
-            <Text textAlign={"center"}>어성초추출물 </Text>
-            <Text textAlign={"center"}>펩타이드</Text>
+   
             </VStack>
             <AddIcon mt={10}></AddIcon>
             <VStack space={2}>
@@ -185,12 +182,11 @@ const ResultFrame = () => {
                 </Text>
             </Circle>
             
-            <Text textAlign={"center"}>녹차추출물 </Text>
             </VStack>
         </HStack>
         <Image
         style={styles.image}
-        source={require("../assets/KakaoTalk_20231117_030756483.gif")}/>
+        source={require("../assets/silky.png")}/>
         <Text style={styles.text7}>
             #번들거리지 않는 가벼운 텍스쳐
         </Text>

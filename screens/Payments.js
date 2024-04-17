@@ -39,14 +39,15 @@ const Payment = () => {
   const [itemPrice, setitemPrice] = useState(0);
   const increaseCount = () => {
       setCount(count + 1); // count 값을 1 증가
-      console.log(count)
       setitemPrice(totalPrice * (count+1))
+      console.log(totalPrice, count)
   }
 
   const decreaseCount = () => {
       if (count > 1) { // count 값이 1보다 클 때만 감소
           setCount(count - 1); // count 값을 1 감소
           setitemPrice(totalPrice * (count-1))
+          console.log(totalPrice, count)
       }
   }
 
@@ -64,18 +65,18 @@ const Payment = () => {
   const pricePerItem = priceTable[item] || totalPrice;  
   useEffect(() => {
     if (!pricePerItem) {
-      setTotalPrice(price)
+      setTotalPrice(pricePerItem + price)
       setExtraValue(Object.keys(extra).join(", "))
     }
   
     else{
       if(price >0) {
-        setTotalPrice(price)
+        setTotalPrice(pricePerItem + price)
         setExtraValue(Object.keys(extra).join(", "))
         setitemPrice((pricePerItem + price) * count) 
-
+        
       }else{
-      setitemPrice(pricePerItem * count) 
+      setitemPrice((pricePerItem + price) * count) 
     }
     } 
   }, [pricePerItem, extra]);
@@ -116,10 +117,8 @@ const Payment = () => {
   
     if (data.results.juso && data.results.juso.length > 0) {
       setAddress(data.results.juso[0].roadAddr);
-      console.log(address)
     } else {
       console.log("No such address!");
-      console.log(data.results.common.errorMessage)
     }
   };
   
@@ -133,7 +132,7 @@ const validateInput = () => {
       "",
       "모든 필드를 채워주세요", 
       [
-        {text: "확인", onPress: () => console.log("OK Pressed")}
+        {text: "확인"}
       ],
       { cancelable: false }
     );
@@ -157,7 +156,6 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
     
     if (data.results.juso && data.results.juso.length > 0) {
       setSearchResults(data.results.juso);
-      console.log(searchResults.map)
     } else {
       console.log("No such address!");
     }
@@ -368,7 +366,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
                 "결제일자" : paymentDate,
                 "도로명" : keyword,
                 "상세주소": detailAddr,
-                "주문서": orderInfo,
+                "주문서": [orderInfo],
                 "주문자": auth.currentUser.uid,
                 "입금자명": depositor,
                 "연락처": phone,
@@ -377,7 +375,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
               navigation.reset({
                 index: 0,
                 routes: [{ name: 'Screen1' }],
-              });
+              });  
                   } catch (error) {
               console.error(error);
             }
