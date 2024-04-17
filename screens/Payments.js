@@ -40,13 +40,13 @@ const Payment = () => {
   const increaseCount = () => {
       setCount(count + 1); // count 값을 1 증가
       console.log(count)
-      setitemPrice(pricePerItem * (count+1))
+      setitemPrice(totalPrice * (count+1))
   }
 
   const decreaseCount = () => {
       if (count > 1) { // count 값이 1보다 클 때만 감소
           setCount(count - 1); // count 값을 1 감소
-          setitemPrice(pricePerItem * (count-1))
+          setitemPrice(totalPrice * (count-1))
       }
   }
 
@@ -59,14 +59,12 @@ const Payment = () => {
     '프로폴리스 추출물' : 5000,
     '어성초 추출물' : 5000,
     '인진쑥 추출물' : 5000,
-    // 필요한 만큼 다른 상품과 가격을 추가할 수 있습니다.
   };
 
-  const pricePerItem = priceTable[item] || totalPrice;  // 상품에 해당하는 가격을 찾습니다.
+  const pricePerItem = priceTable[item] || totalPrice;  
   useEffect(() => {
     if (!pricePerItem) {
       setTotalPrice(price)
-      // setTotalPrice(Object.values(extra).reduce((sum, item) => sum + item.count * item.price, 0))
       setExtraValue(Object.keys(extra).join(", "))
     }
   
@@ -79,20 +77,20 @@ const Payment = () => {
       }else{
       setitemPrice(pricePerItem * count) 
     }
-    } // 총 가격을 계산합니다.
+    } 
   }, [pricePerItem, extra]);
   
   const now = new Date();
 
   const year = now.getFullYear();
-  const month = now.getMonth();  // 월은 0부터 시작하므로 1을 더해야 합니다.
+  const month = now.getMonth();  
   const date = now.getDate();
   
   const paymentTime = now.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul'});
-  const paymentDate = new Date(year, month, date  );  // 월은 0부터 시작하므로 1을 빼야 합니다.
+  const paymentDate = new Date(year, month, date  );  
   const getUserData = async () => {
     const userId = auth.currentUser.uid;
-    const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
+    const userRef = db.collection('users').doc(userId); 
   
     const doc = await userRef.get();
   
@@ -340,27 +338,42 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
               return;
             }
             try {
+
+              const orderInfo = {
+                "제품": item,
+                "제형": formulation,
+                "베이스": base,
+                "피부고민": concern,
+                "농도": concentration,
+                "용량": volume,
+                "케이스": bottle,
+                "레시피이름": name,
+                "추가추출물":extra,
+                "개수":count 
+              };
+              
               const userId = auth.currentUser.uid;
 
     const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
-  
+    const newOrderRef = db.collection('order');
+
     const doc = await userRef.get();
         const userData = doc.data();
       const phone = userData.phone;
               await newOrderRef.add({
-                "결제금액" : total, 
+                "결제금액" : itemPrice, 
                 "보내는사람" : sender || user,
                 "받는사람" : receiver || user,
                 "결제시간" : paymentTime,
                 "결제일자" : paymentDate,
                 "도로명" : keyword,
                 "상세주소": detailAddr,
-                "주문서": cartWithCount,
+                "주문서": orderInfo,
                 "주문자": auth.currentUser.uid,
                 "입금자명": depositor,
                 "연락처": phone,
               });
-              alert("결제 기능 준비 중")
+              alert("입금을 완료해주세요.")
               navigation.reset({
                 index: 0,
                 routes: [{ name: 'Screen1' }],

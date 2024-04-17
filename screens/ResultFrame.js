@@ -69,7 +69,7 @@ const ResultFrame = () => {
   
   return (
     <View style={styles.view} backgroundColor="blueGray.400">
-      <HStack mt={3} ml={6}space={3} alignItems={"center"}>
+      <HStack mt={"10%"} ml={6}space={3} alignItems={"center"}>
       
         <IconButton style={styles.chevronLeftIcon}
                     _pressed={{bg: "gray.600:alpha.10"}}
