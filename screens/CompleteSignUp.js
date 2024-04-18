@@ -26,7 +26,7 @@ const Frame11 = () => {
         <Image
           style={[styles.frameItem, styles.frameItemPosition]}
           contentFit="cover"
-          source={require("../assets/ellipse-26.png")}
+          source={require("../assets/check.png")}
         />
       </View>
     </View>

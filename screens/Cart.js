@@ -413,7 +413,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
                 "연락처": phone,
                 "상태": "결제대기"
               });
-              alert("결제 기능 준비 중")
+              alert("입금을 완료해주세요.")
               navigation.reset({
                 index: 0,
                 routes: [{ name: 'Screen1' }],

@@ -31,7 +31,7 @@ import { View, Text, Pressable, TouchableOpacity } from "react-native";
 import { LogBox } from 'react-native';
 import Cart from './screens/Cart'
 import Order from './screens/OrderHistroy'
-
+import Detail from './screens/DetailScreen'
 LogBox.ignoreLogs(['Warning: ...']);  // Warning: 이후에 경고 메시지의 일부를 입력하면 됩니다.
 LogBox.ignoreLogs([
   'If you do not provide children, you must specify an aria-label for accessibility',
@@ -115,6 +115,11 @@ const App = () => {
             <Stack.Screen
               name="Frame7"
               component={Frame7}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Detail"
+              component={Detail}
               options={{ headerShown: false }}
             />
             <Stack.Screen

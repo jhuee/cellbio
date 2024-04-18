@@ -370,6 +370,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
                 "주문자": auth.currentUser.uid,
                 "입금자명": depositor,
                 "연락처": phone,
+                "상태": "결제대기"
               });
               alert("입금을 완료해주세요.")
               navigation.reset({
