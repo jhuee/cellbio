@@ -135,10 +135,8 @@ const paymentDate = new Date(year, month, date  );  // 월은 0부터 시작하�
   
     if (data.results.juso && data.results.juso.length > 0) {
       setAddress(data.results.juso[0].roadAddr);
-      console.log(address)
     } else {
       console.log("No such address!");
-      console.log(data.results.common.errorMessage)
     }
   };
   
@@ -152,7 +150,7 @@ const validateInput = () => {
       "", // 타이틀을 빈 문자열로 설정하여 "ALERT"를 표시하지 않음
       "모든 필드를 채워주세요", // 알림 메시지
       [
-        {text: "확인", onPress: () => console.log("OK Pressed")}
+        {text: "확인"}
       ],
       { cancelable: false }
     );

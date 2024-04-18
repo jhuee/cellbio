@@ -74,7 +74,6 @@ const Frame9 = () => {
     dispatch(setPrice(totalPrices));
     showExtrasModal(false);
     navigation.navigate('Payment')
-    // console.log(extrasObject)
   }
   
 

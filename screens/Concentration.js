@@ -24,7 +24,6 @@ const Frame5 = () => {
   const dispatch = useDispatch();
   const handlePress = () => {
     dispatch(setConcentration(value));
-    console.log(value)
     navigation.navigate("Frame2");
   };
   const ccValues = ["아주 묽게", "묽게", "적당하게", "되직하게", "아주 되직하게"];

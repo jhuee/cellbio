@@ -18,7 +18,6 @@ const OrderHistoryScreen = () => {
   const handleStatusChange = (newStatus) => {
     setCurrentStatus(newStatus);
     updateOrderStatus(selectedOrder.id, newStatus); // 선택된 order의 상태를 업데이트하는 함수, 구현 필요
-    console.log(selectedOrder.id)
   };
 
   const StatusButton = ({ status }) => (
@@ -86,42 +85,45 @@ const updateOrderStatus = async (orderId, newStatus) => {
       </HStack>
 
       
-      <ScrollView mt={50}>
-        <VStack space={10}>
-          {Object.entries(orders).map(([date, ordersOnDate]) => (
-            <VStack space={2} key={date}>
-              <Text style={styles.textTypo3}>{date}</Text>
-              {ordersOnDate.map(order => (
-                <VStack space={3} key={order.id}>
-                  <Pressable
-                    shadow={2}
-                    rounded={4}
-                    ml={2}
-                    mr={2}
-                    p={4}
-                    bgColor={"coolGray.100"}
-                    onPress={() => {
-                      setShowModal(true);
-                      setSelectedOrder(order); // 선택된 주문 상태 업데이트
-                    }}
-                  >
-                    <Text bold color={"green.700"}>{order.상태}</Text>
-                    {order.주문서.map(item => (
-                      <Box key={item.레시피}>
-                        <HStack alignItems={"center"}>
-                          <Text style={styles.textTypo3}>{item.레시피}</Text>
-                          <Text style={styles.textTypo5}> {item.제품} *{item.개수}개</Text>
-                        </HStack>
-                      </Box>
-                    ))}
-                    <Text bold color={"green.700"} style={styles.textTypo4}>자세히</Text>
-                  </Pressable>
-                </VStack>
-              ))}
-            </VStack>
-          ))}
+       
+      <FlatList
+  data={Object.entries(orders)}
+  renderItem={({ item: [date, ordersOnDate] }) => (
+    <VStack space={2} key={date}>
+      <Text style={styles.textTypo3}>{date}</Text>
+      {ordersOnDate.map(order => (
+        <VStack space={3} key={order.id}> 
+          <Pressable
+            shadow={2}
+            rounded={4}
+            ml={2}
+            mr={2}
+            p={4}
+            bgColor={"coolGray.100"}
+            onPress={() => {
+              setShowModal(true);
+              setSelectedOrder(order);
+            }}
+
+            key={order.id} 
+          >
+            <Text bold color={"green.700"}>{order.상태}</Text>
+            {order.주문서.map(item => (
+              <Box key={item.레시피}>
+                <HStack alignItems={"center"}>
+                  <Text style={styles.textTypo3}>{item.레시피}</Text>
+                  <Text style={styles.textTypo5}> {item.제품} *{item.개수}개</Text>
+                </HStack>
+              </Box>
+            ))}
+            <Text bold color={"green.700"} style={styles.textTypo4}>자세히</Text>
+          </Pressable>
         </VStack>
-      </ScrollView>
+      ))}
+    </VStack>
+  )}
+  keyExtractor={(item, index) => index.toString()} // 여기서 keyExtractor를 추가해줍니다.
+/>
 
       {/* 모달 구현 */}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>

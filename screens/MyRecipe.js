@@ -34,7 +34,6 @@ const Frame1 = () => {
       useEffect(() => {
         getRecipe().then((data) => setRecipes(data)); // 레시피 데이터 가져오기
       }, []);
-    console.log(recipes)
       const groupedRecipes = recipes.reduce((grouped, recipe) => {
         (grouped[recipe.skinType] = grouped[recipe.skinType] || []).push(recipe);
         return grouped;

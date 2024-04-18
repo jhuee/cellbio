@@ -35,7 +35,7 @@ const Frame12 = () => {
             "", 
             "사용 가능한 이메일입니다.", // 알림 메시지
             [
-              {text: "확인", onPress: () => console.log("OK Pressed")}
+              {text: "확인"}
             ],
             { cancelable: false }
           );
@@ -44,7 +44,7 @@ const Frame12 = () => {
             "",
             "사용 중인 이메일입니다.", // 알림 메시지
             [
-              {text: "확인", onPress: () => console.log("OK Pressed")}
+              {text: "확인"}
             ],
             { cancelable: false }
           );
@@ -69,7 +69,7 @@ const validateInput = () => {
       "", // 타이틀을 빈 문자열로 설정하여 "ALERT"를 표시하지 않음
       "모든 필드를 채워주세요", // 알림 메시지
       [
-        {text: "확인", onPress: () => console.log("OK Pressed")}
+        {text: "확인"}
       ],
       { cancelable: false }
     );

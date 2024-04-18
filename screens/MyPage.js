@@ -107,7 +107,7 @@ const Frame2 = () => {
       <Pressable h={50} justifyContent={'center'} onPress={() => navigation.navigate("Order")}>
       <Text style={[styles.textTypo]}>주문 내역</Text>
       </Pressable>
-      <Pressable h={50} justifyContent={'center'} onPress={() => navigation.navigate("AdminPage")}>
+      <Pressable h={50} justifyContent={'center'} >
       <Text style={[styles.textTypo]}>취소, 반품, 교환 내역</Text>
       </Pressable>
       <Pressable h={50} justifyContent={'center'}>

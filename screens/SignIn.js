@@ -21,7 +21,7 @@ const Screen1 = () => {
         });
       }
     });
-
+    
     // 컴포넌트 unmount 시 리스너 해제
     return unsubscribe;
   }, [navigation]);
@@ -30,10 +30,10 @@ const Screen1 = () => {
     try {
       const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
       const user = userCredential.user;
-  
+
       // 여기서는 이메일 주소로 관리자 여부를 가정합니다.
       // 실제로는 Firestore나 Realtime Database에서 관리자 여부를 확인해야 합니다.
-      if(user.email === "bse07210@naver.com") {
+      if(user.email === "cellbiotoktok@gmail.com") {
         // 관리자 계정으로 판단되면 다른 화면으로 네비게이션 합니다.
         navigation.navigate("AdminPage");
       } else {

@@ -40,14 +40,12 @@ const Payment = () => {
   const increaseCount = () => {
       setCount(count + 1); // count 값을 1 증가
       setitemPrice(totalPrice * (count+1))
-      console.log(totalPrice, count)
   }
 
   const decreaseCount = () => {
       if (count > 1) { // count 값이 1보다 클 때만 감소
           setCount(count - 1); // count 값을 1 감소
           setitemPrice(totalPrice * (count-1))
-          console.log(totalPrice, count)
       }
   }
 

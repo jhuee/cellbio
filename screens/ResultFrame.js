@@ -137,7 +137,6 @@ const ResultFrame = () => {
           try {
           const userId = auth.currentUser.uid;
           const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
-          console.log(userId)
           const recipeRef = userRef.collection('recipe').doc(); // 레시피 문서 참조 생성
     
           await recipeRef.set({ // 레시피 문서에 데이터 저장

@@ -184,7 +184,6 @@ m소듐하이알루로네이트
     dispatch(setPrice(totalPrices));
     showExtrasModal(false);
 
-    // console.log(extrasObject)
   }
 
   const decreaseCounts = (index) => {
