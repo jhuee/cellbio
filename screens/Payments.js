@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {  StyleSheet, View,  Alert,  TouchableOpacity,Keyboard,Modal, Button, TextInput} from "react-native";
+import {  StyleSheet, View,  Alert,  TouchableOpacity,Keyboard,Modal, Button, TextInput, Platform} from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
@@ -293,7 +293,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
           backgroundColor={"white"}
           focusOutlineColor={"#9A887E"}
           mr={1}
-          readOnly={"true"}
+          readOnly={true}
           value={keyword}
           />
           <Pressable borderRadius={5} w={"30%"} backgroundColor={"coolGray.400"} justifyContent={"center"} onPress={openModal}>

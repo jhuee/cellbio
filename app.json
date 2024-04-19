@@ -18,16 +18,26 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cellbio.toktok"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icontok.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.cellbio.toktok"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ad5b3864-500a-45a8-8405-8ed634596328"
+      }
+    },
+    "plugins": [
+      "expo-build-properties"
+    ]
   }
 }
