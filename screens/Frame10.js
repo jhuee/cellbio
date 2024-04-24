@@ -190,11 +190,7 @@ const Frame10 = () => {
       </Circle>
       <Text style={styles.text}>{currentQuestionText}</Text>
       </VStack>
-      
-      {/* <View style={styles.rectangleParent}>
-        <View style={styles.frameChild} />
-        <Text style={styles.text1}>이전으로</Text>
-      </View> */}
+
 
       <View style={styles.frameParent}>
         <Pressable onPress={handleYes}>

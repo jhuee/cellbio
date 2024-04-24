@@ -82,7 +82,7 @@ const validateInput = () => {
     <View style={styles.view}>
 
       <Text style={styles.text}>회원가입</Text>
-      <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"}
+      <KeyboardAvoidingView    behavior="padding"
       keyboardVerticalOffset={10}   >
       <ScrollView mt={180} ml={30} mr={30} >
         <VStack>

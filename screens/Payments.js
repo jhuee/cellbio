@@ -77,7 +77,7 @@ const Payment = () => {
       setitemPrice((pricePerItem + price) * count) 
     }
     } 
-  }, [pricePerItem, extra]);
+  }, [pricePerItem, extra, count]);
   
   const now = new Date();
 

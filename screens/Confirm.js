@@ -27,7 +27,7 @@ const Confirm = () => {
   };
   return (
     <View style={styles.view}>
-            <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"}
+            <KeyboardAvoidingView    behavior="padding"
       keyboardVerticalOffset={200}   >
 
       <Image
