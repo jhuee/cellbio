@@ -34,7 +34,7 @@ const Payment = () => {
   const [detailAddr, setDetailAddr] = useState('');
   const [sender, setSender] = useState(user);
   const [receiver, setReceiver] = useState(user);
-  const [extraValue, setExtraValue] = useState();
+  // const [extraValue, setExtraValue] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
   const [itemPrice, setitemPrice] = useState(0);
   const increaseCount = () => {
@@ -49,6 +49,39 @@ const Payment = () => {
       }
   }
 
+  //가격 정보 불러오기
+
+  useEffect(() => {
+    const fetchPriceInfo = async () => {
+      try {
+        const prices = await Promise.all([
+          db.collection('prices').doc('product').get(),
+          db.collection('prices').doc('base').get(),
+          db.collection('prices').doc('volume').get(),
+        ]);
+
+        const itemData = prices[0].data();
+        const baseData = prices[1].data();
+        const volumeData = prices[2].data();
+
+        const itemPrice = itemData[item] || 0;
+        const basePrice = baseData[base] || 0;
+        const volumePrice = volumeData[volume] || 0;
+
+        // 선택된 아이템, 베이스, 볼륨에 맞는 가격을 가져와 총 가격 계산
+        const calculatedTotalPrice = itemPrice + basePrice + volumePrice;
+        setTotalPrice(calculatedTotalPrice);
+      } catch (error) {
+        console.error("가격 정보를 가져오는 중 오류가 발생했습니다:", error);
+      }
+    };
+
+    fetchPriceInfo();
+  }, [item, base, volume]); // 의존성 배열에 상태를 추가합니다.
+
+  // 총 가격에 수량을 반영하여 최종 가격을 계산합니다.
+  const finalPrice = totalPrice * count;
+  console.log(finalPrice)
   const priceTable = {
     '크림': 5000, 
     '병출 추출물' : 5000,
@@ -61,24 +94,63 @@ const Payment = () => {
   };
 
   const pricePerItem = priceTable[item] || totalPrice;  
-  useEffect(() => {
-    if (!pricePerItem) {
-      setTotalPrice(pricePerItem + price)
-      setExtraValue(Object.keys(extra).join(", "))
-    }
+  // useEffect(() => {
+  //   if (!pricePerItem) {
+  //     setTotalPrice(pricePerItem + price)
+  //     setExtraValue(Object.keys(extra).join(", "))
+  //   }
   
-    else{
-      if(price >0) {
-        setTotalPrice(pricePerItem + price)
-        setExtraValue(Object.keys(extra).join(", "))
-        setitemPrice((pricePerItem + price) * count) 
+  //   else{
+  //     if(price >0) {
+  //       setTotalPrice(pricePerItem + price)
+  //       setExtraValue(Object.keys(extra).join(", "))
+  //       setitemPrice((pricePerItem + price) * count) 
         
-      }else{
-      setitemPrice((pricePerItem + price) * count) 
-    }
-    } 
-  }, [pricePerItem, extra, count]);
+  //     }else{
+  //     setitemPrice((pricePerItem + price) * count) 
+  //   }
+  //   } 
+  // }, [pricePerItem, extra,]);
   
+  // const usePriceCalculation = (item, extra, count, basePrice = 0) => {
+  //   const [totalPrice, setTotalPrice] = useState(basePrice);
+  //   const [extraValue, setExtraValue] = useState('');
+  //   const [itemPrice, setItemPrice] = useState(0);
+  
+  //   useEffect(() => {
+  //     const fetchPrice = async () => {
+  //       const docRef = db.collection('prices').doc("volume", "base",); // "base"는 가격 정보 문서의 ID입니다.
+  //       const snapshot = await docRef.get(); // 레시피 컬렉션의 스냅샷 가져오기
+    
+  //       // 스냅샷에서 문서 데이터 가져오기
+  //       const info = snapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+  
+  //       if (docSnap.exists()) {
+  //         const priceTable = docSnap.data();
+  //         const pricePerItem = priceTable[item]; // `item`에 해당하는 가격을 가져옵니다.
+  
+  //         if (pricePerItem) {
+  //           const newTotalPrice = pricePerItem + basePrice;
+  //           setTotalPrice(newTotalPrice);
+  //           setExtraValue(Object.keys(extra).join(", "));
+  //           setItemPrice(newTotalPrice * count);
+  //         }
+  //       } else {
+  //         console.log("No such document!");
+  //       }
+  //     };
+  
+  //     fetchPrice();
+  //   }, [item, extra, count, basePrice]);
+  
+  //   return { totalPrice, extraValue, itemPrice };
+  // };
+
+  // const { totalPrice, extraValue, itemPrice } = usePriceCalculation('premium', {extra1: true}, 2, 1000);
+
   const now = new Date();
 
   const year = now.getFullYear();
@@ -103,24 +175,6 @@ const Payment = () => {
   }
   
   getUserData();
-  
-
-  const searchAdd = async () => {
-    const apiKey = 'U01TX0FVVEgyMDI0MDMyNjEzMzMxMTExNDYzMTE=';
-    const url = `http://business.juso.go.kr/addrlink/addrLinkApi.do?confmKey=${apiKey}&currentPage=1&countPerPage=5&keyword=${encodeURI(keyword)}&resultType=json`;
-  
-    const response = await fetch(url);
-  
-    const data = await response.json();
-  
-    if (data.results.juso && data.results.juso.length > 0) {
-      setAddress(data.results.juso[0].roadAddr);
-    } else {
-      console.log("No such address!");
-    }
-  };
-  
-  
   
 
   
@@ -233,7 +287,7 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
                 <Text style={styles.texttb}>{name}</Text>
                 </HStack>
         <Text>
-           {bottle} {extraValue}
+           {bottle} 
         </Text>
         </Box> 
         <HStack alignItems={"center"} justifyContent={"space-between"}>

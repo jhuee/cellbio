@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { Image } from "expo-image";
 import { StyleSheet, View,  } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -8,7 +8,7 @@ import { setConcern } from "../src/actions";
 import { useDispatch } from "react-redux";
 const Frame6 = () => {
   const navigation = useNavigation();
-  const [groupValue, setGroupValue] = React.useState([]);
+  const [groupValue, setGroupValue] = useState([]);
   const num = [
     { color:"#BCB1B1", text: '1' },
     { color:"#BCB1B1", text: '2' },
@@ -103,12 +103,13 @@ const Frame6 = () => {
       </View>
 
       <ScrollView mt={130} >
-      <Checkbox.Group colorScheme="yellow" defaultValue={groupValue} onChange={values => setGroupValue(values || [])}>
+      
+      <Checkbox.Group  colorScheme="yellow" defaultValue={groupValue} onChange={values => setGroupValue(values || [])}>
           <VStack alignSelf={"center"} marginTop={4} space={5}>
               {items.map((item, index) => (
               <Box key={index} style={[styles.rectangleParentLayout, styles.frameChildLayout]} pl={4} pt={3} alignItems={"flex-start"}>
               <HStack>
-                <Checkbox mt={8} value={item.title}></Checkbox>
+                <Checkbox mt={8} value={item.title} aria-label="concern" ></Checkbox>
                 <VStack>
                   <Text style={[styles.text9, styles.textTypo]}>{item.title}</Text>
                   <Text style={[styles.text10, styles.textLayout]}>{item.content}</Text>

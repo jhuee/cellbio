@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { HStack, VStack, Circle, Text, Radio, ZStack, Box, Divider, extendTheme, useTheme } from "native-base";
-import { set     } from "../src/actions";
+import { setConcentration} from "../src/actions";
 import { useDispatch } from "react-redux";
 
 const Frame5 = () => {
