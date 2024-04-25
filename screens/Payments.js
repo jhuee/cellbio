@@ -26,6 +26,7 @@ const Payment = () => {
   const name = useSelector(state => state.name);
   const extra = useSelector(state => state.extra);
   const price = useSelector(state => state.price);
+  const total = useSelector(state => state.total);
   const [depositor, setDepositor] = useState('');
 
   const [count, setCount] = useState(1); // 초기값을 1로 설정
@@ -35,121 +36,30 @@ const Payment = () => {
   const [sender, setSender] = useState(user);
   const [receiver, setReceiver] = useState(user);
   // const [extraValue, setExtraValue] = useState();
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState();
   const [itemPrice, setitemPrice] = useState(0);
   const increaseCount = () => {
       setCount(count + 1); // count 값을 1 증가
-      setitemPrice(totalPrice * (count+1))
+      setitemPrice(total * (count+1))
   }
 
   const decreaseCount = () => {
       if (count > 1) { // count 값이 1보다 클 때만 감소
           setCount(count - 1); // count 값을 1 감소
-          setitemPrice(totalPrice * (count-1))
+          setitemPrice(total * (count-1))
       }
   }
 
-  //가격 정보 불러오기
+
 
   useEffect(() => {
-    const fetchPriceInfo = async () => {
-      try {
-        const prices = await Promise.all([
-          db.collection('prices').doc('product').get(),
-          db.collection('prices').doc('base').get(),
-          db.collection('prices').doc('volume').get(),
-        ]);
+    setitemPrice(total)
 
-        const itemData = prices[0].data();
-        const baseData = prices[1].data();
-        const volumeData = prices[2].data();
 
-        const itemPrice = itemData[item] || 0;
-        const basePrice = baseData[base] || 0;
-        const volumePrice = volumeData[volume] || 0;
-
-        // 선택된 아이템, 베이스, 볼륨에 맞는 가격을 가져와 총 가격 계산
-        const calculatedTotalPrice = itemPrice + basePrice + volumePrice;
-        setTotalPrice(calculatedTotalPrice);
-      } catch (error) {
-        console.error("가격 정보를 가져오는 중 오류가 발생했습니다:", error);
-      }
-    };
-
-    fetchPriceInfo();
-  }, [item, base, volume]); // 의존성 배열에 상태를 추가합니다.
+ 
+  }, [total]); // 의존성 배열에 상태를 추가합니다.
 
   // 총 가격에 수량을 반영하여 최종 가격을 계산합니다.
-  const finalPrice = totalPrice * count;
-  console.log(finalPrice)
-  const priceTable = {
-    '크림': 5000, 
-    '병출 추출물' : 5000,
-    '녹차 추출물' : 5000,
-    '달팽이 점액 추출물' : 5000,
-    '꿀 추출물' : 5000,
-    '프로폴리스 추출물' : 5000,
-    '어성초 추출물' : 5000,
-    '인진쑥 추출물' : 5000,
-  };
-
-  const pricePerItem = priceTable[item] || totalPrice;  
-  // useEffect(() => {
-  //   if (!pricePerItem) {
-  //     setTotalPrice(pricePerItem + price)
-  //     setExtraValue(Object.keys(extra).join(", "))
-  //   }
-  
-  //   else{
-  //     if(price >0) {
-  //       setTotalPrice(pricePerItem + price)
-  //       setExtraValue(Object.keys(extra).join(", "))
-  //       setitemPrice((pricePerItem + price) * count) 
-        
-  //     }else{
-  //     setitemPrice((pricePerItem + price) * count) 
-  //   }
-  //   } 
-  // }, [pricePerItem, extra,]);
-  
-  // const usePriceCalculation = (item, extra, count, basePrice = 0) => {
-  //   const [totalPrice, setTotalPrice] = useState(basePrice);
-  //   const [extraValue, setExtraValue] = useState('');
-  //   const [itemPrice, setItemPrice] = useState(0);
-  
-  //   useEffect(() => {
-  //     const fetchPrice = async () => {
-  //       const docRef = db.collection('prices').doc("volume", "base",); // "base"는 가격 정보 문서의 ID입니다.
-  //       const snapshot = await docRef.get(); // 레시피 컬렉션의 스냅샷 가져오기
-    
-  //       // 스냅샷에서 문서 데이터 가져오기
-  //       const info = snapshot.docs.map((doc) => ({
-  //         id: doc.id,
-  //         ...doc.data(),
-  //       }));
-  
-  //       if (docSnap.exists()) {
-  //         const priceTable = docSnap.data();
-  //         const pricePerItem = priceTable[item]; // `item`에 해당하는 가격을 가져옵니다.
-  
-  //         if (pricePerItem) {
-  //           const newTotalPrice = pricePerItem + basePrice;
-  //           setTotalPrice(newTotalPrice);
-  //           setExtraValue(Object.keys(extra).join(", "));
-  //           setItemPrice(newTotalPrice * count);
-  //         }
-  //       } else {
-  //         console.log("No such document!");
-  //       }
-  //     };
-  
-  //     fetchPrice();
-  //   }, [item, extra, count, basePrice]);
-  
-  //   return { totalPrice, extraValue, itemPrice };
-  // };
-
-  // const { totalPrice, extraValue, itemPrice } = usePriceCalculation('premium', {extra1: true}, 2, 1000);
 
   const now = new Date();
 

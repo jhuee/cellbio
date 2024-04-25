@@ -53,4 +53,9 @@ export const setFormulation = (formulation) => ({
     payload: price,
   });
   
+  export const setTotal = (total) => ({
+    type: 'SET_TOTAL',
+    payload: total,
+  });
+  
   

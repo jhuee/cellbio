@@ -87,4 +87,13 @@ export const formulationReducer = (state = '', action) => {
         return state;
     }
   };
+
+  export const totalReducer = (state = '', action) => {
+    switch (action.type) {
+      case 'SET_TOTAL':
+        return action.payload;
+      default:
+        return state;
+    }
+  };
   
