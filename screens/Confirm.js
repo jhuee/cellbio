@@ -1,29 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { Image } from "expo-image";
-import { StyleSheet, View,  } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import {Box, VStack, HStack, Text, Pressable, ScrollView, Checkbox, Circle, Input, KeyboardAvoidingView} from "native-base";
-import { setRecName,setTotal } from "../src/actions";
+import {
+  Box,
+  VStack,
+  HStack,
+  Text,
+  Pressable,
+  ScrollView,
+  Checkbox,
+  Circle,
+  Input,
+  KeyboardAvoidingView,
+} from "native-base";
+import { setRecName, setTotal } from "../src/actions";
 import { useSelector, useDispatch } from "react-redux";
-import { db, auth } from '../firebaseConfig'
+import { db, auth } from "../firebaseConfig";
 
 const Confirm = () => {
   const navigation = useNavigation();
- 
-  const formulation = useSelector(state => state.formulation);
-  const base = useSelector(state => state.base);
-  const concern = useSelector(state => state.concern);
-  const concentration = useSelector(state => state.concentration);
-  const volume = useSelector(state => state.volume);
-  const bottle = useSelector(state => state.case);
-  const item = useSelector(state => state.item);
-  const [totalPrice, setTotalPrice] = useState(0)
-  const [name, setName] = useState('');
+
+  const formulation = useSelector((state) => state.formulation);
+  const base = useSelector((state) => state.base);
+  const concern = useSelector((state) => state.concern);
+  const concentration = useSelector((state) => state.concentration);
+  const volume = useSelector((state) => state.volume);
+  const bottle = useSelector((state) => state.case);
+  const item = useSelector((state) => state.item);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [name, setName] = useState("");
   const dispatch = useDispatch();
   const handlePress = () => {
     dispatch(setRecName(name));
-    dispatch(setTotal(totalPrice))
+    dispatch(setTotal(totalPrice));
     navigation.navigate("Payment");
   };
 
@@ -31,9 +42,9 @@ const Confirm = () => {
     const fetchPriceInfo = async () => {
       try {
         const prices = await Promise.all([
-          db.collection('prices').doc('product').get(),
-          db.collection('prices').doc('base').get(),
-          db.collection('prices').doc('volume').get(),
+          db.collection("prices").doc("product").get(),
+          db.collection("prices").doc("base").get(),
+          db.collection("prices").doc("volume").get(),
         ]);
 
         const itemData = prices[0].data();
@@ -51,92 +62,131 @@ const Confirm = () => {
         console.error("가격 정보를 가져오는 중 오류가 발생했습니다:", error);
       }
     };
- 
+
     fetchPriceInfo();
   }, [item, base, volume]); // 의존성 배열에 상태를 추가합니다.
 
   // 총 가격에 수량을 반영하여 최종 가격을 계산합니다.
-  console.log(item , base , volume, totalPrice)
+  console.log(item, base, volume, totalPrice);
   return (
     <View style={styles.view}>
-            <KeyboardAvoidingView    behavior="padding"
-      keyboardVerticalOffset={200}   >
-
-      <Image
-        style={styles.child}
-        contentFit="cover"
-        source={require("../assets/ellipse-48.png")}
-      />
-
-      <HStack mt={52} ml={3}space={3} alignItems={"center"}>
-        <Pressable onPress={() => navigation.goBack()}>
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={200}>
         <Image
-          style={styles.chevronLeftIcon}
+          style={styles.child}
           contentFit="cover"
-          source={require("../assets/chevronleft.png")}
-          />
-        </Pressable>
-      <Text style={[styles.titleText, styles.textTypo3]}>레시피 이름</Text>
-      </HStack>
+          source={require("../assets/ellipse-48.png")}
+        />
 
-        <VStack mt={100} alignItems={"center"} justifyContent={"center"} space={3}>
-          <Box  justifyContent={"center"} alignItems={"center"}>
-            <Image style={styles.child2} contentFit="cover" source={require("../assets/circleB.png")}></Image>
+        <HStack mt={52} ml={3} space={3} alignItems={"center"}>
+          <Pressable onPress={() => navigation.goBack()}>
+            <Image
+              style={styles.chevronLeftIcon}
+              contentFit="cover"
+              source={require("../assets/chevronleft.png")}
+            />
+          </Pressable>
+          <Text style={[styles.titleText, styles.textTypo3]}>레시피 이름</Text>
+        </HStack>
+
+        <VStack
+          mt={100}
+          alignItems={"center"}
+          justifyContent={"center"}
+          space={3}
+        >
+          <Box justifyContent={"center"} alignItems={"center"}>
+            <Image
+              style={styles.child2}
+              contentFit="cover"
+              source={require("../assets/circleB.png")}
+            ></Image>
           </Box>
-          <Text style={styles.textTypo}>
-            레시피 이름 설정
-          </Text>
-          <Input size="lg" width={"75%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setName(text)}></Input>
-          <HStack justifyContent={"space-between"} space={3} alignItems={"center"}>
-          <Pressable justifyContent={"center"} borderWidth={1} borderRadius={5} borderColor={"#9A887E"} w={"35%"} alignItems={"center"} h={10}
-            onPress={async  () =>{
-              try {
-              const userId = auth.currentUser.uid;
-              const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
-              const recipeRef = userRef.collection('recipe').doc(); // 레시피 문서 참조 생성
-                
-              await recipeRef.set({ // 레시피 문서에 데이터 저장
-                  skinType : '지성 피부',
-                  "제품" : item,
-                  "제형" : formulation,
-                  "베이스" : base,
-                  "피부고민" : concern,
-                  "농도" : concentration,
-                  "용량" : volume,
-                  "케이스" : bottle,
-                  "레시피" : name,
-                  "가격" : 15000
-                });
-        
-              alert("저장되었습니다.")
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'Recipe' }],
-              });
-            } catch (error) {
-              console.error(error);
-            }
-          }}
+          <Text style={styles.textTypo}>레시피 이름 설정</Text>
+          <Input
+            size="lg"
+            width={"75%"}
+            backgroundColor={"white"}
+            focusOutlineColor={"#9A887E"}
+            mr={1}
+            onChangeText={(text) => setName(text)}
+          ></Input>
+          <HStack
+            justifyContent={"space-between"}
+            space={3}
+            alignItems={"center"}
+          >
+            <Pressable
+              justifyContent={"center"}
+              borderWidth={1}
+              borderRadius={5}
+              borderColor={"#9A887E"}
+              w={"35%"}
+              alignItems={"center"}
+              h={10}
+              onPress={async () => {
+                try {
+                  const userId = auth.currentUser.uid;
+                  const userRef = db.collection("users").doc(userId); // 사용자 문서 참조 생성
+                  const recipeRef = userRef.collection("recipe").doc(); // 레시피 문서 참조 생성
+
+                  await recipeRef.set({
+                    // 레시피 문서에 데이터 저장
+                    skinType: "지성 피부",
+                    제품: item,
+                    제형: formulation,
+                    베이스: base,
+                    피부고민: concern,
+                    농도: concentration,
+                    용량: volume,
+                    케이스: bottle,
+                    레시피: name,
+                    가격: 15000,
+                  });
+
+                  alert("저장되었습니다.");
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: "Recipe" }],
+                  });
+                } catch (error) {
+                  console.error(error);
+                }
+              }}
             >
-            <Text  style={styles.textTypo}>저장</Text>
-          </Pressable>
-          <Pressable justifyContent={"center"} borderWidth={1} borderRadius={5} borderColor={"#9A887E"} w={"35%"} alignItems={"center"} h={10}
-          onPress={()=> navigation.reset({
-            index: 0,
-            routes: [{ name: 'Screen1' }],
-          })}>
-            <Text style={styles.textTypo}>삭제</Text>
-          </Pressable>
-            </HStack>
-            <Pressable mt={18} borderRadius={5} backgroundColor={"#9A887E"} w={"75%"}  alignItems={"center"} justifyContent={"center"} h={10}
-             onPress={handlePress}>
+              <Text style={styles.textTypo}>저장</Text>
+            </Pressable>
+            <Pressable
+              justifyContent={"center"}
+              borderWidth={1}
+              borderRadius={5}
+              borderColor={"#9A887E"}
+              w={"35%"}
+              alignItems={"center"}
+              h={10}
+              onPress={() =>
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Screen1" }],
+                })
+              }
+            >
+              <Text style={styles.textTypo}>삭제</Text>
+            </Pressable>
+          </HStack>
+          <Pressable
+            mt={18}
+            borderRadius={5}
+            backgroundColor={"#9A887E"}
+            w={"75%"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            h={10}
+            onPress={handlePress}
+          >
             <Text style={styles.textTypo1}>주문하기</Text>
-          </Pressable>   
+          </Pressable>
         </VStack>
-
-
-
- </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -150,19 +200,19 @@ const styles = StyleSheet.create({
     height: 30,
     position: "absolute",
   },
-  titleText:{
+  titleText: {
     color: Color.colorDarkslategray_100,
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "700",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-},  
-textTypo3: {
-  fontFamily: FontFamily.pretendardLight,
-  fontWeight: "600",
-  lineHeight: 40,
-  fontSize: FontSize.size_6xl,
-},
+  },
+  textTypo3: {
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "600",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+  },
   textTypo1: {
     color: Color.colorWhite,
     top: 0,
@@ -294,8 +344,7 @@ textTypo3: {
   rectangleView: {
     backgroundColor: Color.colorSilver,
     height: 82,
-  
-   },
+  },
   text8: {
     color: Color.colorGray_300,
     fontWeight: "500",
@@ -303,7 +352,7 @@ textTypo3: {
     fontSize: FontSize.size_6xl,
     fontFamily: FontFamily.pretendardLight,
     textAlign: "center",
-    marginTop: 15
+    marginTop: 15,
   },
   rectangleParent: {
     width: "100%",

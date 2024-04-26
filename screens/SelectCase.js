@@ -3,7 +3,14 @@ import { Image } from "expo-image";
 import { StyleSheet, View, Modal } from "react-native";
 import Component from "../components/Component";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { HStack, VStack, Circle, Text, ScrollView, Pressable } from "native-base";
+import {
+  HStack,
+  VStack,
+  Circle,
+  Text,
+  ScrollView,
+  Pressable,
+} from "native-base";
 import { useDispatch } from "react-redux";
 import { setCase } from "../src/actions";
 import { useNavigation } from "@react-navigation/native";
@@ -20,27 +27,27 @@ const Frame3 = () => {
     setFrameButtonVisible(false);
   }, []);
   const num = [
-    { color:"#BCB1B1", text: '1' },
-    { color:"#BCB1B1", text: '2' },
-    { color:"#BCB1B1", text: '3' },
-    { color:"#BCB1B1", text: "4" },
-    { color:"#BCB1B1", text: '5' },
-    { color:"#BCB1B1", text: '6' },
-    { color: "#8E6868", text: '7' },
-    { color: "#BCB1B1", text: '8' },
+    { color: "#BCB1B1", text: "1" },
+    { color: "#BCB1B1", text: "2" },
+    { color: "#BCB1B1", text: "3" },
+    { color: "#BCB1B1", text: "4" },
+    { color: "#BCB1B1", text: "5" },
+    { color: "#BCB1B1", text: "6" },
+    { color: "#8E6868", text: "7" },
+    { color: "#BCB1B1", text: "8" },
   ];
 
   const typeValues = [
-    { text: '스포이드 타입', source: require("../assets/spoid.png") },
-    { text: '튜브 타입', source: require("../assets/tube.png") },
-    { text: '원형 타입', source: require("../assets/circleC.png") },
-    { text: '병 타입', source: require("../assets/bottle.png") },
+    { text: "스포이드 타입", source: require("../assets/spoid.png") },
+    { text: "튜브 타입", source: require("../assets/tube.png") },
+    { text: "원형 타입", source: require("../assets/circleC.png") },
+    { text: "병 타입", source: require("../assets/bottle.png") },
   ];
 
   const dispatch = useDispatch();
   const handlePress = (bottle) => {
     dispatch(setCase(bottle));
-    console.log(bottle)
+    console.log(bottle);
     navigation.navigate("Confirm");
   };
   return (
@@ -52,47 +59,50 @@ const Frame3 = () => {
           source={require("../assets/ellipse-48.png")}
         />
 
-       <Text style={[styles.text7, styles.textTypo]}>
+        <Text style={[styles.text7, styles.textTypo]}>
           담을 케이스를 고르세요
         </Text>
 
-      
-      <HStack mt={3} ml={3}space={3} alignItems={"center"}>
-        <Pressable onPress={() => navigation.goBack()}>
-        <Image
-          style={styles.chevronLeftIcon}
-          contentFit="cover"
-          source={require("../assets/chevronleft.png")}
-          />
-        </Pressable>
-      <Text style={[styles.titleText, styles.textTypo3]}>케이스 선택</Text>
-      </HStack>
-
-      <View style={styles.frameGroup1}>
-        <HStack space={1.5}>
-          {num.map((item, idx) => (
-          <Circle key={idx} size={"28px"} bg={item.color}>
-          <Text style={[ styles.textTypo2]}>{item.text}</Text>
-          </Circle>
-          ))}
-        </HStack>
-      </View>
-       
-          <ScrollView mt={150}>
-            <VStack alignSelf={"center"} space={5} mt={2}>
-            {typeValues.map((type, index) => (
-              <Pressable key={index} onPress={()=> handlePress(type.text)} style={styles.parentPosition} w={360}>
+        <HStack mt={3} ml={3} space={3} alignItems={"center"}>
+          <Pressable onPress={() => navigation.goBack()}>
             <Image
-              style={ styles.iconLayout}
+              style={styles.chevronLeftIcon}
               contentFit="cover"
-              source={type.source}
+              source={require("../assets/chevronleft.png")}
             />
-            <Text style={styles.text8}>{type.text}</Text>
+          </Pressable>
+          <Text style={[styles.titleText, styles.textTypo3]}>케이스 선택</Text>
+        </HStack>
+
+        <View style={styles.frameGroup1}>
+          <HStack space={1.5}>
+            {num.map((item, idx) => (
+              <Circle key={idx} size={"28px"} bg={item.color}>
+                <Text style={[styles.textTypo2]}>{item.text}</Text>
+              </Circle>
+            ))}
+          </HStack>
+        </View>
+
+        <ScrollView mt={150}>
+          <VStack alignSelf={"center"} space={5} mt={2}>
+            {typeValues.map((type, index) => (
+              <Pressable
+                key={index}
+                onPress={() => handlePress(type.text)}
+                style={styles.parentPosition}
+                w={360}
+              >
+                <Image
+                  style={styles.iconLayout}
+                  contentFit="cover"
+                  source={type.source}
+                />
+                <Text style={styles.text8}>{type.text}</Text>
               </Pressable>
             ))}
-            </VStack>
-          </ScrollView>
-          
+          </VStack>
+        </ScrollView>
       </View>
 
       <Modal animationType="fade" transparent visible={frameButtonVisible}>
@@ -110,19 +120,19 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
     overflow: "hidden",
   },
-  titleText:{
+  titleText: {
     color: Color.colorDarkslategray_100,
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "700",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-},  
-textTypo3: {
-  fontFamily: FontFamily.pretendardLight,
-  fontWeight: "600",
-  lineHeight: 40,
-  fontSize: FontSize.size_6xl,
-},
+  },
+  textTypo3: {
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "600",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+  },
   ellipseParentPosition: {
     width: 27,
     marginTop: -15,
@@ -288,7 +298,7 @@ textTypo3: {
   },
   frameGroup: {
     top: 258,
-    flex: 1
+    flex: 1,
   },
   text12: {
     marginLeft: -57.5,

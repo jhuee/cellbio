@@ -4,21 +4,32 @@ import { StyleSheet, View, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { HStack, VStack, Circle, Text, Radio, ZStack, Box, Divider, extendTheme, useTheme } from "native-base";
-import { setConcentration} from "../src/actions";
+import {
+  HStack,
+  VStack,
+  Circle,
+  Text,
+  Radio,
+  ZStack,
+  Box,
+  Divider,
+  extendTheme,
+  useTheme,
+} from "native-base";
+import { setConcentration } from "../src/actions";
 import { useDispatch } from "react-redux";
 
 const Frame5 = () => {
   const navigation = useNavigation();
   const num = [
-    { color: "#BCB1B1", text: '1' },
-    { color:"#BCB1B1", text: '2' },
-    { color:"#BCB1B1", text: '3' },
-    { color:"#8E6868", text: "4" },
-    { color:"#BCB1B1", text: '5' },
-    { color:"#BCB1B1", text: '6' },
-    { color:"#BCB1B1", text: '7' },
-    { color:"#BCB1B1", text: '8' },
+    { color: "#BCB1B1", text: "1" },
+    { color: "#BCB1B1", text: "2" },
+    { color: "#BCB1B1", text: "3" },
+    { color: "#8E6868", text: "4" },
+    { color: "#BCB1B1", text: "5" },
+    { color: "#BCB1B1", text: "6" },
+    { color: "#BCB1B1", text: "7" },
+    { color: "#BCB1B1", text: "8" },
   ];
 
   const dispatch = useDispatch();
@@ -26,7 +37,13 @@ const Frame5 = () => {
     dispatch(setConcentration(value));
     navigation.navigate("Frame2");
   };
-  const ccValues = ["아주 묽게", "묽게", "적당하게", "되직하게", "아주 되직하게"];
+  const ccValues = [
+    "아주 묽게",
+    "묽게",
+    "적당하게",
+    "되직하게",
+    "아주 되직하게",
+  ];
 
   const [value, setValue] = useState(ccValues[0]);
   return (
@@ -40,43 +57,59 @@ const Frame5 = () => {
         추출물 농도를 조절할 수 있어요
       </Text>
 
-     <HStack mt={3} ml={3}space={3} alignItems={"center"}>
+      <HStack mt={3} ml={3} space={3} alignItems={"center"}>
         <Pressable onPress={() => navigation.goBack()}>
-        <Image
-          style={styles.chevronLeftIcon}
-          contentFit="cover"
-          source={require("../assets/chevronleft.png")}
+          <Image
+            style={styles.chevronLeftIcon}
+            contentFit="cover"
+            source={require("../assets/chevronleft.png")}
           />
         </Pressable>
-      <Text style={[styles.titleText, styles.textTypo2]}>추출물 농도 조절</Text>
+        <Text style={[styles.titleText, styles.textTypo2]}>
+          추출물 농도 조절
+        </Text>
       </HStack>
 
-           <View style={styles.frameGroup}>
+      <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
-          <Circle key={idx} size={"28px"} bg={item.color}>
-          <Text style={[ styles.textTypo1]}>{item.text}</Text>
-          </Circle>
+            <Circle key={idx} size={"28px"} bg={item.color}>
+              <Text style={[styles.textTypo1]}>{item.text}</Text>
+            </Circle>
           ))}
         </HStack>
       </View>
 
-      
-        <Radio.Group value={value} colorScheme={"light"} defaultValue="1"  onChange={nextValue => {setValue(nextValue)}} >
-      <VStack  mt={150} ml={10}>
-      {ccValues.map((text, index) =>
-      <Box key={index} mb={-5}>
-        <Radio  value={text} my={1} size={"lg"} >
-          <Text style={styles.text13}>{text}</Text>
-        </Radio>
-        {index !== 4 && <Divider bg={"#B2A2A2"} thickness={3} ml={3} h={"20"} mt={-1} mb={-2}orientation="vertical"/>}  {/* 마지막 라디오 버튼에는 선이 없습니다. */}
-      </Box>
-)}
-
-      </VStack>
-        </Radio.Group>
-
-
+      <Radio.Group
+        value={value}
+        colorScheme={"light"}
+        defaultValue="1"
+        onChange={(nextValue) => {
+          setValue(nextValue);
+        }}
+      >
+        <VStack mt={150} ml={10}>
+          {ccValues.map((text, index) => (
+            <Box key={index} mb={-5}>
+              <Radio value={text} my={1} size={"lg"}>
+                <Text style={styles.text13}>{text}</Text>
+              </Radio>
+              {index !== 4 && (
+                <Divider
+                  bg={"#B2A2A2"}
+                  thickness={3}
+                  ml={3}
+                  h={"20"}
+                  mt={-1}
+                  mb={-2}
+                  orientation="vertical"
+                />
+              )}{" "}
+              {/* 마지막 라디오 버튼에는 선이 없습니다. */}
+            </Box>
+          ))}
+        </VStack>
+      </Radio.Group>
 
       {/* 선택 완료 버튼 */}
       <Pressable
@@ -86,29 +119,27 @@ const Frame5 = () => {
         <View style={[styles.rectangleView, styles.parentPosition]} />
         <Text style={[styles.text8, styles.textPosition]}>선택 완료</Text>
       </Pressable>
-
-
     </View>
   );
 };
 
 const theme = extendTheme({
-  colors : {
-    brown : '#B2A2A2',
-  }
-})
+  colors: {
+    brown: "#B2A2A2",
+  },
+});
 const styles = StyleSheet.create({
   frameParentLayout: {
     width: 27,
     position: "absolute",
   },
-  titleText:{
+  titleText: {
     color: Color.colorDarkslategray_100,
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "700",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-},
+  },
   textTypo1: {
     color: Color.colorWhite,
     fontSize: FontSize.size_xl,
@@ -159,9 +190,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     overflow: "hidden",
   },
-  rect:{
-    width:600,
-    
+  rect: {
+    width: 600,
   },
   frameChild: {
     top: 2,
@@ -251,7 +281,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   wrapper: {
-    left: 50  ,
+    left: 50,
     top: 258,
     width: 23,
     height: 613,
@@ -275,7 +305,7 @@ const styles = StyleSheet.create({
     left: "50%",
   },
   text13: {
-    fontWeight:"500",
+    fontWeight: "500",
     color: Color.colorGray_300,
     fontSize: FontSize.size_xl,
     fontFamily: FontFamily.pretendardLight,

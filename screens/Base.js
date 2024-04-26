@@ -3,21 +3,29 @@ import { Image } from "expo-image";
 import { StyleSheet, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-import {Center, HStack, Text, Circle, VStack, Box, ScrollView} from "native-base"
+import {
+  Center,
+  HStack,
+  Text,
+  Circle,
+  VStack,
+  Box,
+  ScrollView,
+} from "native-base";
 import { useDispatch } from "react-redux";
 import { setBase } from "../src/actions";
 
 const Frame7 = () => {
   const navigation = useNavigation();
   const num = [
-    { color:"#BCB1B1", text: '1' },
-    { color: "#8E6868", text: '2' },
-    { color:"#BCB1B1", text: '3' },
-    { color:"#BCB1B1", text: "4" },
-    { color:"#BCB1B1", text: '5' },
-    { color:"#BCB1B1", text: '6' },
-    { color:"#BCB1B1", text: '7' },
-    { color:"#BCB1B1", text: '8' },
+    { color: "#BCB1B1", text: "1" },
+    { color: "#8E6868", text: "2" },
+    { color: "#BCB1B1", text: "3" },
+    { color: "#BCB1B1", text: "4" },
+    { color: "#BCB1B1", text: "5" },
+    { color: "#BCB1B1", text: "6" },
+    { color: "#BCB1B1", text: "7" },
+    { color: "#BCB1B1", text: "8" },
   ];
 
   const items = [
@@ -30,14 +38,14 @@ const Frame7 = () => {
     {
       key: "standard",
       title: "Standard",
-      description: '합리적인 가격대로 우수한 결과물을 얻을 수 있습니다.',
-      style:  styles.premium,
+      description: "합리적인 가격대로 우수한 결과물을 얻을 수 있습니다.",
+      style: styles.premium,
     },
     {
       key: "basic",
       title: "Basic",
       description: `가장 기본적인 제품으로 무난한 결과물을 얻을 수 있습니다.`,
-      style:  styles.premium
+      style: styles.premium,
     },
   ];
 
@@ -53,51 +61,61 @@ const Frame7 = () => {
         style={styles.child}
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
-        />
+      />
       <Text style={[styles.text3, styles.textTypo1]}>
         베이스를 선택해주세요
       </Text>
-      
-        <HStack mt={3} ml={3}space={3} alignItems={"center"}>
+
+      <HStack mt={3} ml={3} space={3} alignItems={"center"}>
         <Pressable onPress={() => navigation.goBack()}>
-        <Image
-          style={styles.chevronLeftIcon}
-          contentFit="cover"
-          source={require("../assets/chevronleft.png")}
+          <Image
+            style={styles.chevronLeftIcon}
+            contentFit="cover"
+            source={require("../assets/chevronleft.png")}
           />
         </Pressable>
-      <Text style={[styles.titleText, styles.textTypo3]}>베이스 선택</Text>
+        <Text style={[styles.titleText, styles.textTypo3]}>베이스 선택</Text>
       </HStack>
 
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
             <Circle key={idx} size={"28px"} bg={item.color}>
-          <Text style={[ styles.textTypo]}>{item.text}</Text>
-          </Circle>
+              <Text style={[styles.textTypo]}>{item.text}</Text>
+            </Circle>
           ))}
         </HStack>
       </View>
-      
-        <ScrollView mt={150}>
+
+      <ScrollView mt={150}>
         <View>
-        <VStack  space={5} alignItems={"center"} >
-          
-        {items.map((item, index) => (
-  <Pressable  key={index} style={styles.rectangleGroup} width={"95%"} 
-    onPress={()=> handlePress(item.key)}>
-    <Text style = {styles.premium} textAlign={"center"}>{item.title}</Text>
-    <Text style={[styles.text, styles.textTypo2]}>{item.description}</Text>
-  </Pressable>
-))}
-        <Text textAlign={"left"} style={styles.textTypo4} >※ 제형에 따라서 첨가할 수 있는 유효성분이 불가할 수도 있습니다.</Text>
-        <Text  textAlign={"left"} style={styles.textTypo4} mt={-4}>※ 전성분은 차후 완성형 레시피에서 확인 하실 수 있습니다.</Text>
-        </VStack>
+          <VStack space={5} alignItems={"center"}>
+            {items.map((item, index) => (
+              <Pressable
+                key={index}
+                style={styles.rectangleGroup}
+                width={"95%"}
+                onPress={() => handlePress(item.key)}
+              >
+                <Text style={styles.premium} textAlign={"center"}>
+                  {item.title}
+                </Text>
+                <Text style={[styles.text, styles.textTypo2]}>
+                  {item.description}
+                </Text>
+              </Pressable>
+            ))}
+            <Text textAlign={"left"} style={styles.textTypo4}>
+              ※ 제형에 따라서 첨가할 수 있는 유효성분이 불가할 수도 있습니다.
+            </Text>
+            <Text textAlign={"left"} style={styles.textTypo4} mt={-4}>
+              ※ 전성분은 차후 완성형 레시피에서 확인 하실 수 있습니다.
+            </Text>
+          </VStack>
         </View>
+      </ScrollView>
 
-        </ScrollView>
-
-{/* 
+      {/* 
       <View style={[styles.parent, styles.parentPosition]}>
 
       </View> */}
@@ -116,19 +134,19 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.pretendardLight,
     position: "absolute",
   },
-  titleText:{
+  titleText: {
     color: Color.colorDarkslategray_100,
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "700",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-},  
-textTypo3: {
-  fontFamily: FontFamily.pretendardLight,
-  fontWeight: "600",
-  lineHeight: 40,
-  fontSize: FontSize.size_6xl,
-},
+  },
+  textTypo3: {
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "600",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+  },
   textTypo4: {
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "600",
@@ -179,9 +197,7 @@ textTypo3: {
     position: "absolute",
     overflow: "hidden",
   },
-  frameShadowBox: {
-    
-  },
+  frameShadowBox: {},
   premium: {
     color: Color.colorRosybrown,
     fontFamily: FontFamily.pretendardLight,
@@ -190,12 +206,12 @@ textTypo3: {
     fontSize: FontSize.size_6xl,
     top: 29,
   },
-  titleText:{
-      color: Color.colorDarkslategray_100,
-      fontFamily: FontFamily.pretendardLight,
-      fontWeight: "700",
-      lineHeight: 40,
-      fontSize: FontSize.size_6xl,
+  titleText: {
+    color: Color.colorDarkslategray_100,
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "700",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
   },
 
   text: {

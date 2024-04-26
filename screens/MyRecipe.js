@@ -1,252 +1,321 @@
-import {useState, useEffect}  from "react";
-import {StyleSheet} from "react-native";
+import { useState, useEffect } from "react";
+import { StyleSheet } from "react-native";
 import { Image } from "expo-image";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-import { Divider, HStack, ScrollView, View, Text, VStack, Circle, Box, Pressable,ChevronRightIcon, AddIcon, Button, Modal, FormControl, Input, IconButton} from "native-base";
-import {db, auth} from '../firebaseConfig'
-import { useNavigation } from '@react-navigation/native';
-import { AntDesign } from '@expo/vector-icons';
+import {
+  Divider,
+  HStack,
+  ScrollView,
+  View,
+  Text,
+  VStack,
+  Circle,
+  Box,
+  Pressable,
+  ChevronRightIcon,
+  AddIcon,
+  Button,
+  Modal,
+  FormControl,
+  Input,
+  IconButton,
+} from "native-base";
+import { db, auth } from "../firebaseConfig";
+import { useNavigation } from "@react-navigation/native";
+import { AntDesign } from "@expo/vector-icons";
 
 const Frame1 = () => {
   const [showModal, setShowModal] = useState(false);
   const navigation = useNavigation(); // navigation hook 추가
   const [addedSkinTypes, setAddedSkinTypes] = useState([]);
-  const [remainingSkinTypes, setRemainingSkinTypes] = useState(['건성', '중성','지성', '복합성']);
+  const [remainingSkinTypes, setRemainingSkinTypes] = useState([
+    "건성",
+    "중성",
+    "지성",
+    "복합성",
+  ]);
   const [recipes, setRecipes] = useState([]); // 레시피 데이터를 저장할 state
 
-    async function getRecipe() {
-        const userId = auth.currentUser.uid;
-        const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
-        const recipeRef = userRef.collection('recipe'); // 레시피 컬렉션 참조 생성
-        const snapshot = await recipeRef.get(); // 레시피 컬렉션의 스냅샷 가져오기
-        
-        // 스냅샷에서 문서 데이터 가져오기
-        const recipes = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+  async function getRecipe() {
+    const userId = auth.currentUser.uid;
+    const userRef = db.collection("users").doc(userId); // 사용자 문서 참조 생성
+    const recipeRef = userRef.collection("recipe"); // 레시피 컬렉션 참조 생성
+    const snapshot = await recipeRef.get(); // 레시피 컬렉션의 스냅샷 가져오기
 
-        return recipes; // 레시피 데이터 반환
-      }
-      
-      
+    // 스냅샷에서 문서 데이터 가져오기
+    const recipes = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
-      useEffect(() => {
-        getRecipe().then((data) => setRecipes(data)); // 레시피 데이터 가져오기
-      }, []);
-      const groupedRecipes = recipes.reduce((grouped, recipe) => {
-        (grouped[recipe.skinType] = grouped[recipe.skinType] || []).push(recipe);
-        return grouped;
-      }, {});
+    return recipes; // 레시피 데이터 반환
+  }
 
-      
+  useEffect(() => {
+    getRecipe().then((data) => setRecipes(data)); // 레시피 데이터 가져오기
+  }, []);
+  const groupedRecipes = recipes.reduce((grouped, recipe) => {
+    (grouped[recipe.skinType] = grouped[recipe.skinType] || []).push(recipe);
+    return grouped;
+  }, {});
 
-      async function getSkinType() {
-        const userId = auth.currentUser.uid;
-        const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
-        const skinTypeRef = userRef.collection('type').doc('skinType'); // 피부타입 문서 참조 생성
-        const skinTypeDoc = await skinTypeRef.get();
-        return skinTypeDoc.exists ? skinTypeDoc.data().types : [];
-      }
-    
-      useEffect(() => {
-        getSkinType().then((skinTypes) => {
-          setAddedSkinTypes(skinTypes);
-          setRemainingSkinTypes(['건성', '중성','지성', '복합성'].filter((type) => !skinTypes.includes(type)));
-        });
-      }, []);
-    
-      const addSkinType = (type) => {
-        setAddedSkinTypes([...addedSkinTypes, type]);
-        setRemainingSkinTypes(remainingSkinTypes.filter((skinType) => skinType !== type));
-      };
-    
-      const removeSkinType = (type) => {
-        setAddedSkinTypes(addedSkinTypes.filter((skinType) => skinType !== type));
-        setRemainingSkinTypes([...remainingSkinTypes, type]);
-      };
-      
-      const saveSkinTypes = () => {
+  async function getSkinType() {
+    const userId = auth.currentUser.uid;
+    const userRef = db.collection("users").doc(userId); // 사용자 문서 참조 생성
+    const skinTypeRef = userRef.collection("type").doc("skinType"); // 피부타입 문서 참조 생성
+    const skinTypeDoc = await skinTypeRef.get();
+    return skinTypeDoc.exists ? skinTypeDoc.data().types : [];
+  }
 
-        const userId = auth.currentUser.uid;
-        const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
-        userRef.collection('type').doc('skinType').set({
-          types: addedSkinTypes,
-        }, { merge: true });
-      
-      };
+  useEffect(() => {
+    getSkinType().then((skinTypes) => {
+      setAddedSkinTypes(skinTypes);
+      setRemainingSkinTypes(
+        ["건성", "중성", "지성", "복합성"].filter(
+          (type) => !skinTypes.includes(type)
+        )
+      );
+    });
+  }, []);
 
-      async function deleteRecipe(recipeId) {
-        const userId = auth.currentUser.uid;
-        const userRef = db.collection('users').doc(userId);
-        const recipeRef = userRef.collection('recipe').doc(recipeId);
-      
-        await recipeRef.delete();
-        getRecipe().then((data) => setRecipes(data));
+  const addSkinType = (type) => {
+    setAddedSkinTypes([...addedSkinTypes, type]);
+    setRemainingSkinTypes(
+      remainingSkinTypes.filter((skinType) => skinType !== type)
+    );
+  };
 
-      }
+  const removeSkinType = (type) => {
+    setAddedSkinTypes(addedSkinTypes.filter((skinType) => skinType !== type));
+    setRemainingSkinTypes([...remainingSkinTypes, type]);
+  };
 
-      async function addRecipeToCart(recipe) {
-        const userId = auth.currentUser.uid;
-        const userRef = db.collection('users').doc(userId);
-        const cartRef = userRef.collection('cart');
-      
-        // id 속성 제거
-        const { id, ...recipeWithoutId } = recipe;
-      
-        await cartRef.add(recipeWithoutId);
-        alert("장바구니에 추가되었습니다.")
-      }
-      
-      
-    
-      return (
-        <View style={styles.view}>
-          <HStack mt={"20%"} ml={3}space={3} alignItems={"center"}>
-        <Pressable onPress={() => navigation.navigate('Screen1')}>
-        <Image
-          style={styles.chevronLeftIcon}
-          contentFit="cover"
-          source={require("../assets/chevronleft.png")}
+  const saveSkinTypes = () => {
+    const userId = auth.currentUser.uid;
+    const userRef = db.collection("users").doc(userId); // 사용자 문서 참조 생성
+    userRef.collection("type").doc("skinType").set(
+      {
+        types: addedSkinTypes,
+      },
+      { merge: true }
+    );
+  };
+
+  async function deleteRecipe(recipeId) {
+    const userId = auth.currentUser.uid;
+    const userRef = db.collection("users").doc(userId);
+    const recipeRef = userRef.collection("recipe").doc(recipeId);
+
+    await recipeRef.delete();
+    getRecipe().then((data) => setRecipes(data));
+  }
+
+  async function addRecipeToCart(recipe) {
+    const userId = auth.currentUser.uid;
+    const userRef = db.collection("users").doc(userId);
+    const cartRef = userRef.collection("cart");
+
+    // id 속성 제거
+    const { id, ...recipeWithoutId } = recipe;
+
+    await cartRef.add(recipeWithoutId);
+    alert("장바구니에 추가되었습니다.");
+  }
+
+  return (
+    <View style={styles.view}>
+      <HStack mt={"20%"} ml={3} space={3} alignItems={"center"}>
+        <Pressable onPress={() => navigation.navigate("Screen1")}>
+          <Image
+            style={styles.chevronLeftIcon}
+            contentFit="cover"
+            source={require("../assets/chevronleft.png")}
           />
         </Pressable>
-      <Text style={[styles.titleText, styles.textTypo4]}>My 레시피</Text>
+        <Text style={[styles.titleText, styles.textTypo4]}>My 레시피</Text>
       </HStack>
-          <VStack space={4}mt={10}>
-          <Box>
-  <HStack space={4} alignItems={"center"} justifyContent={"center"}>
-    {addedSkinTypes.map((type, index) => {
-      let result;
-      switch (type) {
-        case '지성':
-          result = '지성 피부';
-          break;
-        case '건성':
-          result = '건성·민감성 피부';
-          break;
-        case '중성':
-          result = '중성·약간 민감성 피부';
-          break;
-        case '복합성':
-          result = '복합성 피부';
-          break;
-      }
-      return (
-        <Pressable key={type} onPress={() => navigation.navigate('Result', { result })}>
-          <Circle size="60px" bg={index === 0 ? "#B5CECE" : index === 1 ? "#83B8B8" : "#5DA6A6"}>
-            <Text color={"#033838"}>{type}</Text>
-          </Circle>
-        </Pressable>
-      );
-    })}
-    <Pressable onPress={() => setShowModal(true)}>
-      <Circle size="60px" borderColor={"#83B8B8"} borderWidth={2}>
-        <AddIcon color={"#033838"}/>
-      </Circle>
-    </Pressable>
-  </HStack>
-</Box>
-
-          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <Modal.Content maxWidth="400px">
-          <Modal.CloseButton />
-          <Modal.Header >
-            <Text style={styles.text}>
-              피부 타입 추가
-            </Text>
-          </Modal.Header>
-          <Modal.Body>
-            {/* 피부 타입 추가 */}
-            <Box>
-        <HStack alignItems={"center"} space={2}>
-          <Text>추가된 타입</Text>
-          <Divider w={"70%"} />
-        </HStack>
-      </Box>
-      {addedSkinTypes.map((type) => (
-        <Box key={type}>
-          <HStack justifyContent={"space-between"} alignItems={"center"}>
-            <Text>{type}</Text>
-            <IconButton _pressed={{bg: "red.600:alpha.20"}} onPress={() => removeSkinType(type)} icon={<AntDesign name="minuscircleo" size={18} color="#D80000"  />} borderRadius="full" />
+      <VStack space={4} mt={10}>
+        <Box>
+          <HStack space={4} alignItems={"center"} justifyContent={"center"}>
+            {addedSkinTypes.map((type, index) => {
+              let result;
+              switch (type) {
+                case "지성":
+                  result = "지성 피부";
+                  break;
+                case "건성":
+                  result = "건성·민감성 피부";
+                  break;
+                case "중성":
+                  result = "중성·약간 민감성 피부";
+                  break;
+                case "복합성":
+                  result = "복합성 피부";
+                  break;
+              }
+              return (
+                <Pressable
+                  key={type}
+                  onPress={() => navigation.navigate("Result", { result })}
+                >
+                  <Circle
+                    size="60px"
+                    bg={
+                      index === 0
+                        ? "#B5CECE"
+                        : index === 1
+                        ? "#83B8B8"
+                        : "#5DA6A6"
+                    }
+                  >
+                    <Text color={"#033838"}>{type}</Text>
+                  </Circle>
+                </Pressable>
+              );
+            })}
+            <Pressable onPress={() => setShowModal(true)}>
+              <Circle size="60px" borderColor={"#83B8B8"} borderWidth={2}>
+                <AddIcon color={"#033838"} />
+              </Circle>
+            </Pressable>
           </HStack>
         </Box>
-      ))}
-      <Box>
-        <HStack alignItems={"center"} space={2}>
-          <Text>피부 타입</Text>
-          <Divider w={"70%"} />
-        </HStack>
-      </Box>
-      {remainingSkinTypes.map((type) => (
-        <Box key={type}>
-          <HStack justifyContent={"space-between"} alignItems={"center"}>
-            <Text>{type}</Text>
-            <IconButton _pressed={{bg: "green.600:alpha.20"}} onPress={() => addSkinType(type)} icon={<AntDesign name="pluscircleo" size={18} color="#488000" />} borderRadius="full" />
-          </HStack>
-        </Box>
-      ))}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button.Group space={2}>
-              <Button variant="ghost" colorScheme="blueGray" onPress={() => {
-              setShowModal(false);
-            }}>
-                <Text style={styles.text}>
-                  취소
-                </Text>
-              </Button>
-              <Button bg="#83B8B8" onPress={() => {
-              setShowModal(false);
-              saveSkinTypes();
-            }}>
-                <Text style={styles.text} color={"white"}>
-                  저장
-                </Text>
-              </Button>
-            </Button.Group>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
 
-            </VStack>
-            <Divider/>
-            <Text ml={5} mt={2} style={styles.textTypo5}>피부 타입별 레시피</Text>
-            {Object.keys(groupedRecipes).map((skinType) => (
-              <Box key={skinType} mt={5} ml={5}>
-                <HStack space={2} alignItems={'center'}>
-                <Text style={styles.textTypo}>{skinType}</Text>
-                <Divider w={'70%'}/>
+        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+          <Modal.Content maxWidth="400px">
+            <Modal.CloseButton />
+            <Modal.Header>
+              <Text style={styles.text}>피부 타입 추가</Text>
+            </Modal.Header>
+            <Modal.Body>
+              {/* 피부 타입 추가 */}
+              <Box>
+                <HStack alignItems={"center"} space={2}>
+                  <Text>추가된 타입</Text>
+                  <Divider w={"70%"} />
                 </HStack>
-                {groupedRecipes[skinType].map((recipe) => (
-                  <VStack key={recipe.id}>
-                    
-                  <Pressable ml={8} mr={8}>
-                  <HStack h={60} alignItems={"center"} justifyContent="space-between">
+              </Box>
+              {addedSkinTypes.map((type) => (
+                <Box key={type}>
+                  <HStack
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                  >
+                    <Text>{type}</Text>
+                    <IconButton
+                      _pressed={{ bg: "red.600:alpha.20" }}
+                      onPress={() => removeSkinType(type)}
+                      icon={
+                        <AntDesign
+                          name="minuscircleo"
+                          size={18}
+                          color="#D80000"
+                        />
+                      }
+                      borderRadius="full"
+                    />
+                  </HStack>
+                </Box>
+              ))}
+              <Box>
+                <HStack alignItems={"center"} space={2}>
+                  <Text>피부 타입</Text>
+                  <Divider w={"70%"} />
+                </HStack>
+              </Box>
+              {remainingSkinTypes.map((type) => (
+                <Box key={type}>
+                  <HStack
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                  >
+                    <Text>{type}</Text>
+                    <IconButton
+                      _pressed={{ bg: "green.600:alpha.20" }}
+                      onPress={() => addSkinType(type)}
+                      icon={
+                        <AntDesign
+                          name="pluscircleo"
+                          size={18}
+                          color="#488000"
+                        />
+                      }
+                      borderRadius="full"
+                    />
+                  </HStack>
+                </Box>
+              ))}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button.Group space={2}>
+                <Button
+                  variant="ghost"
+                  colorScheme="blueGray"
+                  onPress={() => {
+                    setShowModal(false);
+                  }}
+                >
+                  <Text style={styles.text}>취소</Text>
+                </Button>
+                <Button
+                  bg="#83B8B8"
+                  onPress={() => {
+                    setShowModal(false);
+                    saveSkinTypes();
+                  }}
+                >
+                  <Text style={styles.text} color={"white"}>
+                    저장
+                  </Text>
+                </Button>
+              </Button.Group>
+            </Modal.Footer>
+          </Modal.Content>
+        </Modal>
+      </VStack>
+      <Divider />
+      <Text ml={5} mt={2} style={styles.textTypo5}>
+        피부 타입별 레시피
+      </Text>
+      {Object.keys(groupedRecipes).map((skinType) => (
+        <Box key={skinType} mt={5} ml={5}>
+          <HStack space={2} alignItems={"center"}>
+            <Text style={styles.textTypo}>{skinType}</Text>
+            <Divider w={"70%"} />
+          </HStack>
+          {groupedRecipes[skinType].map((recipe) => (
+            <VStack key={recipe.id}>
+              <Pressable ml={8} mr={8}>
+                <HStack
+                  h={60}
+                  alignItems={"center"}
+                  justifyContent="space-between"
+                >
                   <Text style={styles.textTypo1}>{recipe.레시피}</Text>
                   <HStack>
-                  <IconButton
-  _pressed={{bg: "gray.600:alpha.10"}}
-  icon={<AntDesign name="shoppingcart" size={18} color="gray"  />}
-  borderRadius="full"
-  onPress={() => addRecipeToCart(recipe)}
-/>
-<IconButton
-  _pressed={{bg: "gray.600:alpha.10"}}
-  icon={<AntDesign name="minus" size={18} color="gray"  />}
-  borderRadius="full"
-  onPress={() => deleteRecipe(recipe.id)}
-/>
-
+                    <IconButton
+                      _pressed={{ bg: "gray.600:alpha.10" }}
+                      icon={
+                        <AntDesign name="shoppingcart" size={18} color="gray" />
+                      }
+                      borderRadius="full"
+                      onPress={() => addRecipeToCart(recipe)}
+                    />
+                    <IconButton
+                      _pressed={{ bg: "gray.600:alpha.10" }}
+                      icon={<AntDesign name="minus" size={18} color="gray" />}
+                      borderRadius="full"
+                      onPress={() => deleteRecipe(recipe.id)}
+                    />
                   </HStack>
-                  </HStack>
-                </Pressable>
-                    
-                  </VStack>
-                ))}
-              </Box>
-            ))}
-        </View>
-      );
+                </HStack>
+              </Pressable>
+            </VStack>
+          ))}
+        </Box>
+      ))}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -255,24 +324,24 @@ const styles = StyleSheet.create({
     left: 0,
     position: "absolute",
   },
-  titleText:{
+  titleText: {
     color: Color.colorDarkslategray_100,
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "700",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-},
-textTypo4: {
-  fontFamily: FontFamily.pretendardLight,
-  fontWeight: "600",
-  lineHeight: 40,
-  fontSize: FontSize.size_6xl,
-},
-textTypo5: {
-  fontFamily: FontFamily.pretendardLight,
-  lineHeight: 40,
-  fontSize: FontSize.size_xl,
-},
+  },
+  textTypo4: {
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "600",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+  },
+  textTypo5: {
+    fontFamily: FontFamily.pretendardLight,
+    lineHeight: 40,
+    fontSize: FontSize.size_xl,
+  },
   textTypo2: {
     width: 108,
     textAlign: "center",

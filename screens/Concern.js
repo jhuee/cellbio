@@ -1,68 +1,81 @@
 import React, { useState, useEffect } from "react";
 import { Image } from "expo-image";
-import { StyleSheet, View,  } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import {Box, VStack, HStack, Text, Pressable, ScrollView, Checkbox, Circle} from "native-base";
+import {
+  Box,
+  VStack,
+  HStack,
+  Text,
+  Pressable,
+  ScrollView,
+  Checkbox,
+  Circle,
+} from "native-base";
 import { setConcern } from "../src/actions";
 import { useDispatch } from "react-redux";
 const Frame6 = () => {
   const navigation = useNavigation();
   const [groupValue, setGroupValue] = useState([]);
   const num = [
-    { color:"#BCB1B1", text: '1' },
-    { color:"#BCB1B1", text: '2' },
-    { color: "#8E6868", text: '3' },
-    { color:"#BCB1B1", text: "4" },
-    { color:"#BCB1B1", text: '5' },
-    { color:"#BCB1B1", text: '6' },
-    { color:"#BCB1B1", text: '7' },
-    { color:"#BCB1B1", text: '8' },
+    { color: "#BCB1B1", text: "1" },
+    { color: "#BCB1B1", text: "2" },
+    { color: "#8E6868", text: "3" },
+    { color: "#BCB1B1", text: "4" },
+    { color: "#BCB1B1", text: "5" },
+    { color: "#BCB1B1", text: "6" },
+    { color: "#BCB1B1", text: "7" },
+    { color: "#BCB1B1", text: "8" },
   ];
   const items = [
     {
-      title: '예민',
-      content: '알로에, 알란토인 등',
+      title: "예민",
+      content: "알로에, 알란토인 등",
     },
     {
-      title: '각질',
-      content: 'A-HA, BA-HA, 효소, 썰파 등',
+      title: "각질",
+      content: "A-HA, BA-HA, 효소, 썰파 등",
     },
     {
-      title: '주름 개선',
-      content: '레티놀, 콜라겐, 아데노신 등',
+      title: "주름 개선",
+      content: "레티놀, 콜라겐, 아데노신 등",
     },
     {
-      title: '브라이트닝',
-      content: '비타민C, 나이아신 아마이드, 알부틴, 감초추출물 등',
+      title: "브라이트닝",
+      content: "비타민C, 나이아신 아마이드, 알부틴, 감초추출물 등",
     },
     {
-      title: '건조',
-      content: '히아루론산, 글리세린, 세라마이드, 호호바오일, 코코넛오일, 쉐어버터, 미네랄오일 등',
+      title: "건조",
+      content:
+        "히아루론산, 글리세린, 세라마이드, 호호바오일, 코코넛오일, 쉐어버터, 미네랄오일 등",
     },
     {
-      title: '미백',
-      content: '글루타치온, 화이트닝컴플렉스, 이데베논, 녹차추출물, 감초추출물, 나이아신아마읻, 알부틴',
+      title: "미백",
+      content:
+        "글루타치온, 화이트닝컴플렉스, 이데베논, 녹차추출물, 감초추출물, 나이아신아마읻, 알부틴",
     },
     {
-      title: '보습',
-      content: '세라마이드, D판테놀, 콜라겐, 글리세레스-26, 히알루론산, 엘라스틴, 아미노산, 트레할로스, 베타인',
+      title: "보습",
+      content:
+        "세라마이드, D판테놀, 콜라겐, 글리세레스-26, 히알루론산, 엘라스틴, 아미노산, 트레할로스, 베타인",
     },
     {
-      title: '재생',
-      content: 'EGF, D판테놀, 보르피린 등',
+      title: "재생",
+      content: "EGF, D판테놀, 보르피린 등",
     },
     {
-      title: '항산화·노화',
-      content: '코엔자임Q10, 이데베논, 화이트닝컴플렉스',
+      title: "항산화·노화",
+      content: "코엔자임Q10, 이데베논, 화이트닝컴플렉스",
     },
     {
-      title: '트러블·여드름',
-      content: '펩타이드, 피토넵, 화이트닝컴플렉스, 어성초추출물, 녹차추출물, 감초 추출물, 알란토인',
-    }, 
+      title: "트러블·여드름",
+      content:
+        "펩타이드, 피토넵, 화이트닝컴플렉스, 어성초추출물, 녹차추출물, 감초 추출물, 알란토인",
+    },
     {
-      title: '진정(수렴)',
-      content: '녹차추출물',
+      title: "진정(수렴)",
+      content: "녹차추출물",
     },
   ];
 
@@ -80,54 +93,69 @@ const Frame6 = () => {
       />
       <Text style={[styles.text7, styles.text3]}>피부 고민을 선택해주세요</Text>
 
-      <HStack mt={3} ml={3}space={3} alignItems={"center"}>
+      <HStack mt={3} ml={3} space={3} alignItems={"center"}>
         <Pressable onPress={() => navigation.goBack()}>
-        <Image
-          style={styles.chevronLeftIcon}
-          contentFit="cover"
-          source={require("../assets/chevronleft.png")}
+          <Image
+            style={styles.chevronLeftIcon}
+            contentFit="cover"
+            source={require("../assets/chevronleft.png")}
           />
         </Pressable>
-      <Text style={[styles.titleText, styles.textTypo2]}>피부 고민 별 선택사항</Text>
+        <Text style={[styles.titleText, styles.textTypo2]}>
+          피부 고민 별 선택사항
+        </Text>
       </HStack>
       <Text style={styles.n}>최대 2개 가능</Text>
 
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
-          <Circle key={idx} size={"28px"} bg={item.color}>
-          <Text style={[ styles.textTypo1]}>{item.text}</Text>
-          </Circle>
+            <Circle key={idx} size={"28px"} bg={item.color}>
+              <Text style={[styles.textTypo1]}>{item.text}</Text>
+            </Circle>
           ))}
         </HStack>
       </View>
 
-      <ScrollView mt={130} >
-      
-      <Checkbox.Group  colorScheme="yellow" defaultValue={groupValue} onChange={values => setGroupValue(values || [])}>
+      <ScrollView mt={130}>
+        <Checkbox.Group
+          colorScheme="yellow"
+          defaultValue={groupValue}
+          onChange={(values) => setGroupValue(values || [])}
+        >
           <VStack alignSelf={"center"} marginTop={4} space={5}>
-              {items.map((item, index) => (
-              <Box key={index} style={[styles.rectangleParentLayout, styles.frameChildLayout]} pl={4} pt={3} alignItems={"flex-start"}>
-              <HStack>
-                <Checkbox mt={8} value={item.title} aria-label="concern" ></Checkbox>
-                <VStack>
-                  <Text style={[styles.text9, styles.textTypo]}>{item.title}</Text>
-                  <Text style={[styles.text10, styles.textLayout]}>{item.content}</Text>
-                </VStack>
-              </HStack>
+            {items.map((item, index) => (
+              <Box
+                key={index}
+                style={[styles.rectangleParentLayout, styles.frameChildLayout]}
+                pl={4}
+                pt={3}
+                alignItems={"flex-start"}
+              >
+                <HStack>
+                  <Checkbox
+                    mt={8}
+                    value={item.title}
+                    aria-label="concern"
+                  ></Checkbox>
+                  <VStack>
+                    <Text style={[styles.text9, styles.textTypo]}>
+                      {item.title}
+                    </Text>
+                    <Text style={[styles.text10, styles.textLayout]}>
+                      {item.content}
+                    </Text>
+                  </VStack>
+                </HStack>
               </Box>
-              ))}
+            ))}
           </VStack>
-      </Checkbox.Group>
-    </ScrollView>
+        </Checkbox.Group>
+      </ScrollView>
 
-    <Pressable
-        style={[styles.rectangleView]}
-        onPress={handlePress}      
-    >
+      <Pressable style={[styles.rectangleView]} onPress={handlePress}>
         <Text style={styles.text8}>선택 완료</Text>
       </Pressable>
-
     </View>
   );
 };
@@ -141,19 +169,19 @@ const styles = StyleSheet.create({
     height: 30,
     position: "absolute",
   },
-  titleText:{
+  titleText: {
     color: Color.colorDarkslategray_100,
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "700",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-},
-textTypo2: {
-  fontFamily: FontFamily.pretendardLight,
-  fontWeight: "600",
-  lineHeight: 40,
-  fontSize: FontSize.size_6xl,
-},
+  },
+  textTypo2: {
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "600",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+  },
   textTypo1: {
     color: Color.colorWhite,
     fontSize: FontSize.size_xl,
@@ -277,8 +305,7 @@ textTypo2: {
   rectangleView: {
     backgroundColor: Color.colorSilver,
     height: 82,
-  
-   },
+  },
   text8: {
     color: Color.colorGray_300,
     fontWeight: "500",
@@ -286,7 +313,7 @@ textTypo2: {
     fontSize: FontSize.size_6xl,
     fontFamily: FontFamily.pretendardLight,
     textAlign: "center",
-    marginTop: 15
+    marginTop: 15,
   },
   rectangleParent: {
     width: "100%",
@@ -294,7 +321,7 @@ textTypo2: {
     bottom: 0,
   },
   n: {
-    top:100,
+    top: 100,
     color: "#464646",
     lineHeight: 24,
     fontSize: FontSize.size_mini,

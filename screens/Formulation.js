@@ -1,26 +1,35 @@
 import * as React from "react";
 import { Image } from "expo-image";
-import { StyleSheet, View,  } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
-import { ScrollView,Box, VStack, HStack, Text, Center,Pressable, Circle } from "native-base";
-import { useSelector } from 'react-redux';
+import {
+  ScrollView,
+  Box,
+  VStack,
+  HStack,
+  Text,
+  Center,
+  Pressable,
+  Circle,
+} from "native-base";
+import { useSelector } from "react-redux";
 import { setFormulation } from "../src/actions";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 
 const Frame8 = () => {
   const navigation = useNavigation();
   const num = [
-    { color: "#8E6868", text: '1' },
-    { color:"#BCB1B1", text: '2' },
-    { color:"#BCB1B1", text: '3' },
-    { color:"#BCB1B1", text: "4" },
-    { color:"#BCB1B1", text: '5' },
-    { color:"#BCB1B1", text: '6' },
-    { color:"#BCB1B1", text: '7' },
-    { color:"#BCB1B1", text: '8' },
+    { color: "#8E6868", text: "1" },
+    { color: "#BCB1B1", text: "2" },
+    { color: "#BCB1B1", text: "3" },
+    { color: "#BCB1B1", text: "4" },
+    { color: "#BCB1B1", text: "5" },
+    { color: "#BCB1B1", text: "6" },
+    { color: "#BCB1B1", text: "7" },
+    { color: "#BCB1B1", text: "8" },
   ];
-  const kk = useSelector(state => state.item);
+  const kk = useSelector((state) => state.item);
   const items = [
     {
       text: "#리치한 영양감",
@@ -50,10 +59,9 @@ const Frame8 = () => {
     dispatch(setFormulation(item));
     navigation.navigate("Frame7");
   };
-  
+
   return (
     <View style={styles.view}>
-    
       <Image
         style={[styles.child, styles.iconLayout]}
         contentFit="cover"
@@ -64,47 +72,55 @@ const Frame8 = () => {
       </Text>
       <HStack mt={3} ml={3} space={3} alignItems={"center"}>
         <Pressable onPress={() => navigation.goBack()}>
-        <Image
-          style={styles.chevronLeftIcon}
-          contentFit="cover"
-          source={require("../assets/chevronleft.png")}
+          <Image
+            style={styles.chevronLeftIcon}
+            contentFit="cover"
+            source={require("../assets/chevronleft.png")}
           />
         </Pressable>
-      <Text style={[styles.text, styles.textTypo3]}>제형 고르기</Text>
+        <Text style={[styles.text, styles.textTypo3]}>제형 고르기</Text>
       </HStack>
-      <ScrollView mt={130}
-      >
-      <VStack justifyContent={"center"} alignSelf={"center"} marginTop={4} space={1}>
-        {items.map((item, index) =>(
-        <Pressable key={index} onPress={() =>handlePress(item.text) } w={360}>
-          <Box p={5} alignItems={"center"}>
-          <Image
-              style={[
-                styles.wrapperKakaotalk20231117030,
-                styles.iconPosition,
-                styles.wrapperPosition,
-              ]}
-              contentFit="cover"
-              source={item.image}
-            />
-  
-          <Text style={[styles.text1, styles.textTypo2]}pt={2} pl={1}>{item.text}</Text>
-          </Box>
-        </Pressable>
-        ))}
+      <ScrollView mt={130}>
+        <VStack
+          justifyContent={"center"}
+          alignSelf={"center"}
+          marginTop={4}
+          space={1}
+        >
+          {items.map((item, index) => (
+            <Pressable
+              key={index}
+              onPress={() => handlePress(item.text)}
+              w={360}
+            >
+              <Box p={5} alignItems={"center"}>
+                <Image
+                  style={[
+                    styles.wrapperKakaotalk20231117030,
+                    styles.iconPosition,
+                    styles.wrapperPosition,
+                  ]}
+                  contentFit="cover"
+                  source={item.image}
+                />
 
-    </VStack>
+                <Text style={[styles.text1, styles.textTypo2]} pt={2} pl={1}>
+                  {item.text}
+                </Text>
+              </Box>
+            </Pressable>
+          ))}
+        </VStack>
       </ScrollView>
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
-          <Circle key={idx} size={"28px"} bg={item.color}>
-          <Text style={[ styles.textTypo]}>{item.text}</Text>
-          </Circle>
+            <Circle key={idx} size={"28px"} bg={item.color}>
+              <Text style={[styles.textTypo]}>{item.text}</Text>
+            </Circle>
           ))}
         </HStack>
       </View>
-
     </View>
   );
 };

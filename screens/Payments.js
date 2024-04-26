@@ -1,62 +1,80 @@
 import React, { useState, useEffect } from "react";
-import {  StyleSheet, View,  Alert,  TouchableOpacity,Keyboard,Modal, Button, TextInput, Platform} from "react-native";
+import {
+  StyleSheet,
+  View,
+  Alert,
+  TouchableOpacity,
+  Keyboard,
+  Modal,
+  Button,
+  TextInput,
+  Platform,
+} from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
-import { ScrollView, VStack, Box, FormControl, Input ,Text, HStack, KeyboardAvoidingView, Divider, IconButton, Pressable, FlatList, Radio} from "native-base";
-import {auth,db} from '../firebaseConfig'
+import {
+  ScrollView,
+  VStack,
+  Box,
+  FormControl,
+  Input,
+  Text,
+  HStack,
+  KeyboardAvoidingView,
+  Divider,
+  IconButton,
+  Pressable,
+  FlatList,
+  Radio,
+} from "native-base";
+import { auth, db } from "../firebaseConfig";
 import { useSelector } from "react-redux";
-import { Feather } from '@expo/vector-icons';
-
-
+import { Feather } from "@expo/vector-icons";
 
 const Payment = () => {
   const navigation = useNavigation();
   const [show, setShow] = React.useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
-  const [user, setUser] = useState('');
-  const item = useSelector(state => state.item);
-  const formulation = useSelector(state => state.formulation);
-  const base = useSelector(state => state.base);
-  const concern = useSelector(state => state.concern);
-  const concentration = useSelector(state => state.concentration);
-  const volume = useSelector(state => state.volume);
-  const bottle = useSelector(state => state.case);
-  const name = useSelector(state => state.name);
-  const extra = useSelector(state => state.extra);
-  const price = useSelector(state => state.price);
-  const total = useSelector(state => state.total);
-  const [depositor, setDepositor] = useState('');
+  const [user, setUser] = useState("");
+  const item = useSelector((state) => state.item);
+  const formulation = useSelector((state) => state.formulation);
+  const base = useSelector((state) => state.base);
+  const concern = useSelector((state) => state.concern);
+  const concentration = useSelector((state) => state.concentration);
+  const volume = useSelector((state) => state.volume);
+  const bottle = useSelector((state) => state.case);
+  const name = useSelector((state) => state.name);
+  const extra = useSelector((state) => state.extra);
+  const price = useSelector((state) => state.price);
+  const total = useSelector((state) => state.total);
+  const [depositor, setDepositor] = useState("");
 
   const [count, setCount] = useState(1); // 초기값을 1로 설정
-  const [address, setAddress] = useState('');
-  const [keyword, setKeyword] = useState('');
-  const [detailAddr, setDetailAddr] = useState('');
+  const [address, setAddress] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [detailAddr, setDetailAddr] = useState("");
   const [sender, setSender] = useState(user);
   const [receiver, setReceiver] = useState(user);
   // const [extraValue, setExtraValue] = useState();
   const [totalPrice, setTotalPrice] = useState();
   const [itemPrice, setitemPrice] = useState(0);
   const increaseCount = () => {
-      setCount(count + 1); // count 값을 1 증가
-      setitemPrice(total * (count+1))
-  }
+    setCount(count + 1); // count 값을 1 증가
+    setitemPrice(total * (count + 1));
+  };
 
   const decreaseCount = () => {
-      if (count > 1) { // count 값이 1보다 클 때만 감소
-          setCount(count - 1); // count 값을 1 감소
-          setitemPrice(total * (count-1))
-      }
-  }
-
-
+    if (count > 1) {
+      // count 값이 1보다 클 때만 감소
+      setCount(count - 1); // count 값을 1 감소
+      setitemPrice(total * (count - 1));
+    }
+  };
 
   useEffect(() => {
-    setitemPrice(total)
-
-
- 
+    setitemPrice(total);
   }, [total]); // 의존성 배열에 상태를 추가합니다.
 
   // 총 가격에 수량을 반영하여 최종 가격을 계산합니다.
@@ -64,104 +82,100 @@ const Payment = () => {
   const now = new Date();
 
   const year = now.getFullYear();
-  const month = now.getMonth();  
+  const month = now.getMonth();
   const date = now.getDate();
-  
-  const paymentTime = now.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul'});
-  const paymentDate = new Date(year, month, date  );  
+
+  const paymentTime = now.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
+  const paymentDate = new Date(year, month, date);
   const getUserData = async () => {
     const userId = auth.currentUser.uid;
-    const userRef = db.collection('users').doc(userId); 
-  
+    const userRef = db.collection("users").doc(userId);
+
     const doc = await userRef.get();
-  
+
     if (doc.exists) {
       const userData = doc.data();
       const name = userData.name;
-      setUser(name)
+      setUser(name);
     } else {
       console.log("No such document!");
     }
-  }
-  
-  getUserData();
-  
-
-  
-const validateInput = () => {
-  if(keyword === '' || user === '') {
-    Alert.alert(
-      "",
-      "모든 필드를 채워주세요", 
-      [
-        {text: "확인"}
-      ],
-      { cancelable: false }
-    );
-    return false;
-  }
-  return true;
-};
-
-
-
-const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
-  const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-
-  const searchAddress = async () => {
-    const apiKey = 'devU01TX0FVVEgyMDI0MDIwNzA0NDIxMTExNDUwMTY=';
-    const url = `http://business.juso.go.kr/addrlink/addrLinkApi.do?confmKey=${apiKey}&currentPage=1&countPerPage=20&keyword=${encodeURI(searchText)}&resultType=json`;
-  
-    const response = await fetch(url);
-    const data = await response.json();
-    
-    if (data.results.juso && data.results.juso.length > 0) {
-      setSearchResults(data.results.juso);
-    } else {
-      console.log("No such address!");
-    }
   };
 
-  const setAddress = (addr) => {
-    setKeyword(addr);
-    onClose();
-  }
-  return (
-    <Modal visible={isVisible} onRequestClose={onClose}>
-      <View style={{flex: 1}}> 
-      <VStack space={1} flex={1} mt={"15%"}>
-        <HStack >
-        <Input 
-          width={"75%"}
-          value={searchText} 
-          onChangeText={text => setSearchText(text)}
-          placeholder="주소 검색" 
-          size={"lg"}
-        />
-        <Button title="검색" onPress={searchAddress} />
-        <Button title="닫기" onPress={onClose} />
-        </HStack>
-        <ScrollView  > 
-        
-        {searchResults.map((result, index) => (
-        <Pressable key={index} onPress={() => setAddress(result.roadAddr)} mt={1} mb={1} borderBottomWidth={1} borderBottomColor={"gray.300"}>
-          <Text key={index} style={styles.text21}>
-            지번주소: {result.jibunAddr} {"\n"}
-            도로명주소: {result.roadAddr} {"\n"}
-            우편번호: {result.zipNo} 
-          </Text>
-          </Pressable>
-        
-        ))}
-       
-        </ScrollView>
-      </VStack>
-      </View>
-    </Modal>
+  getUserData();
 
-  );
-};
+  const validateInput = () => {
+    if (keyword === "" || user === "") {
+      Alert.alert("", "모든 필드를 채워주세요", [{ text: "확인" }], {
+        cancelable: false,
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
+    const [searchText, setSearchText] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+
+    const searchAddress = async () => {
+      const apiKey = "devU01TX0FVVEgyMDI0MDIwNzA0NDIxMTExNDUwMTY=";
+      const url = `http://business.juso.go.kr/addrlink/addrLinkApi.do?confmKey=${apiKey}&currentPage=1&countPerPage=20&keyword=${encodeURI(
+        searchText
+      )}&resultType=json`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.results.juso && data.results.juso.length > 0) {
+        setSearchResults(data.results.juso);
+      } else {
+        console.log("No such address!");
+      }
+    };
+
+    const setAddress = (addr) => {
+      setKeyword(addr);
+      onClose();
+    };
+    return (
+      <Modal visible={isVisible} onRequestClose={onClose}>
+        <View style={{ flex: 1 }}>
+          <VStack space={1} flex={1} mt={"15%"}>
+            <HStack>
+              <Input
+                width={"75%"}
+                value={searchText}
+                onChangeText={(text) => setSearchText(text)}
+                placeholder="주소 검색"
+                size={"lg"}
+              />
+              <Button title="검색" onPress={searchAddress} />
+              <Button title="닫기" onPress={onClose} />
+            </HStack>
+            <ScrollView>
+              {searchResults.map((result, index) => (
+                <Pressable
+                  key={index}
+                  onPress={() => setAddress(result.roadAddr)}
+                  mt={1}
+                  mb={1}
+                  borderBottomWidth={1}
+                  borderBottomColor={"gray.300"}
+                >
+                  <Text key={index} style={styles.text21}>
+                    지번주소: {result.jibunAddr} {"\n"}
+                    도로명주소: {result.roadAddr} {"\n"}
+                    우편번호: {result.zipNo}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </VStack>
+        </View>
+      </Modal>
+    );
+  };
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -174,183 +188,250 @@ const AddressSearchModal = ({ isVisible, onClose, onSelected }) => {
     closeModal();
   };
 
-
   return (
-
     <View style={styles.view}>
-
-<AddressSearchModal 
-        isVisible={modalVisible} 
-        onClose={closeModal} 
-        onSelected={handleAddressSelected} 
+      <AddressSearchModal
+        isVisible={modalVisible}
+        onClose={closeModal}
+        onSelected={handleAddressSelected}
       />
 
       <Text style={styles.text}>주문하기</Text>
-      <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={10}   >
-      <ScrollView mt={180} ml={15} mr={30} >
-        
-        <VStack space={2} mr={5} ml={5}>
-        {item ? (<>
-          <Box  mr={8}>
-                <HStack h={60} alignItems={"center"} justifyContent="space-between">
-                <Text style={styles.texttb}>{name}</Text>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={10}
+      >
+        <ScrollView mt={180} ml={15} mr={30}>
+          <VStack space={2} mr={5} ml={5}>
+            {item ? (
+              <>
+                <Box mr={8}>
+                  <HStack
+                    h={60}
+                    alignItems={"center"}
+                    justifyContent="space-between"
+                  >
+                    <Text style={styles.texttb}>{name}</Text>
+                  </HStack>
+                  <Text>{bottle}</Text>
+                </Box>
+                <HStack alignItems={"center"} justifyContent={"space-between"}>
+                  <HStack alignItems={"center"} space={1}>
+                    <IconButton
+                      _pressed={{ bg: "gray.100:alpha.1" }}
+                      icon={<Feather name="minus" size={18} color={"gray"} />}
+                      borderRadius="full"
+                      onPress={decreaseCount}
+                    />
+
+                    <Box
+                      alignItems={"center"}
+                      w={10}
+                      borderWidth={1}
+                      borderRadius={5}
+                    >
+                      <Text>{count}</Text>
+                    </Box>
+                    <IconButton
+                      _pressed={{ bg: "gray.100:alpha.1" }}
+                      icon={<Feather name="plus" size={18} color={"gray"} />}
+                      borderRadius="full"
+                      onPress={increaseCount}
+                    />
+                  </HStack>
+
+                  <Text style={styles.text4}>
+                    {itemPrice.toLocaleString("ko-KR", {
+                      style: "currency",
+                      currency: "KRW",
+                    })}
+                  </Text>
                 </HStack>
-        <Text>
-           {bottle} 
-        </Text>
-        </Box> 
-        <HStack alignItems={"center"} justifyContent={"space-between"}>
-        
-          <HStack alignItems={"center"} space={1}>
-        <IconButton _pressed={{bg: "gray.100:alpha.1"}} icon={<Feather name="minus" size={18} color={"gray"}/>} borderRadius="full"  onPress={decreaseCount}/>
-
-        <Box alignItems={"center"} w={10} borderWidth={1} borderRadius={5}> 
-          <Text>{count}</Text>
-        </Box>
-        <IconButton  _pressed={{bg: "gray.100:alpha.1"}}  icon={<Feather name="plus" size={18} color={"gray"}/>}  borderRadius="full" onPress={increaseCount}/>
-        </HStack>
-
-        <Text style={styles.text4}>{itemPrice.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' })}</Text>
-        </HStack>
-        </>) : (<>
-          <Box  mr={8}>
-                <HStack h={60} alignItems={"center"} justifyContent="space-between">
-                <Text style={styles.texttb}>{name}</Text>
+              </>
+            ) : (
+              <>
+                <Box mr={8}>
+                  <HStack
+                    h={60}
+                    alignItems={"center"}
+                    justifyContent="space-between"
+                  >
+                    <Text style={styles.texttb}>{name}</Text>
+                  </HStack>
+                  <Text>{extraValue}</Text>
+                </Box>
+                <HStack alignItems={"center"} justifyContent={"space-between"}>
+                  <HStack alignItems={"center"} space={1}></HStack>
+                  <Text style={styles.text4}>
+                    {totalPrice.toLocaleString("ko-KR", {
+                      style: "currency",
+                      currency: "KRW",
+                    })}
+                  </Text>
                 </HStack>
-                <Text>
-          {extraValue}
-        </Text>
-        </Box> 
-        <HStack alignItems={"center"} justifyContent={"space-between"}>
-          <HStack alignItems={"center"} space={1}>
-       
-        </HStack>
-        <Text style={styles.text4}>{totalPrice.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' })}</Text>
-        </HStack>
-        </>)}
-  
+              </>
+            )}
 
-        
+            <Divider />
+            <Text style={styles.texttb}>주문자 정보</Text>
+            <Text>보내는 사람</Text>
+            <Input
+              size="lg"
+              width={"100%"}
+              backgroundColor={"white"}
+              focusOutlineColor={"#9A887E"}
+              mr={1}
+              onChangeText={(text) => setSender(text)}
+              value={sender ? sender : user}
+            />
 
-        <Divider/>
-        <Text style={styles.texttb}>주문자 정보</Text>
-        <Text>보내는 사람</Text>
-        <Input
-          size="lg"
-          width={"100%"}
-          backgroundColor={"white"}
-          focusOutlineColor={"#9A887E"}
-          mr={1}
-          onChangeText={text => setSender(text)}
-          value={sender ? sender : user}
+            <Text>받는 사람</Text>
+            <Input
+              size="lg"
+              width={"100%"}
+              backgroundColor={"white"}
+              focusOutlineColor={"#9A887E"}
+              mr={1}
+              onChangeText={(text) => setReceiver(text ? text : user)}
+            >
+              {user}
+            </Input>
+            <Text>배송 주소</Text>
+            <HStack>
+              <Input
+                size="lg"
+                width={"70%"}
+                backgroundColor={"white"}
+                focusOutlineColor={"#9A887E"}
+                mr={1}
+                readOnly={true}
+                value={keyword}
+              />
+              <Pressable
+                borderRadius={5}
+                w={"30%"}
+                backgroundColor={"coolGray.400"}
+                justifyContent={"center"}
+                onPress={openModal}
+              >
+                <Text textAlign={"center"}>주소검색</Text>
+              </Pressable>
+            </HStack>
+            <Text>상세 주소</Text>
+            <Input
+              size="lg"
+              width={"100%"}
+              backgroundColor={"white"}
+              focusOutlineColor={"#9A887E"}
+              mr={1}
+              onChangeText={(text) => setDetailAddr(text)}
+            ></Input>
 
-/>
+            <Divider mt={5} />
+            <Text style={styles.texttb}>결제 수단</Text>
+            <VStack space={4}>
+              <Radio.Group mt={2} colorScheme={"blue"}>
+                <Radio>무통장입금</Radio>
+              </Radio.Group>
+              <HStack justifyContent={"space-between"}>
+                <Text>받는사람</Text>
+                <Text bold color={"blue.500"}>
+                  주식회사 셀바이오
+                </Text>
+              </HStack>
+              <HStack justifyContent={"space-between"}>
+                <Text>입금은행</Text>
+                <Text bold color={"blue.500"}>
+                  기업은행
+                </Text>
+              </HStack>
+              <HStack justifyContent={"space-between"}>
+                <Text>계좌번호</Text>
+                <Text bold color={"blue.500"}>
+                  472-059724-01-013
+                </Text>
+              </HStack>
+              <HStack justifyContent={"space-between"}>
+                <Text>송금액</Text>
+                <Text bold color={"blue.500"}>
+                  {itemPrice}원
+                </Text>
+              </HStack>
+              <Text>입금자명</Text>
+              <Input
+                size="lg"
+                width={"100%"}
+                backgroundColor={"white"}
+                focusOutlineColor={"#9A887E"}
+                mr={1}
+                onChangeText={(text) => setDepositor(text)}
+              ></Input>
+            </VStack>
 
-        <Text>받는 사람</Text>
-        <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1} onChangeText={text => setReceiver(text ? text:user)} >{user}</Input>
-        <Text>배송 주소</Text>
-        <HStack>
-          <Input
-          size="lg"
-          width={"70%"}
-          backgroundColor={"white"}
-          focusOutlineColor={"#9A887E"}
-          mr={1}
-          readOnly={true}
-          value={keyword}
-          />
-          <Pressable borderRadius={5} w={"30%"} backgroundColor={"coolGray.400"} justifyContent={"center"} onPress={openModal}>
-            <Text textAlign={"center"}>주소검색</Text>
-          </Pressable>
-        </HStack>
-          <Text>상세 주소</Text>
-          <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setDetailAddr(text)} ></Input>
-         
-          <Divider mt={5}/>
-          <Text style={styles.texttb}>결제 수단</Text>
-          <VStack space={4}>
-          <Radio.Group mt={2}colorScheme={"blue"}>
-          <Radio >무통장입금</Radio>
-          </Radio.Group>
-          <HStack justifyContent={"space-between"}>
-            <Text>받는사람</Text>
-            <Text bold color={"blue.500"}>주식회사 셀바이오</Text>
-          </HStack>
-          <HStack  justifyContent={"space-between"}>
-            <Text>입금은행</Text>
-            <Text bold color={"blue.500"}>기업은행</Text>
-          </HStack>
-          <HStack  justifyContent={"space-between"}>
-            <Text>계좌번호</Text>
-            <Text bold color={"blue.500"}>472-059724-01-013</Text>
-          </HStack>
-          <HStack  justifyContent={"space-between"}>
-            <Text>송금액</Text>
-            <Text bold color={"blue.500"}>{itemPrice}원</Text>
-          </HStack>
-          <Text>입금자명</Text> 
-          <Input size="lg" width={"100%"} backgroundColor={"white"} focusOutlineColor={"#9A887E"} mr={1}   onChangeText={text => setDepositor(text)} ></Input>
+            <Pressable
+              onPress={async () => {
+                if (!validateInput()) {
+                  return;
+                }
+                try {
+                  const orderInfo = {
+                    제품: item,
+                    제형: formulation,
+                    베이스: base,
+                    피부고민: concern,
+                    농도: concentration,
+                    용량: volume,
+                    케이스: bottle,
+                    레시피이름: name,
+                    추가추출물: extra,
+                    개수: count,
+                  };
+
+                  const userId = auth.currentUser.uid;
+
+                  const userRef = db.collection("users").doc(userId); // 사용자 문서 참조 생성
+                  const newOrderRef = db.collection("order");
+
+                  const doc = await userRef.get();
+                  const userData = doc.data();
+                  const phone = userData.phone;
+                  await newOrderRef.add({
+                    결제금액: itemPrice,
+                    보내는사람: sender || user,
+                    받는사람: receiver || user,
+                    결제시간: paymentTime,
+                    결제일자: paymentDate,
+                    도로명: keyword,
+                    상세주소: detailAddr,
+                    주문서: [orderInfo],
+                    주문자: auth.currentUser.uid,
+                    입금자명: depositor,
+                    연락처: phone,
+                    상태: "결제대기",
+                  });
+                  alert("입금을 완료해주세요.");
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: "Screen1" }],
+                  });
+                } catch (error) {
+                  console.error(error);
+                }
+              }}
+              h={"12"}
+              borderRadius={5}
+              w={"100%"}
+              backgroundColor={"coolGray.400"}
+              justifyContent={"center"}
+            >
+              <Text style={styles.textTypo1} textAlign={"center"}>
+                결제하기
+              </Text>
+            </Pressable>
           </VStack>
-
-          <Pressable onPress={async () => {
-            if (!validateInput()) {
-              return;
-            }
-            try {
-
-              const orderInfo = {
-                "제품": item,
-                "제형": formulation,
-                "베이스": base,
-                "피부고민": concern,
-                "농도": concentration,
-                "용량": volume,
-                "케이스": bottle,
-                "레시피이름": name,
-                "추가추출물":extra,
-                "개수":count 
-              };
-              
-              const userId = auth.currentUser.uid;
-
-    const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
-    const newOrderRef = db.collection('order');
-
-    const doc = await userRef.get();
-        const userData = doc.data();
-      const phone = userData.phone;
-              await newOrderRef.add({
-                "결제금액" : itemPrice, 
-                "보내는사람" : sender || user,
-                "받는사람" : receiver || user,
-                "결제시간" : paymentTime,
-                "결제일자" : paymentDate,
-                "도로명" : keyword,
-                "상세주소": detailAddr,
-                "주문서": [orderInfo],
-                "주문자": auth.currentUser.uid,
-                "입금자명": depositor,
-                "연락처": phone,
-                "상태": "결제대기"
-              });
-              alert("입금을 완료해주세요.")
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'Screen1' }],
-              });  
-                  } catch (error) {
-              console.error(error);
-            }
-          }} h={"12"} borderRadius={5} w={"100%"} backgroundColor={"coolGray.400"} justifyContent={"center"} >
-            <Text style={styles.textTypo1} textAlign={"center"}>결제하기</Text>
-          </Pressable>
-        </VStack>
-
-    </ScrollView>    
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
-    
   );
 };
 

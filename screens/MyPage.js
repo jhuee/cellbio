@@ -2,121 +2,158 @@ import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { Image } from "expo-image";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-import {db, auth} from '../firebaseConfig'
-import { ScrollView, VStack, Box, FormControl, Input, HStack, KeyboardAvoidingView, Divider, IconButton, Pressable, FlatList, ZStack} from "native-base";
+import { db, auth } from "../firebaseConfig";
+import {
+  ScrollView,
+  VStack,
+  Box,
+  FormControl,
+  Input,
+  HStack,
+  KeyboardAvoidingView,
+  Divider,
+  IconButton,
+  Pressable,
+  FlatList,
+  ZStack,
+} from "native-base";
 import { useNavigation } from "@react-navigation/native";
 
 const Frame2 = () => {
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState("");
   const navigation = useNavigation();
 
   const getUserData = async () => {
     const userId = auth.currentUser.uid;
-    const userRef = db.collection('users').doc(userId); // 사용자 문서 참조 생성
-  
+    const userRef = db.collection("users").doc(userId); // 사용자 문서 참조 생성
+
     const doc = await userRef.get();
-  
+
     if (doc.exists) {
       const userData = doc.data();
       const name = userData.name;
-      setUser(name)
+      setUser(name);
     } else {
       console.log("No such document!");
     }
-  }
+  };
   getUserData();
   return (
     <View style={styles.view}>
-         <HStack mt={"20%"} ml={6}space={3} alignItems={"center"}>
+      <HStack mt={"20%"} ml={6} space={3} alignItems={"center"}>
         <Pressable onPress={() => navigation.goBack()}>
-        <Image
-          style={styles.chevronLeftIcon}
-          contentFit="cover"
-          source={require("../assets/chevronleft.png")}
+          <Image
+            style={styles.chevronLeftIcon}
+            contentFit="cover"
+            source={require("../assets/chevronleft.png")}
           />
         </Pressable>
-      <Text style={[styles.titleText, styles.textTypo4]}>장바구니</Text>
+        <Text style={[styles.titleText, styles.textTypo4]}>장바구니</Text>
       </HStack>
-      <ScrollView mt={50}  >
-      <VStack mr={5} ml={5} space={2}>
-      <Box>
-        <Image
-          style={styles.frameChild}
-          contentFit="cover"
-          source={require("../assets/group-427320737.png")}
-        />
-        <Text style={styles.text1}>{user}님</Text>
-        <Text style={styles.green}>
-          <Text style={styles.green1}>Green</Text>
-          <Text style={styles.text2}> 등급</Text>
-        </Text>
-        </Box>
-      <HStack justifyContent={"space-between"} mt={2} p={1} pl={4} pr={4}>
-        <Box w={50}>
-        <Text style={[ styles.textTypo2]}>{`포인트 
-0`}</Text>
-</Box>
-<Box  w={50}>
-        <Text style={[styles.textTypo2]}>{`쿠폰 
-0`}</Text>
-</Box>
-<Box w={50}>
-        <Text style={[styles.textTypo2]}>{`리뷰 
-0`}</Text>
-</Box>
-      </HStack>
-    <Divider/>
-    
-      <Text style={[ styles.textTypo3]}>제작 중인 레시피</Text>
-      <HStack justifyContent={"space-between"} mt={3} mb={5}>
-          <Box justifyContent={"center"} style={[styles.frameItem, styles.frameLayout]}>
-          <Text style={styles.text7}>레시피</Text>
+      <ScrollView mt={50}>
+        <VStack mr={5} ml={5} space={2}>
+          <Box>
+            <Image
+              style={styles.frameChild}
+              contentFit="cover"
+              source={require("../assets/group-427320737.png")}
+            />
+            <Text style={styles.text1}>{user}님</Text>
+            <Text style={styles.green}>
+              <Text style={styles.green1}>Green</Text>
+              <Text style={styles.text2}> 등급</Text>
+            </Text>
           </Box>
-        <Image
-          style={[styles.chevronRightIcon, ]}
-          contentFit="cover"
-          source={require("../assets/chevronright.png")}
-        />
-          <Box justifyContent={"center"}style={[styles.frameInner, styles.frameLayout]} >
-          <Text style={[styles.text8, styles.textTypo1]}>업체선정</Text>
-          </Box>
-        <Image
-          style={[styles.chevronRightIcon, ]}
-          contentFit="cover"
-          source={require("../assets/chevronright.png")}
-        />
-        <Box justifyContent={"center"}style={[styles.frameInner, styles.frameLayout]} >
-          <Text style={[styles.text8, styles.textTypo1]}>제작</Text>
-          </Box>
-        <Image
-          style={[styles.chevronRightIcon, ]}
-          contentFit="cover"
-          source={require("../assets/chevronright11.png")}
-        />
-        <Box justifyContent={"center"}style={[styles.frameInner, styles.frameLayout]} >
-          <Text style={[styles.text8, styles.textTypo1]}>완성</Text>
-        </Box>
-      </HStack>
-      <Divider/>
-      <Pressable h={50} justifyContent={'center'} onPress={() => navigation.navigate("Frame10")}>
-      <Text style={[styles.textTypo]}>MY 피부타입</Text>
-      </Pressable>
-      <Pressable h={50} justifyContent={'center'} onPress={() => navigation.navigate("Recipe")}>
-      <Text style={[styles.textTypo]}>보관된 레시피</Text>
-      </Pressable>
-      <Pressable h={50} justifyContent={'center'} onPress={() => navigation.navigate("Order")}>
-      <Text style={[styles.textTypo]}>주문 내역</Text>
-      </Pressable>
-      <Pressable h={50} justifyContent={'center'} >
-      <Text style={[styles.textTypo]}>취소, 반품, 교환 내역</Text>
-      </Pressable>
-      <Pressable h={50} justifyContent={'center'}>
-      <Text style={[styles.textTypo]}>배송지/환불 계좌</Text>
-      </Pressable>
-      <Pressable h={50} justifyContent={'center'}>
-      <Text style={[styles.textTypo]}>이벤트 참여 현황</Text>
-      </Pressable>
-      </VStack>
+          <HStack justifyContent={"space-between"} mt={2} p={1} pl={4} pr={4}>
+            <Box w={50}>
+              <Text style={[styles.textTypo2]}>{`포인트 
+0`}</Text>
+            </Box>
+            <Box w={50}>
+              <Text style={[styles.textTypo2]}>{`쿠폰 
+0`}</Text>
+            </Box>
+            <Box w={50}>
+              <Text style={[styles.textTypo2]}>{`리뷰 
+0`}</Text>
+            </Box>
+          </HStack>
+          <Divider />
+
+          <Text style={[styles.textTypo3]}>제작 중인 레시피</Text>
+          <HStack justifyContent={"space-between"} mt={3} mb={5}>
+            <Box
+              justifyContent={"center"}
+              style={[styles.frameItem, styles.frameLayout]}
+            >
+              <Text style={styles.text7}>레시피</Text>
+            </Box>
+            <Image
+              style={[styles.chevronRightIcon]}
+              contentFit="cover"
+              source={require("../assets/chevronright.png")}
+            />
+            <Box
+              justifyContent={"center"}
+              style={[styles.frameInner, styles.frameLayout]}
+            >
+              <Text style={[styles.text8, styles.textTypo1]}>업체선정</Text>
+            </Box>
+            <Image
+              style={[styles.chevronRightIcon]}
+              contentFit="cover"
+              source={require("../assets/chevronright.png")}
+            />
+            <Box
+              justifyContent={"center"}
+              style={[styles.frameInner, styles.frameLayout]}
+            >
+              <Text style={[styles.text8, styles.textTypo1]}>제작</Text>
+            </Box>
+            <Image
+              style={[styles.chevronRightIcon]}
+              contentFit="cover"
+              source={require("../assets/chevronright11.png")}
+            />
+            <Box
+              justifyContent={"center"}
+              style={[styles.frameInner, styles.frameLayout]}
+            >
+              <Text style={[styles.text8, styles.textTypo1]}>완성</Text>
+            </Box>
+          </HStack>
+          <Divider />
+          <Pressable
+            h={50}
+            justifyContent={"center"}
+            onPress={() => navigation.navigate("Frame10")}
+          >
+            <Text style={[styles.textTypo]}>MY 피부타입</Text>
+          </Pressable>
+          <Pressable
+            h={50}
+            justifyContent={"center"}
+            onPress={() => navigation.navigate("Recipe")}
+          >
+            <Text style={[styles.textTypo]}>보관된 레시피</Text>
+          </Pressable>
+          <Pressable
+            h={50}
+            justifyContent={"center"}
+            onPress={() => navigation.navigate("Order")}
+          >
+            <Text style={[styles.textTypo]}>주문 내역</Text>
+          </Pressable>
+          <Pressable h={50} justifyContent={"center"}>
+            <Text style={[styles.textTypo]}>취소, 반품, 교환 내역</Text>
+          </Pressable>
+          <Pressable h={50} justifyContent={"center"}>
+            <Text style={[styles.textTypo]}>배송지/환불 계좌</Text>
+          </Pressable>
+          <Pressable h={50} justifyContent={"center"}>
+            <Text style={[styles.textTypo]}>이벤트 참여 현황</Text>
+          </Pressable>
+        </VStack>
       </ScrollView>
     </View>
   );
@@ -128,26 +165,26 @@ const styles = StyleSheet.create({
     left: 0,
   },
   textTypo2: {
-    textAlign:"center",
+    textAlign: "center",
     color: Color.colorBlack,
     fontWeight: "500",
     lineHeight: 24,
     fontSize: FontSize.size_mini,
     fontFamily: FontFamily.pretendardLight,
   },
-  titleText:{
+  titleText: {
     color: Color.colorDarkslategray_100,
     fontFamily: FontFamily.pretendardLight,
     fontWeight: "700",
     lineHeight: 40,
     fontSize: FontSize.size_6xl,
-},
-textTypo4: {
-  fontFamily: FontFamily.pretendardLight,
-  fontWeight: "600",
-  lineHeight: 40,
-  fontSize: FontSize.size_6xl,
-},
+  },
+  textTypo4: {
+    fontFamily: FontFamily.pretendardLight,
+    fontWeight: "600",
+    lineHeight: 40,
+    fontSize: FontSize.size_6xl,
+  },
 
   textTypo3: {
     color: Color.colorBlack,
@@ -277,7 +314,6 @@ textTypo4: {
   text5: {
     marginLeft: 73.5,
   },
-
 
   item: {
     top: 420,

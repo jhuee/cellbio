@@ -3,27 +3,28 @@ import { Image } from "expo-image";
 import { StyleSheet, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { HStack,Circle, Text} from "native-base";
+import { HStack, Circle, Text } from "native-base";
 const Frame = () => {
   const navigation = useNavigation();
   const num = [
-    { color: "#8E6868", text: '1' },
-    { color:"#BCB1B1", text: '2' },
-    { color:"#BCB1B1", text: '3' },
-    { color:"#BCB1B1", text: "4" },
-    { color:"#BCB1B1", text: '5' },
-    { color:"#BCB1B1", text: '6' },
-    { color:"#BCB1B1", text: '7' },
+    { color: "#8E6868", text: "1" },
+    { color: "#BCB1B1", text: "2" },
+    { color: "#BCB1B1", text: "3" },
+    { color: "#BCB1B1", text: "4" },
+    { color: "#BCB1B1", text: "5" },
+    { color: "#BCB1B1", text: "6" },
+    { color: "#BCB1B1", text: "7" },
   ];
-  const formulation = useSelector(state => state.formulation);
+  const formulation = useSelector((state) => state.formulation);
   const formulationInfo = {
-    '스킨': "스킨은 피부에 수분을 공급하고, 이후에 사용할 제품들이 더 잘 흡수되도록 도와주는 역할을 합니다.",
-    '에센스': "에센스는 피부에 깊숙이 침투하여, 피부를 촉촉하게 유지하고 피부 밸런스를 맞춰줍니다.",
-    '크림': "크림은 피부를 보호하는 마지막 단계로, 피부에 필요한 영양을 공급하고 수분을 잠가줍니다.",
-    '샴푸': "샴푸는 머리카락과 두피를 깨끗이 하는 역할을 합니다.",
-    '바디워시': "바디워시는 몸의 노폐물을 제거하고 피부를 상쾌하게 해줍니다.",
-    '클렌징': "클렌징은 피부의 노폐물과 메이크업을 제거하는 첫번째 단계입니다."
-  }
+    스킨: "스킨은 피부에 수분을 공급하고, 이후에 사용할 제품들이 더 잘 흡수되도록 도와주는 역할을 합니다.",
+    에센스:
+      "에센스는 피부에 깊숙이 침투하여, 피부를 촉촉하게 유지하고 피부 밸런스를 맞춰줍니다.",
+    크림: "크림은 피부를 보호하는 마지막 단계로, 피부에 필요한 영양을 공급하고 수분을 잠가줍니다.",
+    샴푸: "샴푸는 머리카락과 두피를 깨끗이 하는 역할을 합니다.",
+    바디워시: "바디워시는 몸의 노폐물을 제거하고 피부를 상쾌하게 해줍니다.",
+    클렌징: "클렌징은 피부의 노폐물과 메이크업을 제거하는 첫번째 단계입니다.",
+  };
   return (
     <View style={styles.ellipseParent}>
       <Image
@@ -31,14 +32,14 @@ const Frame = () => {
         contentFit="cover"
         source={require("../assets/ellipse-48.png")}
       />
-     
+
       {/* 단계 */}
       <View style={styles.frameGroup}>
         <HStack space={1.5}>
           {num.map((item, idx) => (
-          <Circle key={idx} size={"25px"} bg={item.color}>
-          <Text style={[ styles.textTypo]}>{item.text}</Text>
-          </Circle>
+            <Circle key={idx} size={"25px"} bg={item.color}>
+              <Text style={[styles.textTypo]}>{item.text}</Text>
+            </Circle>
           ))}
         </HStack>
       </View>
@@ -57,7 +58,10 @@ const Frame = () => {
         style={styles.frameItem}
         onPress={() => navigation.navigate("Frame4")}
       />
-      <Text style={[styles.text9, styles.textTypo]}> {formulationInfo[formulation]}</Text>
+      <Text style={[styles.text9, styles.textTypo]}>
+        {" "}
+        {formulationInfo[formulation]}
+      </Text>
       <View style={[styles.frameInner, styles.groupChildPosition]} />
       <Text style={[styles.text10, styles.textTypo]}>선택 완료</Text>
     </View>
