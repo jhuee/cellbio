@@ -29,13 +29,18 @@ const Confirm = () => {
   const volume = useSelector((state) => state.volume);
   const bottle = useSelector((state) => state.case);
   const item = useSelector((state) => state.item);
+  const extra = useSelector((state) => state.extra);
   const [totalPrice, setTotalPrice] = useState(0);
   const [name, setName] = useState("");
   const dispatch = useDispatch();
   const handlePress = () => {
-    dispatch(setRecName(name));
-    dispatch(setTotal(totalPrice));
-    navigation.navigate("Payment");
+    if (name == "") {
+      alert("레시피 이름을 설정해주세요!");
+    } else {
+      dispatch(setRecName(name));
+      dispatch(setTotal(totalPrice));
+      navigation.navigate("Payment");
+    }
   };
 
   useEffect(() => {
@@ -45,29 +50,42 @@ const Confirm = () => {
           db.collection("prices").doc("product").get(),
           db.collection("prices").doc("base").get(),
           db.collection("prices").doc("volume").get(),
+          db.collection("prices").doc("extras").get(),
         ]);
 
         const itemData = prices[0].data();
         const baseData = prices[1].data();
         const volumeData = prices[2].data();
+        const extraData = prices[3].data();
 
         const itemPrice = itemData[item] || 0;
         const basePrice = baseData[base] || 0;
         const volumePrice = volumeData[volume] || 0;
+        let extraTotalPrice = 0;
+        Object.keys(extra).forEach((key) => {
+          // 여기서 extrasFromRedux[key]가 존재하는지 먼저 확인
+          if (extra[key]) {
+            const count = extra[key].count || 0; // 이렇게 해도 되고,
+            const price = extraData[key] || 0;
+            extraTotalPrice += price * count;
+            console.log(extraData[key]);
+          }
+        });
 
-        // 선택된 아이템, 베이스, 볼륨에 맞는 가격을 가져와 총 가격 계산
-        const calculatedTotalPrice = itemPrice + basePrice + volumePrice;
+        // 선택된 아이템, 베이스, 볼륨, 그리고 extra에 맞는 가격을 가져와 총 가격을 계산합니다.
+        const calculatedTotalPrice =
+          itemPrice + basePrice + volumePrice + extraTotalPrice;
         setTotalPrice(calculatedTotalPrice);
+
+        console.log(extra, calculatedTotalPrice, item, base, volume);
       } catch (error) {
         console.error("가격 정보를 가져오는 중 오류가 발생했습니다:", error);
       }
     };
-
     fetchPriceInfo();
-  }, [item, base, volume]); // 의존성 배열에 상태를 추가합니다.
+  }, []); // 의존성 배열에 상태를 추가합니다.
 
   // 총 가격에 수량을 반영하여 최종 가격을 계산합니다.
-  console.log(item, base, volume, totalPrice);
   return (
     <View style={styles.view}>
       <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={200}>
@@ -140,7 +158,8 @@ const Confirm = () => {
                     용량: volume,
                     케이스: bottle,
                     레시피: name,
-                    가격: 15000,
+                    가격: totalPrice,
+                    추출물: extra,
                   });
 
                   alert("저장되었습니다.");

@@ -84,6 +84,7 @@ const Frame6 = () => {
     dispatch(setConcern(groupValue));
     navigation.navigate("Frame5");
   };
+
   return (
     <View style={styles.view}>
       <Image
