@@ -40,7 +40,6 @@ const OrderHistoryScreen = () => {
   );
   const [refresh, setRefresh] = useState(false);
 
-  // 상태 변경 함수
   const handleStatusChange = (newStatus) => {
     setCurrentStatus(newStatus);
     updateOrderStatus(selectedOrder.id, newStatus); // 선택된 order의 상태를 업데이트하는 함수, 구현 필요
@@ -77,7 +76,7 @@ const OrderHistoryScreen = () => {
 
       // 결제 일자별로 그룹화
       const groupedOrders = orders.reduce((groups, order) => {
-        const date = order.결제일자.toDate().toISOString().split("T")[0]; // 날짜만 추출
+        const date = order.결제일자.toDate().toISOString().split("T")[0];
         if (!groups[date]) {
           groups[date] = [];
         }

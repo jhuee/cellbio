@@ -49,7 +49,7 @@ const Cart = () => {
   const extra = useSelector((state) => state.extra);
   const price = useSelector((state) => state.price);
 
-  const [count, setCount] = useState(1); // 초기값을 1로 설정
+  const [count, setCount] = useState(1);
   const [address, setAddress] = useState("");
   const [keyword, setKeyword] = useState("");
   const [detailAddr, setDetailAddr] = useState("");
@@ -59,7 +59,7 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [itemPrice, setitemPrice] = useState(0);
   const [depositor, setDepositor] = useState("");
-  const [carts, setCarts] = useState([]); // 레시피 데이터를 저장할 state
+  const [carts, setCarts] = useState([]);
   const increaseCount = (recipe) => {
     const id = recipe.id;
     setCount((prevCount) => ({
@@ -82,11 +82,11 @@ const Cart = () => {
   const now = new Date();
 
   const year = now.getFullYear();
-  const month = now.getMonth(); // 월은 0부터 시작하므로 1을 더해야 합니다.
+  const month = now.getMonth();
   const date = now.getDate();
 
   const paymentTime = now.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
-  const paymentDate = new Date(year, month, date); // 월은 0부터 시작하므로 1을 빼야 합니다.
+  const paymentDate = new Date(year, month, date);
 
   const priceTable = {
     크림: 5000,
@@ -99,19 +99,19 @@ const Cart = () => {
     "인진쑥 추출물": 5000,
   };
 
-  const pricePerItem = priceTable[item]; // 상품에 해당하는 가격을 찾습니다.
+  const pricePerItem = priceTable[item];
   useEffect(() => {
     if (!pricePerItem) {
       setTotalPrice(price);
       setExtraValue(Object.keys(extra).join(", "));
     } else {
       setitemPrice(pricePerItem * count);
-    } // 총 가격을 계산합니다.
+    }
   }, [pricePerItem, extra]);
 
   const getUserData = async () => {
     const userId = auth.currentUser.uid;
-    const userRef = db.collection("users").doc(userId); // 사용자 문서 참조 생성
+    const userRef = db.collection("users").doc(userId);
 
     const doc = await userRef.get();
 
@@ -128,21 +128,20 @@ const Cart = () => {
 
   async function getCart() {
     const userId = auth.currentUser.uid;
-    const userRef = db.collection("users").doc(userId); // 사용자 문서 참조 생성
-    const cartRef = userRef.collection("cart"); // 레시피 컬렉션 참조 생성
-    const snapshot = await cartRef.get(); // 레시피 컬렉션의 스냅샷 가져오기
+    const userRef = db.collection("users").doc(userId);
+    const cartRef = userRef.collection("cart");
+    const snapshot = await cartRef.get();
 
-    // 스냅샷에서 문서 데이터 가져오기
     const cart = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
 
-    return cart; // 레시피 데이터 반환
+    return cart;
   }
 
   useEffect(() => {
-    getCart().then((data) => setCarts(data)); // 레시피 데이터 가져오기
+    getCart().then((data) => setCarts(data));
   }, []);
   const groupedCarts = carts.reduce((grouped, recipe) => {
     (grouped[recipe.skinType] = grouped[recipe.skinType] || []).push(recipe);
@@ -168,12 +167,9 @@ const Cart = () => {
 
   const validateInput = () => {
     if (keyword === "" || user === "") {
-      Alert.alert(
-        "", // 타이틀을 빈 문자열로 설정하여 "ALERT"를 표시하지 않음
-        "모든 필드를 채워주세요", // 알림 메시지
-        [{ text: "확인" }],
-        { cancelable: false }
-      );
+      Alert.alert("", "모든 필드를 채워주세요", [{ text: "확인" }], {
+        cancelable: false,
+      });
       return false;
     }
     return true;
@@ -496,7 +492,7 @@ const Cart = () => {
                   const newOrderRef = db.collection("order");
                   const userId = auth.currentUser.uid;
 
-                  const userRef = db.collection("users").doc(userId); // 사용자 문서 참조 생성
+                  const userRef = db.collection("users").doc(userId);
 
                   const doc = await userRef.get();
                   const userData = doc.data();
