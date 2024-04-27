@@ -18,7 +18,13 @@ import {
 } from "native-base";
 
 import { useDispatch } from "react-redux";
-import { setExtra, setItem, setPrice, setRecName } from "../src/actions";
+import {
+  setExtra,
+  setItem,
+  setPrice,
+  setRecName,
+  setTotal,
+} from "../src/actions";
 import { FontAwesome5, Feather } from "@expo/vector-icons";
 import { db, auth } from "../firebaseConfig";
 
@@ -47,6 +53,7 @@ const Frame9 = () => {
   const dispatch = useDispatch();
   const [creamModal, showCreamModal] = useState(false);
   const [extrasModal, showExtrasModal] = useState(false);
+  const [creamPrice, setCreamPrice] = useState(0);
   const totalPrice = 15000 * count; // 총 가격을 계산합니다.
   const [extraValue, setExtraValue] = useState([]);
   const date = new Date();
@@ -63,8 +70,10 @@ const Frame9 = () => {
 
   const handleCreamItem = () => {
     dispatch(setRecName("크림베이스 구매"));
-    dispatch(setPrice(totalPrice));
+    creamPrice;
+    dispatch(setTotal(totalPrice));
     dispatch(setExtra(""));
+    dispatch(setItem("크림베이스"));
     showCreamModal(false);
     console.log(totalPrice);
     navigation.navigate("Payment");
@@ -82,7 +91,8 @@ const Frame9 = () => {
     // // 변환된 객체를 상태로 저장
     dispatch(setExtra(extrasObject));
     dispatch(setRecName("추출물 구매"));
-    dispatch(setPrice(totalPrices));
+    dispatch(setItem("추출물"));
+    dispatch(setTotal(totalPrices));
     showExtrasModal(false);
     navigation.navigate("Payment");
   };
@@ -254,6 +264,12 @@ const Frame9 = () => {
                 onPress={async () => {
                   try {
                     const userId = auth.currentUser.uid;
+                    const price = db
+                      .collection("prices")
+                      .doc("creambase")
+                      .get();
+                    const creamData = price[0].data();
+                    const creamPrice = creamData["크림베이스"] || 0;
                     const userRef = db.collection("users").doc(userId); // 사용자 문서 참조 생성
                     const recipeRef = userRef.collection("cart").doc(); // 레시피 문서 참조 생성
 
@@ -264,7 +280,7 @@ const Frame9 = () => {
                       용량: "500ml",
                       레시피: "크림베이스",
                       개수: count,
-                      가격: 15000,
+                      가격: creamPrice,
                     });
 
                     alert("저장되었습니다.");
